@@ -1,0 +1,326 @@
+version: '3'
+
+###
+# Fin Server from deployed DockerHub container images
+###
+services:
+
+  ###
+  # Front End NodeJS Application Server
+  ###
+  gateway:
+    image: {{UCD_DAMS_SERVER_IMAGE_NAME}}:{{APP_VERSION}}
+    volumes:
+      - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/api:/fin/services/api
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/essync:/fin/services/essync
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/gateway:/fin/services/gateway
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/models:/fin/services/models
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/node-utils:/fin/services/node-utils
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/trusted-proxy:/fin/services/trusted-proxy
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/ucd-lib-client:/fin/services/ucd-lib-client
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/fin-api/index.js:/fin/api/index.js
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/fin-api/lib:/fin/api/lib
+    ports:
+      - ${HOST_PORT:-3000}:3001
+    env_file:
+      - .env
+    depends_on:
+      - fcrepo
+      - redis
+      - elasticsearch
+    command: npm run gateway
+    # command: bash -c 'tail -f /dev/null'
+
+  ###
+  # Fedora Repository
+  ###
+  fcrepo:
+    image: {{FCREPO_IMAGE_NAME}}:{{APP_VERSION}}
+    ports:
+      - 8080:8080
+    # Example for change logging.  Note, don't forget to still include the fcrepo.properties file location!
+    # See: https://wiki.lyrasis.org/display/FEDORA6x/Logging
+    # environment:
+    #  - CATALINA_OPTS=-Dfcrepo.log.auth=DEBUG -Dfcrepo.config.file=/etc/fin/fcrepo.properties
+    volumes:
+      - fedora-data:/usr/local/tomcat/fcrepo-home/data
+      - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fcrepo/activemq.xml:/usr/local/tomcat/webapps/fcrepo/WEB-INF/classes/config/activemq.xml
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fcrepo/fcrepo.properties:/etc/fin/fcrepo.properties
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fcrepo/root-authorization.ttl:/etc/fin/root-authorization.ttl
+    env_file:
+      - .env
+
+  ###
+  # Fedora Postgres Service
+  ###
+  postgres:
+    image: {{POSTGRES_IMAGE_NAME}}:{{APP_VERSION}}
+    environment: 
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+
+  ###
+  # Fin Init Service
+  ###
+  init:
+    image: {{UCD_DAMS_INIT_IMAGE_NAME}}:{{APP_VERSION}}
+    volumes:
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/init/postgres:/etc/ucdlib-service-init/postgres
+      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/init/fcrepo:/etc/ucdlib-service-init/fcrepo
+      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/init/docker-run.sh:/docker-run.sh
+
+
+  ###
+  # Trusted Proxy for Services
+  ###
+  trustedproxy:
+    image: {{UCD_DAMS_SERVER_IMAGE_NAME}}:{{APP_VERSION}}
+    volumes:
+      - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/api:/fin/services/api
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/essync:/fin/services/essync
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/gateway:/fin/services/gateway
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/node-utils:/fin/services/node-utils
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/trusted-proxy:/fin/services/trusted-proxy
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/ucd-lib-client:/fin/services/ucd-lib-client
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/fin-api/index.js:/fin/api/index.js
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/fin-api/lib:/fin/api/lib
+    env_file:
+      - .env
+    depends_on:
+      - fcrepo
+    command: npm run trusted-proxy
+    # command: bash -c 'tail -f /dev/null'
+
+  ###
+  # Session, admin store
+  ###
+  redis:
+    image: redis:3.2
+    volumes:
+      - redis-data:/data
+    depends_on:
+      - fcrepo
+
+  ###
+  # UC DAMS Client API
+  ###
+  api:
+    image: {{UCD_DAMS_SERVER_IMAGE_NAME}}:{{APP_VERSION}}
+    volumes:
+      - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/api:/fin/services/api
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/essync:/fin/services/essync
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/gateway:/fin/services/gateway
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/node-utils:/fin/services/node-utils
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/trusted-proxy:/fin/services/trusted-proxy
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/ucd-lib-client:/fin/services/ucd-lib-client
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/fin-api/index.js:/fin/api/index.js
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/fin-api/lib:/fin/api/lib
+      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/fin/models:/fin/services/models
+    env_file:
+      - .env
+    depends_on:
+      - elasticsearch
+    command: npm run api
+  # command: bash -c 'tail -f /dev/null'
+
+  app-data:
+    image: {{UCD_DAMS_SERVER_IMAGE_NAME}}:{{APP_VERSION}}
+    volumes:
+      - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/app-data:/fin/services/app-data
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/node-utils:/fin/services/node-utils
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/fin-api/index.js:/fin/api/index.js
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/fin-api/lib:/fin/api/lib
+      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/fin/models:/fin/services/models
+    env_file:
+      - .env
+    command: node app-data/index.js
+    # command: bash -c 'tail -f /dev/null'
+
+  finac:
+    image: {{UCD_DAMS_SERVER_IMAGE_NAME}}:{{APP_VERSION}}
+    volumes:
+      - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/fin-ac:/fin/services/fin-ac
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/node-utils:/fin/services/node-utils
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/fin-api/index.js:/fin/api/index.js
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/fin-api/lib:/fin/api/lib
+      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/fin/models:/fin/services/models
+    env_file:
+      - .env
+    command: node fin-ac/index.js
+    # command: bash -c 'tail -f /dev/null'
+
+  ###
+  # UC DAMS Client UI
+  ###
+  ucd-lib-client:
+    image: {{UCD_DAMS_SERVER_IMAGE_NAME}}:{{APP_VERSION}}
+    volumes:
+      - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/api:/fin/services/api
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/essync:/fin/services/essync
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/gateway:/fin/services/gateway
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/node-utils:/fin/services/node-utils
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/trusted-proxy:/fin/services/trusted-proxy
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/fin-api/index.js:/fin/api/index.js
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/fin-api/lib:/fin/api/lib
+      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/fin/ucd-lib-client:/fin/services/ucd-lib-client
+      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/fin/models:/fin/services/models
+    env_file:
+      - .env
+    depends_on:
+      - elasticsearch
+    command: npm run ucd-lib-client
+    # command: bash -c 'tail -f /dev/null'
+
+  ###
+  # ES Indexer
+  ###
+  essync:
+    image: {{UCD_DAMS_SERVER_IMAGE_NAME}}:{{APP_VERSION}}
+    volumes:
+      - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/api:/fin/services/api
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/essync:/fin/services/essync
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/gateway:/fin/services/gateway
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/node-utils:/fin/services/node-utils
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/trusted-proxy:/fin/services/trusted-proxy
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/ucd-lib-client:/fin/services/ucd-lib-client
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/fin-api/index.js:/fin/api/index.js
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/fin-api/lib:/fin/api/lib
+      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/fin/models:/fin/services/models
+    env_file:
+      - .env
+    depends_on:
+      - gateway
+    command: npm run essync
+    # command: bash -c 'tail -f /dev/null'
+
+  ###
+  # Search
+  ###
+  elasticsearch:
+    image: {{ELASTIC_SEARCH_IMAGE_NAME}}:{{APP_VERSION}}
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    env_file:
+      - .env
+    volumes:
+      - es-data:/usr/share/elasticsearch/data
+    depends_on:
+      - fcrepo
+    # command: bash -c 'tail -f /dev/null'
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.4.3
+    ports:
+      - 5601:5601
+    env_file:
+      - .env
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
+      - xpack.security.enabled=false
+      - telemetry.enabled=false
+    depends_on:
+      - elasticsearch
+
+  ###
+  # IIIF Service
+  ###
+  loris:
+    image: {{LORIS_IMAGE_NAME}}:{{APP_VERSION}}
+    depends_on:
+      - fcrepo
+    env_file:
+      - .env
+    volumes:
+      - loris-cache:/var/cache/loris
+      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/loris/loris2.conf:/opt/loris/etc/loris2.conf
+      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/loris/start.py:/opt/loris/loris/start.py
+
+  ###
+  # Tesseract OCR Services
+  ###
+  tesseract:
+    image: {{TESSERACT_IMAGE_NAME}}:{{APP_VERSION}}
+    volumes:
+      - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
+      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/tesseract/index.js:/service/index.js
+      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/fin/node-utils/lib:/fin-node-utils/lib
+      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/fin/node-utils/config.js:/fin-node-utils/config.js
+      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/fin/node-utils/index.js:/fin-node-utils/index.js
+    env_file:
+      - .env
+    depends_on:
+      - gateway
+    # command: bash -c 'tail -f /dev/null'
+
+  ###
+  # OIDC AuthenticationService
+  ###
+  oidc:
+    image: {{UCD_DAMS_SERVER_IMAGE_NAME}}:{{APP_VERSION}}
+    volumes:
+      - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/api:/fin/services/api
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/oidc:/fin/services/oidc
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/essync:/fin/services/essync
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/gateway:/fin/services/gateway
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/node-utils:/fin/services/node-utils
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/trusted-proxy:/fin/services/trusted-proxy
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/ucd-lib-client:/fin/services/ucd-lib-client
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/fin-api/index.js:/fin/api/index.js
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/fin-api/lib:/fin/api/lib
+      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/fin/models:/fin/services/models
+    env_file:
+      - .env
+    depends_on:
+      - gateway
+    # command: bash -c 'tail -f /dev/null'
+    command: npm run oidc
+    
+  keycloak:
+    image: {{KEYCLOAK_IMAGE_NAME}}:{{APP_VERSION}}
+    environment:
+      KC_HEALTH_ENABLED: true
+      KC_METRICS_ENABLED: true
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://postgres/postgres
+      KC_DB_USERNAME: postgres
+      KC_DB_PASSWORD: postgres
+      KC_HOSTNAME: localhost
+    volumes:
+      - ../keycloak/dams-local-dev-realm.json:/opt/keycloak/data/import/dams-local-dev-realm.json
+    ports:
+      - 8081:8080
+      - 8443:8443
+    command: ["start-dev --import-realm"]
+
+
+###
+# Docker data volumes
+###
+volumes:
+  fedora-data:
+    driver: local
+  pg-data:
+    driver: local
+  es-data:
+    driver: local
+  redis-data:
+    driver: local
+  loris-cache:
+    driver: local
+  service-account:
+    driver: local

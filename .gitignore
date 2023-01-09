@@ -1,0 +1,6 @@
+*service-account.json
+node_modules
+.env
+repositories
+fin-local-dev
+dams-local-dev-realm.json
