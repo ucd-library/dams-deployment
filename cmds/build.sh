@@ -5,8 +5,7 @@ ROOT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 cd $ROOT_DIR/..
 source config.sh
 
-echo "Starting docker build"
-
+echo "Starting docker build "
 FIN_SERVER_REPO_HASH=$(git -C $REPOSITORY_DIR/$FIN_SERVER_REPO_NAME log -1 --pretty=%h)
 
 # Core Server - fcrepo

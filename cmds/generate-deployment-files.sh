@@ -15,4 +15,4 @@ cork-template \
 LOCAL_DEV=true cork-template \
   -c ../config.sh \
   -t local-dev.yaml \
-  -o ../fin-local-dev/docker-compose.yaml
+  -o ../dams-local-dev/docker-compose.yaml
