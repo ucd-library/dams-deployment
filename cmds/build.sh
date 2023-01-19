@@ -10,7 +10,7 @@ FIN_SERVER_REPO_HASH=$(git -C $REPOSITORY_DIR/$FIN_SERVER_REPO_NAME log -1 --pre
 
 # Core Server - fcrepo
 docker build \
-  --build-arg FIN_SERVER_REPO_TAG=${FIN_SERVER_REPO_TAG} \
+  --build-arg FIN_REPO_TAG=${FIN_REPO_TAG} \
   --build-arg FIN_SERVER_REPO_HASH=${FIN_SERVER_REPO_HASH} \
   -t $FCREPO_IMAGE_NAME:$APP_VERSION \
   --cache-from $FCREPO_IMAGE_NAME:$DOCKER_CACHE_TAG \
@@ -18,7 +18,7 @@ docker build \
 
 # Core Server - postgres
 docker build \
-  --build-arg FIN_SERVER_REPO_TAG=${FIN_SERVER_REPO_TAG} \
+  --build-arg FIN_REPO_TAG=${FIN_REPO_TAG} \
   --build-arg FIN_SERVER_REPO_HASH=${FIN_SERVER_REPO_HASH} \
   -t $POSTGRES_IMAGE_NAME:$APP_VERSION \
   --cache-from $POSTGRES_IMAGE_NAME:$DOCKER_CACHE_TAG \
@@ -26,7 +26,7 @@ docker build \
 
 # Core Server - server
 docker build \
-  --build-arg FIN_SERVER_REPO_TAG=${FIN_SERVER_REPO_TAG} \
+  --build-arg FIN_REPO_TAG=${FIN_REPO_TAG} \
   --build-arg FIN_SERVER_REPO_HASH=${FIN_SERVER_REPO_HASH} \
   -t $SERVER_IMAGE_NAME:$APP_VERSION \
   --cache-from $SERVER_IMAGE_NAME:$DOCKER_CACHE_TAG \
@@ -35,7 +35,7 @@ docker build \
 
 # Core Server - elastic search
 docker build \
-  --build-arg FIN_SERVER_REPO_TAG=${FIN_SERVER_REPO_TAG} \
+  --build-arg FIN_REPO_TAG=${FIN_REPO_TAG} \
   --build-arg FIN_SERVER_REPO_HASH=${FIN_SERVER_REPO_HASH} \
   -t $ELASTIC_SEARCH_IMAGE_NAME:$APP_VERSION \
   --cache-from $ELASTIC_SEARCH_IMAGE_NAME:$DOCKER_CACHE_TAG \
@@ -67,7 +67,7 @@ docker build \
 
 # DAMS - Loris Service
 docker build \
-  --build-arg FIN_SERVER_REPO_TAG=${FIN_SERVER_REPO_TAG} \
+  --build-arg FIN_REPO_TAG=${FIN_REPO_TAG} \
   --build-arg FIN_SERVER_REPO_HASH=${FIN_SERVER_REPO_HASH} \
   -t $LORIS_IMAGE_NAME:$APP_VERSION \
   --cache-from $LORIS_IMAGE_NAME:$DOCKER_CACHE_TAG \
@@ -76,7 +76,7 @@ docker build \
 # DAMS - Tesseract Service
 docker build \
   --build-arg FIN_SERVER_IMAGE=${SERVER_IMAGE_NAME}:${APP_VERSION} \
-  --build-arg FIN_SERVER_REPO_TAG=${FIN_SERVER_REPO_TAG} \
+  --build-arg FIN_REPO_TAG=${FIN_REPO_TAG} \
   --build-arg FIN_SERVER_REPO_HASH=${FIN_SERVER_REPO_HASH} \
   -t $TESSERACT_IMAGE_NAME:$APP_VERSION \
   --cache-from $TESSERACT_IMAGE_NAME:$DOCKER_CACHE_TAG \

@@ -16,7 +16,8 @@ fi
 APP_TAG=v2.0.0-alpha
 APP_VERSION=${APP_TAG}.${BUILD_NUM}
 
-FIN_SERVER_REPO_TAG=v2.0-sandbox
+FIN_REPO_TAG=sandbox
+DAMS_REPO_TAG=sandbox
 
 #### End main config ####
 
