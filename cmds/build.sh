@@ -73,11 +73,11 @@ docker build \
   --cache-from $LORIS_IMAGE_NAME:$DOCKER_CACHE_TAG \
   $REPOSITORY_DIR/$UCD_DAMS_REPO_NAME/services/loris
 
-# DAMS - Tesseract Service
+# DAMS - Image Utils Service
 docker build \
   --build-arg FIN_SERVER_IMAGE=${SERVER_IMAGE_NAME}:${APP_VERSION} \
   --build-arg FIN_REPO_TAG=${FIN_REPO_TAG} \
   --build-arg FIN_SERVER_REPO_HASH=${FIN_SERVER_REPO_HASH} \
-  -t $TESSERACT_IMAGE_NAME:$APP_VERSION \
-  --cache-from $TESSERACT_IMAGE_NAME:$DOCKER_CACHE_TAG \
-  $REPOSITORY_DIR/$UCD_DAMS_REPO_NAME/services/tesseract
+  -t $IMAGE_UTILS_IMAGE_NAME:$APP_VERSION \
+  --cache-from $IMAGE_UTILS_IMAGE_NAME:$DOCKER_CACHE_TAG \
+  $REPOSITORY_DIR/$UCD_DAMS_REPO_NAME/services/image-utils
