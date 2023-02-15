@@ -273,19 +273,42 @@ services:
       - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/loris/start.py:/opt/loris/loris/start.py
 
   ###
+  # Fin Workflows
+  ###
+  workflow:
+    image: {{UCD_DAMS_SERVER_IMAGE_NAME}}:{{APP_VERSION}}
+    volumes:
+      - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/node-utils/lib:/fin/services/node-utils/lib
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/node-utils/config.js:/fin/services/node-utils/config.js
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/node-utils/index.js:/fin/services/node-utils/index.js
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/workflow/index.js:/fin/services/workflow/index.js
+    env_file:
+      - .env
+    depends_on:
+      - gateway
+    # command: bash -c 'tail -f /dev/null'
+
+  ###
   # Image Utils OCR Services
   ###
   image-utils:
     image: {{IMAGE_UTILS_IMAGE_NAME}}:{{APP_VERSION}}
     volumes:
       - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
-      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/fin/node-utils/lib:/fin-node-utils/lib
-      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/fin/node-utils/config.js:/fin-node-utils/config.js
-      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/fin/node-utils/index.js:/fin-node-utils/index.js
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/node-utils/lib:/fin/services/node-utils/lib
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/node-utils/config.js:/fin/services/node-utils/config.js
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/node-utils/index.js:/fin/services/node-utils/index.js
+      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/image-utils/index.js:/fin/services/image-utils/index.js
+      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/image-utils/cli:/fin/services/image-utils/cli
+      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/image-utils/controllers:/fin/services/image-utils/controllers
+      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/image-utils/lib:/fin/services/image-utils/lib
     env_file:
       - .env
     depends_on:
       - gateway
+    ports:
+      - 8082:3000
     # command: bash -c 'tail -f /dev/null'
 
   ###
