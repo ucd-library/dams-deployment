@@ -125,20 +125,6 @@ services:
     command: npm run api
   # command: bash -c 'tail -f /dev/null'
 
-  app-data:
-    image: {{UCD_DAMS_SERVER_IMAGE_NAME}}:{{APP_VERSION}}
-    volumes:
-      - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/app-data:/fin/services/app-data
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/node-utils:/fin/services/node-utils
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/fin-api/index.js:/fin/api/index.js
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/fin-api/lib:/fin/api/lib
-      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/fin/models:/fin/services/models
-    env_file:
-      - .env
-    command: node app-data/index.js
-    # command: bash -c 'tail -f /dev/null'
-
   finac:
     image: {{UCD_DAMS_SERVER_IMAGE_NAME}}:{{APP_VERSION}}
     volumes:
@@ -217,14 +203,13 @@ services:
       - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/trusted-proxy:/fin/services/trusted-proxy
       - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/fin-api/index.js:/fin/api/index.js
       - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/fin-api/lib:/fin/api/lib
-      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/fin/models:/fin/services/models
-      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/fin/gcssync/lib:/fin/services/gcssync/lib
-      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/fin/gcssync/index.js:/fin/services/gcssync/index.js
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/gcssync/lib:/fin/services/gcssync/lib
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/gcssync/index.js:/fin/services/gcssync/index.js
     env_file:
       - .env
     depends_on:
       - gateway
-    command: node gcssync/index.js
+    command: npm run gcssync
     # command: bash -c 'tail -f /dev/null'
 
   ###
