@@ -190,9 +190,9 @@ services:
     # command: bash -c 'tail -f /dev/null'
 
   ###
-  # GCS Sync
+  # GCS - Sccess & Sync
   ###
-  gcssync:
+  gcs:
     image: {{UCD_DAMS_SERVER_IMAGE_NAME}}:{{APP_VERSION}}
     volumes:
       - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
@@ -203,13 +203,13 @@ services:
       - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/trusted-proxy:/fin/services/trusted-proxy
       - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/fin-api/index.js:/fin/api/index.js
       - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/fin-api/lib:/fin/api/lib
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/gcssync/lib:/fin/services/gcssync/lib
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/gcssync/index.js:/fin/services/gcssync/index.js
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/gcs/lib:/fin/services/gcs/lib
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/gcs/index.js:/fin/services/gcs/index.js
     env_file:
       - .env
     depends_on:
       - gateway
-    command: npm run gcssync
+    command: npm run gcs
     # command: bash -c 'tail -f /dev/null'
 
   ###
