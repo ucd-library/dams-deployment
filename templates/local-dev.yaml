@@ -353,5 +353,3 @@ volumes:
     driver: local
   loris-cache:
     driver: local
-  service-account:
-    driver: local

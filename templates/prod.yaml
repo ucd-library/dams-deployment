@@ -8,10 +8,10 @@ services:
   ###
   # Font End NodeJS Application Server
   ###
-  server:
-    image: ucdlib/fin-ucd-lib-server-impl:{{APP_TAG}}
+  gateway:
+    image: {{UCD_DAMS_SERVER_IMAGE_NAME}}:{{APP_VERSION}}
     volumes:
-      - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-service-account}:/etc/fin/webapp-service-account.json
+      - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
     ports:
       - ${HOST_PORT:-3001}:3001
     env_file:
@@ -25,10 +25,12 @@ services:
   # Fedora Repository
   ###
   fcrepo:
-    image: ucdlib/fin-fcrepo:{{CORE_SERVER_REPO_TAG}}
+    image: {{FCREPO_IMAGE_NAME}}:{{APP_VERSION}}
+    ports:
+      - ${FCREPO_HOST_PORT:-8080}:8080
     volumes:
-      - fedora-data:/var/lib/jetty/fedora-data
-      - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-service-account}:/etc/fin/webapp-service-account.json
+      - fedora-data:/usr/local/tomcat/fcrepo-home/data
+      - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
     env_file:
       - .env
 
@@ -36,21 +38,30 @@ services:
   # Fedora Postgres Service
   ###
   postgres:
-    image: ucdlib/fin-postgres:{{CORE_SERVER_REPO_TAG}}
+    image: {{POSTGRES_IMAGE_NAME}}:{{APP_VERSION}}
+    environment: 
+      - POSTGRES_HOST_AUTH_METHOD=trust
     volumes:
       - pg-data:/var/lib/postgresql/data
+
+  ###
+  # Fin Init Service
+  ###
+  init:
+    image: {{UCD_DAMS_INIT_IMAGE_NAME}}:{{APP_VERSION}}
 
   ###
   # Trusted Proxy for Services
   ###
   trustedproxy:
-    image: ucdlib/fin-trusted-proxy:{{CORE_SERVER_REPO_TAG}}
+    image: {{UCD_DAMS_SERVER_IMAGE_NAME}}:{{APP_VERSION}}
     volumes:
-      - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-service-account}:/etc/fin/webapp-service-account.json
+      - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
     env_file:
       - .env
     depends_on:
       - fcrepo
+    command: npm run trusted-proxy
 
   ###
   # Session, admin store
@@ -66,43 +77,67 @@ services:
   # UC DAMS Client API
   ###
   api:
-    image: ucdlib/fin-ucd-lib-api:{{UCD_LIB_SERVER_REPO_TAG}}
+    image: {{UCD_DAMS_SERVER_IMAGE_NAME}}:{{APP_VERSION}}
     volumes:
-      - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-service-account}:/etc/fin/webapp-service-account.json
+      - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
     env_file:
       - .env
     depends_on:
       - elasticsearch
+    command: npm run api
+
+  finac:
+    image: {{UCD_DAMS_SERVER_IMAGE_NAME}}:{{APP_VERSION}}
+    volumes:
+      - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.jso
+    env_file:
+      - .env
+    command: node fin-ac/index.js
 
   ###
   # UC DAMS Client UI
   ###
   ucd-lib-client:
-    image: ucdlib/fin-ucd-lib-client:{{UCD_LIB_SERVER_REPO_TAG}}
+    image: {{UCD_DAMS_SERVER_IMAGE_NAME}}:{{APP_VERSION}}
     volumes:
-      - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-service-account}:/etc/fin/webapp-service-account.json
+      - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
     env_file:
       - .env
     depends_on:
-    - elasticsearch
+      - elasticsearch
+    command: node ucd-lib-client/index.js
 
   ###
   # ES Indexer
   ###
   essync:
-    image: ucdlib/fin-essync:{{UCD_LIB_SERVER_REPO_TAG}}
+    image: {{UCD_DAMS_SERVER_IMAGE_NAME}}:{{APP_VERSION}}
     volumes:
-      - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-service-account}:/etc/fin/webapp-service-account.json
+      - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
     env_file:
       - .env
     depends_on:
-    - server
+      - gateway
+    command: npm run essync
+
+  ###
+  # GCS - Access & Sync
+  ###
+  gcs:
+    image: {{UCD_DAMS_SERVER_IMAGE_NAME}}:{{APP_VERSION}}
+    volumes:
+      - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
+    env_file:
+      - .env
+    depends_on:
+      - gateway
+    command: npm run gcs
 
   ###
   # Search
   ###
   elasticsearch:
-    image: ucdlib/fin-elasticsearch:{{UCD_LIB_SERVER_REPO_TAG}}
+    image: {{ELASTIC_SEARCH_IMAGE_NAME}}:{{APP_VERSION}}
     ulimits:
       memlock:
         soft: -1
@@ -112,11 +147,25 @@ services:
     depends_on:
       - fcrepo
 
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.4.3
+    ports:
+      - ${KIBANA_HOST_PORT:-5601}:5601
+    env_file:
+      - .env
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
+      - xpack.security.enabled=false
+      - telemetry.enabled=false
+    depends_on:
+      - elasticsearch
+
   ###
   # IIIF Service
   ###
   loris:
-    image: ucdlib/fin-loris:{{LORIS_SERVICE_REPO_TAG}}
+    image: {{LORIS_IMAGE_NAME}}:{{APP_VERSION}}
     depends_on:
       - fcrepo
     env_file:
@@ -125,28 +174,30 @@ services:
       - loris-cache:/var/cache/loris
 
   ###
-  # Tesseract OCR Services
+  # Fin Workflows
   ###
-  tesseract:
-    image: ucdlib/fin-tesseract:{{TESSERACT_SERVICE_REPO_TAG}}
+  workflow:
+    image: {{UCD_DAMS_SERVER_IMAGE_NAME}}:{{APP_VERSION}}
     volumes:
-      - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-service-account}:/etc/fin/webapp-service-account.json
+      - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
     env_file:
       - .env
     depends_on:
-    - server
+      - gateway
+    command: node workflow/index.js
 
   ###
-  # CAS AuthenticationService
+  # OIDC AuthenticationService
   ###
-  cas:
-    image: ucdlib/fin-cas:{{CAS_SERVICE_REPO_TAG}}
+  oidc:
+    image: {{UCD_DAMS_SERVER_IMAGE_NAME}}:{{APP_VERSION}}
     volumes:
-      - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-service-account}:/etc/fin/webapp-service-account.json
+      - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
     env_file:
       - .env
     depends_on:
-    - server
+      - gateway
+    command: npm run oidc
 
 
 ###
@@ -162,6 +213,4 @@ volumes:
   redis-data:
     driver: local
   loris-cache:
-    driver: local
-  service-account:
     driver: local
