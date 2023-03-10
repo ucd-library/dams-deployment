@@ -8,5 +8,5 @@ gcloud config set project digital-ucdavis-edu
 echo "Submitting build to Google Cloud..."
 gcloud builds submit \
   --config ./gcloud/cloudbuild.yaml \
-  --substitutions=REPO_NAME=fin-ucd-lib-deployment,TAG_NAME=$(git describe --tags --abbrev=0),BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD),SHORT_SHA=$(git log -1 --pretty=%h) \
+  --substitutions=REPO_NAME=dams-deployment,TAG_NAME=$(git describe --tags --abbrev=0),BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD),SHORT_SHA=$(git log -1 --pretty=%h) \
   .
