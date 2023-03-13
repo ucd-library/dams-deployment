@@ -45,10 +45,20 @@ steps:
   - name: gcr.io/cloud-builders/git
     entrypoint: "bash"
     args: ["-c", "./cmds/clone.sh"]
+    env: 
+      - 'GCLOUD_BUILD=true'
+      - 'BRANCH_NAME=$BRANCH_NAME'
+      - 'SHORT_SHA=$SHORT_SHA'
+      - 'TAG_NAME=$TAG_NAME'
 
   - name: gcr.io/cloud-builders/docker
     entrypoint: "bash"
     args: ["-c", "./cmds/pull.sh"]
+    env: 
+      - 'GCLOUD_BUILD=true'
+      - 'BRANCH_NAME=$BRANCH_NAME'
+      - 'SHORT_SHA=$SHORT_SHA'
+      - 'TAG_NAME=$TAG_NAME'
 
   - name: gcr.io/cloud-builders/docker
     entrypoint: "bash"
