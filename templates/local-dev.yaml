@@ -9,7 +9,7 @@ services:
   # Front End NodeJS Application Server
   ###
   gateway:
-    image: {{UCD_DAMS_SERVER_IMAGE_NAME}}:{{APP_VERSION}}
+    image: {{UCD_DAMS_SERVER_IMAGE_NAME}}:{{APP_TAG}}
     volumes:
       - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
       - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/api:/fin/services/api
@@ -35,7 +35,7 @@ services:
   # Fedora Repository
   ###
   fcrepo:
-    image: {{FCREPO_IMAGE_NAME}}:{{APP_VERSION}}
+    image: {{FCREPO_IMAGE_NAME}}:{{APP_TAG}}
     ports:
       - 8080:8080
     # Example for change logging.  Note, don't forget to still include the fcrepo.properties file location!
@@ -55,7 +55,7 @@ services:
   # Fedora Postgres Service
   ###
   postgres:
-    image: {{POSTGRES_IMAGE_NAME}}:{{APP_VERSION}}
+    image: {{POSTGRES_IMAGE_NAME}}:{{APP_TAG}}
     environment: 
       - POSTGRES_HOST_AUTH_METHOD=trust
     volumes:
@@ -65,7 +65,7 @@ services:
   # Fin Init Service
   ###
   init:
-    image: {{UCD_DAMS_INIT_IMAGE_NAME}}:{{APP_VERSION}}
+    image: {{UCD_DAMS_INIT_IMAGE_NAME}}:{{APP_TAG}}
     volumes:
       - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/init/postgres:/etc/ucdlib-service-init/postgres
       - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/init/fcrepo:/etc/ucdlib-service-init/fcrepo
@@ -76,7 +76,7 @@ services:
   # Trusted Proxy for Services
   ###
   trustedproxy:
-    image: {{UCD_DAMS_SERVER_IMAGE_NAME}}:{{APP_VERSION}}
+    image: {{UCD_DAMS_SERVER_IMAGE_NAME}}:{{APP_TAG}}
     volumes:
       - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
       - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/api:/fin/services/api
@@ -107,7 +107,7 @@ services:
   # UC DAMS Client API
   ###
   api:
-    image: {{UCD_DAMS_SERVER_IMAGE_NAME}}:{{APP_VERSION}}
+    image: {{UCD_DAMS_SERVER_IMAGE_NAME}}:{{APP_TAG}}
     volumes:
       - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
       - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/api:/fin/services/api
@@ -126,7 +126,7 @@ services:
   # command: bash -c 'tail -f /dev/null'
 
   finac:
-    image: {{UCD_DAMS_SERVER_IMAGE_NAME}}:{{APP_VERSION}}
+    image: {{UCD_DAMS_SERVER_IMAGE_NAME}}:{{APP_TAG}}
     volumes:
       - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
       - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/fin-ac:/fin/services/fin-ac
@@ -143,7 +143,7 @@ services:
   # UC DAMS Client UI
   ###
   ucd-lib-client:
-    image: {{UCD_DAMS_SERVER_IMAGE_NAME}}:{{APP_VERSION}}
+    image: {{UCD_DAMS_SERVER_IMAGE_NAME}}:{{APP_TAG}}
     volumes:
       - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
       - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/api:/fin/services/api
@@ -171,7 +171,7 @@ services:
   # ES Indexer
   ###
   essync:
-    image: {{UCD_DAMS_SERVER_IMAGE_NAME}}:{{APP_VERSION}}
+    image: {{UCD_DAMS_SERVER_IMAGE_NAME}}:{{APP_TAG}}
     volumes:
       - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
       - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/api:/fin/services/api
@@ -193,7 +193,7 @@ services:
   # GCS - Sccess & Sync
   ###
   gcs:
-    image: {{UCD_DAMS_SERVER_IMAGE_NAME}}:{{APP_VERSION}}
+    image: {{UCD_DAMS_SERVER_IMAGE_NAME}}:{{APP_TAG}}
     volumes:
       - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
       - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/api:/fin/services/api
@@ -216,7 +216,7 @@ services:
   # Search
   ###
   elasticsearch:
-    image: {{ELASTIC_SEARCH_IMAGE_NAME}}:{{APP_VERSION}}
+    image: {{ELASTIC_SEARCH_IMAGE_NAME}}:{{APP_TAG}}
     ulimits:
       memlock:
         soft: -1
@@ -247,7 +247,7 @@ services:
   # IIIF Service
   ###
   loris:
-    image: {{LORIS_IMAGE_NAME}}:{{APP_VERSION}}
+    image: {{LORIS_IMAGE_NAME}}:{{APP_TAG}}
     depends_on:
       - fcrepo
     env_file:
@@ -261,7 +261,7 @@ services:
   # Fin Workflows
   ###
   workflow:
-    image: {{UCD_DAMS_SERVER_IMAGE_NAME}}:{{APP_VERSION}}
+    image: {{UCD_DAMS_SERVER_IMAGE_NAME}}:{{APP_TAG}}
     volumes:
       - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
       - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/node-utils/lib:/fin/services/node-utils/lib
@@ -278,7 +278,7 @@ services:
   # Image Utils OCR Services
   ###
   image-utils:
-    image: {{IMAGE_UTILS_IMAGE_NAME}}:{{APP_VERSION}}
+    image: {{IMAGE_UTILS_IMAGE_NAME}}:{{APP_TAG}}
     volumes:
       - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
       - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/node-utils/lib:/fin/services/node-utils/lib
@@ -300,7 +300,7 @@ services:
   # OIDC AuthenticationService
   ###
   oidc:
-    image: {{UCD_DAMS_SERVER_IMAGE_NAME}}:{{APP_VERSION}}
+    image: {{UCD_DAMS_SERVER_IMAGE_NAME}}:{{APP_TAG}}
     volumes:
       - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
       - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/api:/fin/services/api
@@ -320,7 +320,7 @@ services:
     command: npm run oidc
     
   keycloak:
-    image: {{KEYCLOAK_IMAGE_NAME}}:{{APP_VERSION}}
+    image: {{KEYCLOAK_IMAGE_NAME}}:{{APP_TAG}}
     environment:
       KC_HEALTH_ENABLED: true
       KC_METRICS_ENABLED: true

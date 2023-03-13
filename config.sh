@@ -11,6 +11,13 @@ else
   BUILD_NUM=-1
 fi
 
+FIN_TAG=sandbox
+if [[ ! -z "$FIN_VERSION_OVERRIDE" ]]; then
+  echo "Using FIN_VERSION_OVERRIDE: $FIN_VERSION_OVERRIDE"
+  echo "  -> GitOps version was: $FIN_TAG"
+  FIN_TAG=$FIN_VERSION_OVERRIDE
+fi
+
 if [[ -z "$BRANCH_NAME" ]]; then
   DAMS_BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
 else
@@ -23,7 +30,7 @@ else
   DAMS_TAG_NAME=$TAG_NAME
 fi
 
-if [[ "$FIN_BRANCH_NAME" == "main" ]]; then
+if [[ "$DAMS_BRANCH_NAME" == "main" ]]; then
   APP_TAG=$DAMS_TAG_NAME
 else
   APP_TAG=$DAMS_BRANCH_NAME
@@ -32,10 +39,6 @@ fi
 # Main version number we are tagging the app with. Always update
 # this when you cut a new version of the app!
 APP_VERSION=${APP_TAG}.${BUILD_NUM}
-
-if [[ -z $FIN_VERSION ]]; then
-  FIN_VERSION=$DAMS_BRANCH_NAME
-fi
 
 if [[ -z $DAMS_REPO_TAG ]]; then
   DAMS_REPO_TAG=$DAMS_BRANCH_NAME
@@ -49,7 +52,11 @@ GITHUB_ORG_URL=https://github.com/ucd-library
 
 ## Core Server
 UCD_DAMS_REPO_NAME=dams
-UCD_DAMS_REPO_URL=https://github.com/ucd-library/$UCD_DAMS_REPO_NAME
+UCD_DAMS_REPO_URL=$GITHUB_ORG_URL/$UCD_DAMS_REPO_NAME
+
+# Fin Server
+FIN_SERVER_REPO_NAME=fin
+FIN_SERVER_REPO_URL=$GITHUB_ORG_URL/$FIN_SERVER_REPO_NAME
 
 ##
 # Registery

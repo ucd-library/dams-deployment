@@ -9,9 +9,9 @@ services:
   # Font End NodeJS Application Server
   ###
   gateway:
-    image: gcr.io/ucdlib-pubreg/dams-base-service:v2.0.0-alpha.-1
+    image: gcr.io/ucdlib-pubreg/dams-base-service:sandbox
     volumes:
-      - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
+      - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-./service-account.json}:/etc/fin/service-account.json
     ports:
       - ${HOST_PORT:-3001}:3001
     env_file:
@@ -25,12 +25,12 @@ services:
   # Fedora Repository
   ###
   fcrepo:
-    image: gcr.io/ucdlib-pubreg/fin-fcrepo:v2.0.0-alpha.-1
+    image: gcr.io/ucdlib-pubreg/fin-fcrepo:sandbox
     ports:
       - ${FCREPO_HOST_PORT:-8080}:8080
     volumes:
       - fedora-data:/usr/local/tomcat/fcrepo-home/data
-      - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
+      - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-./service-account.json}:/etc/fin/service-account.json
     env_file:
       - .env
 
@@ -38,7 +38,7 @@ services:
   # Fedora Postgres Service
   ###
   postgres:
-    image: gcr.io/ucdlib-pubreg/fin-postgres:v2.0.0-alpha.-1
+    image: gcr.io/ucdlib-pubreg/fin-postgres:sandbox
     environment: 
       - POSTGRES_HOST_AUTH_METHOD=trust
     volumes:
@@ -48,15 +48,15 @@ services:
   # Fin Init Service
   ###
   init:
-    image: gcr.io/ucdlib-pubreg/dams-init:v2.0.0-alpha.-1
+    image: gcr.io/ucdlib-pubreg/dams-init:sandbox
 
   ###
   # Trusted Proxy for Services
   ###
   trustedproxy:
-    image: gcr.io/ucdlib-pubreg/dams-base-service:v2.0.0-alpha.-1
+    image: gcr.io/ucdlib-pubreg/dams-base-service:sandbox
     volumes:
-      - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
+      - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-./service-account.json}:/etc/fin/service-account.json
     env_file:
       - .env
     depends_on:
@@ -77,9 +77,9 @@ services:
   # UC DAMS Client API
   ###
   api:
-    image: gcr.io/ucdlib-pubreg/dams-base-service:v2.0.0-alpha.-1
+    image: gcr.io/ucdlib-pubreg/dams-base-service:sandbox
     volumes:
-      - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
+      - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-./service-account.json}:/etc/fin/service-account.json
     env_file:
       - .env
     depends_on:
@@ -87,9 +87,9 @@ services:
     command: npm run api
 
   finac:
-    image: gcr.io/ucdlib-pubreg/dams-base-service:v2.0.0-alpha.-1
+    image: gcr.io/ucdlib-pubreg/dams-base-service:sandbox
     volumes:
-      - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.jso
+      - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-./service-account.json}:/etc/fin/service-account.jso
     env_file:
       - .env
     command: node fin-ac/index.js
@@ -98,9 +98,9 @@ services:
   # UC DAMS Client UI
   ###
   ucd-lib-client:
-    image: gcr.io/ucdlib-pubreg/dams-base-service:v2.0.0-alpha.-1
+    image: gcr.io/ucdlib-pubreg/dams-base-service:sandbox
     volumes:
-      - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
+      - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-./service-account.json}:/etc/fin/service-account.json
     env_file:
       - .env
     depends_on:
@@ -111,9 +111,9 @@ services:
   # ES Indexer
   ###
   essync:
-    image: gcr.io/ucdlib-pubreg/dams-base-service:v2.0.0-alpha.-1
+    image: gcr.io/ucdlib-pubreg/dams-base-service:sandbox
     volumes:
-      - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
+      - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-./service-account.json}:/etc/fin/service-account.json
     env_file:
       - .env
     depends_on:
@@ -124,9 +124,9 @@ services:
   # GCS - Access & Sync
   ###
   gcs:
-    image: gcr.io/ucdlib-pubreg/dams-base-service:v2.0.0-alpha.-1
+    image: gcr.io/ucdlib-pubreg/dams-base-service:sandbox
     volumes:
-      - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
+      - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-./service-account.json}:/etc/fin/service-account.json
     env_file:
       - .env
     depends_on:
@@ -137,7 +137,7 @@ services:
   # Search
   ###
   elasticsearch:
-    image: gcr.io/ucdlib-pubreg/fin-elastic-search:v2.0.0-alpha.-1
+    image: gcr.io/ucdlib-pubreg/fin-elastic-search:sandbox
     ulimits:
       memlock:
         soft: -1
@@ -165,7 +165,7 @@ services:
   # IIIF Service
   ###
   loris:
-    image: gcr.io/ucdlib-pubreg/dams-loris:v2.0.0-alpha.-1
+    image: gcr.io/ucdlib-pubreg/dams-loris:sandbox
     depends_on:
       - fcrepo
     env_file:
@@ -177,9 +177,9 @@ services:
   # Fin Workflows
   ###
   workflow:
-    image: gcr.io/ucdlib-pubreg/dams-base-service:v2.0.0-alpha.-1
+    image: gcr.io/ucdlib-pubreg/dams-base-service:sandbox
     volumes:
-      - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
+      - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-./service-account.json}:/etc/fin/service-account.json
     env_file:
       - .env
     depends_on:
@@ -190,9 +190,9 @@ services:
   # OIDC AuthenticationService
   ###
   oidc:
-    image: gcr.io/ucdlib-pubreg/dams-base-service:v2.0.0-alpha.-1
+    image: gcr.io/ucdlib-pubreg/dams-base-service:sandbox
     volumes:
-      - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
+      - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-./service-account.json}:/etc/fin/service-account.json
     env_file:
       - .env
     depends_on:

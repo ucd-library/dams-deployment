@@ -10,16 +10,17 @@ set -e
 ROOT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 cd $ROOT_DIR/..
 
-source config.sh
-
 export LOCAL_DEV=true
+
+source config.sh
 
 # build local fin
 $REPOSITORY_DIR/$FIN_SERVER_REPO_NAME/devops/build.sh 
+export FIN_VERSION_OVERRIDE=$APP_TAG
 
 ./cmds/build.sh
 
 # now build keycloak
 docker build \
-  -t $KEYCLOAK_IMAGE_NAME:$APP_VERSION \
+  -t $KEYCLOAK_IMAGE_NAME:$APP_TAG \
   $ROOT_DIR/../keycloak
