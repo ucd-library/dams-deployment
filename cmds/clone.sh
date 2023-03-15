@@ -11,7 +11,7 @@ if [ -d $REPOSITORY_DIR ] ; then
 fi
 mkdir -p $REPOSITORY_DIR
 
-# Fin Dams
+# Dams
 $GIT_CLONE $UCD_DAMS_REPO_URL.git \
   --branch $DAMS_REPO_TAG \
   --depth 1 \

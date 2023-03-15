@@ -19,21 +19,27 @@ if [[ ! -z "$FIN_VERSION_OVERRIDE" ]]; then
 fi
 
 if [[ -z "$BRANCH_NAME" ]]; then
-  DAMS_BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
+  UCD_DAMS_DEPLOYMENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 else
-  DAMS_BRANCH_NAME=$BRANCH_NAME
+  UCD_DAMS_DEPLOYMENT_BRANCH=$BRANCH_NAME
 fi
 
 if [[ -z "$TAG_NAME" ]]; then
-  DAMS_TAG_NAME=$(git rev-parse --abbrev-ref HEAD)
+  UCD_DAMS_DEPLOYMENT_TAG=$(git describe --tags --abbrev=0) || true
 else
-  DAMS_TAG_NAME=$TAG_NAME
+  UCD_DAMS_DEPLOYMENT_TAG=$TAG_NAME
 fi
 
-if [[ "$DAMS_BRANCH_NAME" == "main" ]]; then
-  APP_TAG=$DAMS_TAG_NAME
+if [[ -z "$SHORT_SHA" ]]; then
+  UCD_DAMS_DEPLOYMENT_SHA=$(git log -1 --pretty=%h)
 else
-  APP_TAG=$DAMS_BRANCH_NAME
+  UCD_DAMS_DEPLOYMENT_SHA=$SHORT_SHA
+fi
+
+if [[ "$UCD_DAMS_DEPLOYMENT_BRANCH" == "main" && ! -z "$UCD_DAMS_DEPLOYMENT_TAG" ]]; then
+  APP_TAG=$UCD_DAMS_DEPLOYMENT_TAG
+else
+  APP_TAG=$UCD_DAMS_DEPLOYMENT_BRANCH
 fi
 
 # Main version number we are tagging the app with. Always update
@@ -41,7 +47,7 @@ fi
 APP_VERSION=${APP_TAG}.${BUILD_NUM}
 
 if [[ -z $DAMS_REPO_TAG ]]; then
-  DAMS_REPO_TAG=$DAMS_BRANCH_NAME
+  DAMS_REPO_TAG=$UCD_DAMS_DEPLOYMENT_BRANCH
 fi
 
 #### End main config ####
@@ -72,7 +78,7 @@ if [[ -z $A6T_REG_HOST ]]; then
   fi
 fi
 
-DOCKER_CACHE_TAG=$DAMS_BRANCH_NAME
+DOCKER_CACHE_TAG=$UCD_DAMS_DEPLOYMENT_BRANCH
 
 # Docker Images
 FCREPO_IMAGE_NAME=$A6T_REG_HOST/fin-fcrepo
@@ -100,7 +106,7 @@ GIT=git
 GIT_CLONE="$GIT clone"
 
 ALL_GIT_REPOSITORIES=( \
-  $UCD_DAMS_REPO_NAME
+  $UCD_DAMS_REPO_NAME $FIN_SERVER_REPO_URL \
 )
 
 # directory we are going to cache our various git repos at different tags

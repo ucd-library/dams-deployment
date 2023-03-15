@@ -5,16 +5,30 @@ ROOT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 cd $ROOT_DIR/..
 source config.sh
 
+UCD_DAMS_REPO_BRANCH=$(git -C $REPOSITORY_DIR/$UCD_DAMS_REPO_NAME rev-parse --abbrev-ref HEAD)
+UCD_DAMS_REPO_TAG=$(git -C $REPOSITORY_DIR/$UCD_DAMS_REPO_NAME describe --tags --abbrev=0)
+UCD_DAMS_REPO_SHA=$(git -C $REPOSITORY_DIR/$UCD_DAMS_REPO_NAME log -1 --pretty=%h)
+
 echo -e "Starting docker build\n"
 
+echo "DAMS Repository:"
+echo "Branch: $UCD_DAMS_REPO_BRANCH"
+echo "Tag: $UCD_DAMS_REPO_TAG"
+echo -e "SHA: $UCD_DAMS_REPO_SHA\n"
+
+echo "DAMS Deployment Repository:"
+echo "Branch: $UCD_DAMS_DEPLOYMENT_BRANCH"
+echo "Tag: $UCD_DAMS_DEPLOYMENT_TAG"
+echo -e "SHA: $UCD_DAMS_DEPLOYMENT_SHA\n"
+
 echo "Using base Fin images:"
-echo "Fin - Init: $INIT_IMAGE_NAME:$FIN_TAG"
-echo "Fin - Base Service: $SERVER_IMAGE_NAME:$FIN_TAG"
+echo    "Fin - Init              : $INIT_IMAGE_NAME:$FIN_TAG"
+echo    "Fin - Base Service      : $SERVER_IMAGE_NAME:$FIN_TAG"
 echo -e "\nBuilding images:"
-echo "UCD DAMS - Init: $UCD_DAMS_INIT_IMAGE_NAME:$APP_TAG"
-echo "UCD DAMS - Base Service: $LORIS_IMAGE_NAME:$APP_TAG"
-echo "UCD DAMS - Loris: $UCD_DAMS_SERVER_IMAGE_NAME:$APP_TAG"
-echo -e "UCD DAMS - Image Utils: $IMAGE_UTILS_IMAGE_NAME:$APP_TAG\n"
+echo    "UCD DAMS - Init         : $UCD_DAMS_INIT_IMAGE_NAME:$APP_TAG"
+echo    "UCD DAMS - Base Service : $UCD_DAMS_SERVER_IMAGE_NAME:$APP_TAG"
+echo    "UCD DAMS - Loris        : $LORIS_IMAGE_NAME:$APP_TAG"
+echo -e "UCD DAMS - Image Utils  : $IMAGE_UTILS_IMAGE_NAME:$APP_TAG\n"
 
 # UCD DAMS - Init Service
 docker build \
@@ -26,8 +40,14 @@ docker build \
 
 # UCD DAMS - Main service image
 docker build \
-  --build-arg UCD_DAMS_SERVER_REPO_TAG=${UCD_DAMS_SERVER_REPO_TAG} \
-  --build-arg UCD_DAMS_SERVER_REPO_HASH=${UCD_DAMS_SERVER_REPO_HASH} \
+  --build-arg APP_VERSION=$APP_VERSION \
+  --build-arg BUILD_NUM=${BUILD_NUM} \
+  --build-arg UCD_DAMS_REPO_BRANCH=${UCD_DAMS_REPO_BRANCH} \
+  --build-arg UCD_DAMS_REPO_TAG=${UCD_DAMS_REPO_TAG} \
+  --build-arg UCD_DAMS_REPO_SHA=${UCD_DAMS_REPO_SHA} \
+  --build-arg UCD_DAMS_DEPLOYMENT_SHA=${UCD_DAMS_DEPLOYMENT_SHA} \
+  --build-arg UCD_DAMS_DEPLOYMENT_BRANCH=${UCD_DAMS_DEPLOYMENT_BRANCH} \
+  --build-arg UCD_DAMS_DEPLOYMENT_TAG=${UCD_DAMS_DEPLOYMENT_TAG} \
   --build-arg FIN_SERVER_IMAGE=${SERVER_IMAGE_NAME}:${FIN_TAG} \
   -t $UCD_DAMS_SERVER_IMAGE_NAME:$APP_TAG \
   --cache-from $UCD_DAMS_SERVER_IMAGE_NAME:$DOCKER_CACHE_TAG \
