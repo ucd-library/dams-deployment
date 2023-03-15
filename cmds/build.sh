@@ -6,7 +6,7 @@ cd $ROOT_DIR/..
 source config.sh
 
 UCD_DAMS_REPO_BRANCH=$(git -C $REPOSITORY_DIR/$UCD_DAMS_REPO_NAME rev-parse --abbrev-ref HEAD)
-UCD_DAMS_REPO_TAG=$(git -C $REPOSITORY_DIR/$UCD_DAMS_REPO_NAME describe --tags --abbrev=0)
+UCD_DAMS_REPO_TAG=$(git -C $REPOSITORY_DIR/$UCD_DAMS_REPO_NAME describe --tags --abbrev=0) || true
 UCD_DAMS_REPO_SHA=$(git -C $REPOSITORY_DIR/$UCD_DAMS_REPO_NAME log -1 --pretty=%h)
 
 echo -e "Starting docker build\n"
