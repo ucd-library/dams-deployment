@@ -10,5 +10,5 @@ if [ $count == 0 ]; then
 fi
 
 $REMOTE_EXEC "cd $REMOTE_DIR; git reset HEAD --hard; git pull"
-$REMOTE_EXEC "cd $REMOTE_DIR; docker-compose pull"
-$REMOTE_EXEC "cd $REMOTE_DIR; docker-compose down; docker-compose up -d"
+$REMOTE_EXEC "cd $REMOTE_DIR; docker compose pull"
+$REMOTE_EXEC "cd $REMOTE_DIR; docker compose down; docker compose up -d"
