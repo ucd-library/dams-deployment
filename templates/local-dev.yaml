@@ -156,7 +156,18 @@ services:
       - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/fin/models:/fin/services/models
       - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/fin/ucd-lib-client/index.js:/fin/services/ucd-lib-client/index.js
       - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/fin/ucd-lib-client/config.js:/fin/services/ucd-lib-client/config.js
-      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/fin/ucd-lib-client/client:/fin/services/ucd-lib-client/client
+      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/fin/ucd-lib-client/client/public/elements:/fin/services/ucd-lib-client/client/public/elements
+      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/fin/ucd-lib-client/client/public/fonts:/fin/services/ucd-lib-client/client/public/fonts
+      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/fin/ucd-lib-client/client/public/images:/fin/services/ucd-lib-client/client/public/images
+      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/fin/ucd-lib-client/client/public/lib:/fin/services/ucd-lib-client/client/public/lib
+      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/fin/ucd-lib-client/client/public/loader:/fin/services/ucd-lib-client/client/public/loader
+      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/fin/ucd-lib-client/client/public/index.html:/fin/services/ucd-lib-client/client/public/index.html
+      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/fin/ucd-lib-client/client/public/manifest.json:/fin/services/ucd-lib-client/client/public/manifest.json
+      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/fin/ucd-lib-client/client/babel.config.js:/fin/services/ucd-lib-client/client/babel.config.js
+      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/fin/ucd-lib-client/client/watch.sh:/fin/services/ucd-lib-client/client/watch.sh
+      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/fin/ucd-lib-client/client/build.sh:/fin/services/ucd-lib-client/client/build.sh
+      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/fin/ucd-lib-client/client/webpack-dist.config.js:/fin/services/ucd-lib-client/client/webpack-dist.config.js
+      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/fin/ucd-lib-client/client/webpack.config.js:/fin/services/ucd-lib-client/client/webpack.config.js
       - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/fin/ucd-lib-client/controllers:/fin/services/ucd-lib-client/controllers
       - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/fin/ucd-lib-client/lib:/fin/services/ucd-lib-client/lib
       - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/fin/ucd-lib-client/model:/fin/services/ucd-lib-client/model
