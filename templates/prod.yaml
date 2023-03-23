@@ -109,9 +109,9 @@ services:
     command: node ucd-lib-client/index.js
 
   ###
-  # ES Indexer
+  # External Database Sync Service
   ###
-  essync:
+  dbsync:
     image: {{UCD_DAMS_SERVER_IMAGE_NAME}}:{{APP_TAG}}
     volumes:
       - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-./service-account.json}:/etc/fin/service-account.json
@@ -119,7 +119,20 @@ services:
       - .env
     depends_on:
       - gateway
-    command: npm run essync
+    command: npm run dbsync
+
+  ###
+  # ES Index Management Service
+  ###
+  es-index-management:
+    image: {{UCD_DAMS_SERVER_IMAGE_NAME}}:{{APP_TAG}}
+    volumes:
+      - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
+    env_file:
+      - .env
+    depends_on:
+      - gateway
+    command: npm run es-index-management
 
   ###
   # GCS - Access & Sync
