@@ -6,14 +6,20 @@ version: '3'
 services:
 
   ###
+  # Front end apache server for proxying to gateway from host port
+  ###
+  lb:
+    image: {{LB_IMAGE_NAME}}:{{APP_TAG}}
+    ports:
+      - ${HOST_PORT:-3000}:80
+
+  ###
   # Font End NodeJS Application Server
   ###
   gateway:
     image: {{UCD_DAMS_SERVER_IMAGE_NAME}}:{{APP_TAG}}
     volumes:
       - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-./service-account.json}:/etc/fin/service-account.json
-    ports:
-      - ${HOST_PORT:-3001}:3001
     env_file:
       - .env
     depends_on:

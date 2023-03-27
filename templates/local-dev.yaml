@@ -6,6 +6,14 @@ version: '3'
 services:
 
   ###
+  # Front end apache server for proxying to gateway from host port
+  ###
+  lb:
+    image: {{LB_IMAGE_NAME}}:{{APP_TAG}}
+    ports:
+      - ${HOST_PORT:-3000}:80
+
+  ###
   # Front End NodeJS Application Server
   ###
   gateway:
@@ -20,8 +28,6 @@ services:
       - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/fin-api/index.js:/fin/api/index.js
       - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/fin-api/lib:/fin/api/lib
       - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/fin/models:/fin/services/models
-    ports:
-      - ${HOST_PORT:-3000}:3001
     env_file:
       - .env
     depends_on:
