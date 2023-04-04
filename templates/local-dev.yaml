@@ -50,6 +50,7 @@ services:
     #  - CATALINA_OPTS=-Dfcrepo.log.auth=DEBUG -Dfcrepo.config.file=/etc/fin/fcrepo.properties
     volumes:
       - fedora-data:/usr/local/tomcat/fcrepo-home/data
+      - activemq-data:/usr/local/tomcat/ActiveMQ
       - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
       - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fcrepo/activemq.xml:/usr/local/tomcat/webapps/fcrepo/WEB-INF/classes/config/activemq.xml
       - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fcrepo/fcrepo.properties:/etc/fin/fcrepo.properties
@@ -384,6 +385,8 @@ services:
 ###
 volumes:
   fedora-data:
+    driver: local
+  activemq-data:
     driver: local
   pg-data:
     driver: local

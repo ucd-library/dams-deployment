@@ -37,6 +37,7 @@ services:
       - ${FCREPO_HOST_PORT:-8080}:8080
     volumes:
       - fedora-data:/usr/local/tomcat/fcrepo-home/data
+      - activemq-data:/usr/local/tomcat/ActiveMQ
       - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-./service-account.json}:/etc/fin/service-account.json
     env_file:
       - .env
@@ -225,6 +226,8 @@ services:
 ###
 volumes:
   fedora-data:
+    driver: local
+  activemq-data:
     driver: local
   pg-data:
     driver: local
