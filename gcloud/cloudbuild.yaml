@@ -109,6 +109,20 @@ steps:
       - 'TAG_NAME=$TAG_NAME'
       - 'PROJECT_BUILD_BUCKET=$_CONFIG_BUCKET'
       - 'PROJECT_ID=$_CONFIG_PROJECT'
+
+  - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: "bash"
+    args: ["-c", "./gcloud/deploy-image-utils.sh"]
+    volumes:
+    - name: 'ssh'
+      path: /root/.ssh
+    env: 
+      - 'REPO_NAME=$REPO_NAME'
+      - 'BRANCH_NAME=$BRANCH_NAME'
+      - 'SHORT_SHA=$SHORT_SHA'
+      - 'TAG_NAME=$TAG_NAME'
+      - 'PROJECT_BUILD_BUCKET=$_CONFIG_BUCKET'
+      - 'PROJECT_ID=$_CONFIG_PROJECT'
   
 
 substitutions:

@@ -100,7 +100,7 @@ ALL_DOCKER_BUILD_IMAGES=( \
 
 # Google Cloud
 GC_PROJECT_ID=digital-ucdavis-edu
-IMAGE_UTILS_CLOUD_RUN_SERVICE_NAME=dams-image-utils
+IMAGE_UTILS_CLOUD_RUN_SERVICE_NAME=dams-image-utils-$BRANCH_NAME
 
 # Git
 GIT=git
