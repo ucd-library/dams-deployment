@@ -24,7 +24,6 @@ services:
       - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/dbsync:/fin/services/dbsync
       - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/gateway:/fin/services/gateway
       - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/node-utils:/fin/services/node-utils
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/trusted-proxy:/fin/services/trusted-proxy
       - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/fin-api/index.js:/fin/api/index.js
       - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/fin-api/lib:/fin/api/lib
       - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/fin/models:/fin/services/models
@@ -78,28 +77,6 @@ services:
       - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/init/fcrepo:/etc/ucdlib-service-init/fcrepo
       - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/init/docker-run.sh:/docker-run.sh
 
-
-  ###
-  # Trusted Proxy for Services
-  ###
-  trustedproxy:
-    image: {{UCD_DAMS_SERVER_IMAGE_NAME}}:{{APP_TAG}}
-    volumes:
-      - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/api:/fin/services/api
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/dbsync:/fin/services/dbsync
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/gateway:/fin/services/gateway
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/node-utils:/fin/services/node-utils
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/trusted-proxy:/fin/services/trusted-proxy
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/fin-api/index.js:/fin/api/index.js
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/fin-api/lib:/fin/api/lib
-    env_file:
-      - .env
-    depends_on:
-      - fcrepo
-    command: npm run trusted-proxy
-    # command: bash -c 'tail -f /dev/null'
-
   ###
   # Session, admin store
   ###
@@ -121,7 +98,6 @@ services:
       - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/dbsync:/fin/services/dbsync
       - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/gateway:/fin/services/gateway
       - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/node-utils:/fin/services/node-utils
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/trusted-proxy:/fin/services/trusted-proxy
       - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/fin-api/index.js:/fin/api/index.js
       - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/fin-api/lib:/fin/api/lib
       - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/fin/models:/fin/services/models
@@ -157,7 +133,6 @@ services:
       - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/dbsync:/fin/services/dbsync
       - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/gateway:/fin/services/gateway
       - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/node-utils:/fin/services/node-utils
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/trusted-proxy:/fin/services/trusted-proxy
       - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/fin-api/index.js:/fin/api/index.js
       - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/fin-api/lib:/fin/api/lib
       - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/fin/models:/fin/services/models
@@ -196,7 +171,6 @@ services:
       - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/dbsync:/fin/services/dbsync
       - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/gateway:/fin/services/gateway
       - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/node-utils:/fin/services/node-utils
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/trusted-proxy:/fin/services/trusted-proxy
       - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/fin-api/index.js:/fin/api/index.js
       - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/fin-api/lib:/fin/api/lib
       - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/fin/models:/fin/services/models
@@ -219,7 +193,6 @@ services:
       - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/es-index-management:/fin/services/es-index-management
       - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/gateway:/fin/services/gateway
       - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/node-utils:/fin/services/node-utils
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/trusted-proxy:/fin/services/trusted-proxy
       - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/fin-api/index.js:/fin/api/index.js
       - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/fin-api/lib:/fin/api/lib
       - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/fin/models:/fin/services/models
@@ -240,7 +213,6 @@ services:
       - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/dbsync:/fin/services/dbsync
       - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/gateway:/fin/services/gateway
       - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/node-utils:/fin/services/node-utils
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/trusted-proxy:/fin/services/trusted-proxy
       - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/fin-api/index.js:/fin/api/index.js
       - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/fin-api/lib:/fin/api/lib
       - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/gcs/lib:/fin/services/gcs/lib
@@ -282,20 +254,6 @@ services:
       - telemetry.enabled=false
     depends_on:
       - elasticsearch
-
-  ###
-  # IIIF Service
-  ###
-  loris:
-    image: {{LORIS_IMAGE_NAME}}:{{APP_TAG}}
-    depends_on:
-      - fcrepo
-    env_file:
-      - .env
-    volumes:
-      - loris-cache:/var/cache/loris
-      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/loris/loris2.conf:/opt/loris/etc/loris2.conf
-      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/loris/start.py:/opt/loris/loris/start.py
 
   ###
   # Fin Workflows
@@ -349,7 +307,6 @@ services:
       - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/dbsync:/fin/services/dbsync
       - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/gateway:/fin/services/gateway
       - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/node-utils:/fin/services/node-utils
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/trusted-proxy:/fin/services/trusted-proxy
       - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/fin-api/index.js:/fin/api/index.js
       - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/fin-api/lib:/fin/api/lib
       - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/fin/models:/fin/services/models
@@ -393,6 +350,4 @@ volumes:
   es-data:
     driver: local
   redis-data:
-    driver: local
-  loris-cache:
     driver: local

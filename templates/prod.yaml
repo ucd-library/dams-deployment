@@ -12,6 +12,7 @@ services:
     image: {{LB_IMAGE_NAME}}:{{APP_TAG}}
     ports:
       - ${HOST_PORT:-3000}:80
+    restart: unless-stopped
 
   ###
   # Font End NodeJS Application Server
@@ -26,6 +27,7 @@ services:
       - fcrepo
       - redis
       - elasticsearch
+    restart: unless-stopped
     command: npm run gateway
 
   ###
@@ -41,6 +43,7 @@ services:
       - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-./service-account.json}:/etc/fin/service-account.json
     env_file:
       - .env
+    restart: unless-stopped
 
   ###
   # Fedora Postgres Service
@@ -51,25 +54,13 @@ services:
       - POSTGRES_HOST_AUTH_METHOD=trust
     volumes:
       - pg-data:/var/lib/postgresql/data
+    restart: unless-stopped
 
   ###
   # Fin Init Service
   ###
   init:
     image: {{UCD_DAMS_INIT_IMAGE_NAME}}:{{APP_TAG}}
-
-  ###
-  # Trusted Proxy for Services
-  ###
-  trustedproxy:
-    image: {{UCD_DAMS_SERVER_IMAGE_NAME}}:{{APP_TAG}}
-    volumes:
-      - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-./service-account.json}:/etc/fin/service-account.json
-    env_file:
-      - .env
-    depends_on:
-      - fcrepo
-    command: npm run trusted-proxy
 
   ###
   # Session, admin store
@@ -92,6 +83,7 @@ services:
       - .env
     depends_on:
       - elasticsearch
+    restart: unless-stopped
     command: npm run api
 
   finac:
@@ -100,6 +92,7 @@ services:
       - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-./service-account.json}:/etc/fin/service-account.jso
     env_file:
       - .env
+    restart: unless-stopped
     command: node fin-ac/index.js
 
   ###
@@ -113,6 +106,7 @@ services:
       - .env
     depends_on:
       - elasticsearch
+    restart: unless-stopped
     command: node ucd-lib-client/index.js
 
   ###
@@ -126,6 +120,7 @@ services:
       - .env
     depends_on:
       - gateway
+    restart: unless-stopped
     command: npm run dbsync
 
   ###
@@ -139,6 +134,7 @@ services:
       - .env
     depends_on:
       - gateway
+    restart: unless-stopped
     command: npm run es-index-management
 
   ###
@@ -152,6 +148,7 @@ services:
       - .env
     depends_on:
       - gateway
+    restart: unless-stopped
     command: npm run gcs
 
   ###
@@ -181,18 +178,7 @@ services:
       - telemetry.enabled=false
     depends_on:
       - elasticsearch
-
-  ###
-  # IIIF Service
-  ###
-  loris:
-    image: {{LORIS_IMAGE_NAME}}:{{APP_TAG}}
-    depends_on:
-      - fcrepo
-    env_file:
-      - .env
-    volumes:
-      - loris-cache:/var/cache/loris
+    restart: unless-stopped
 
   ###
   # Fin Workflows
@@ -205,6 +191,7 @@ services:
       - .env
     depends_on:
       - gateway
+    restart: unless-stopped
     command: node workflow/index.js
 
   ###
@@ -218,6 +205,7 @@ services:
       - .env
     depends_on:
       - gateway
+    restart: unless-stopped
     command: npm run oidc
 
 
@@ -234,6 +222,4 @@ volumes:
   es-data:
     driver: local
   redis-data:
-    driver: local
-  loris-cache:
     driver: local

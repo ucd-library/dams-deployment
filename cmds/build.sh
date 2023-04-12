@@ -54,14 +54,6 @@ docker build \
   -f $REPOSITORY_DIR/$UCD_DAMS_REPO_NAME/services/fin/Dockerfile \
   $REPOSITORY_DIR/$UCD_DAMS_REPO_NAME
 
-# DAMS - Loris Service
-docker build \
-  --build-arg FIN_REPO_TAG=${FIN_REPO_TAG} \
-  --build-arg FIN_SERVER_REPO_HASH=${FIN_SERVER_REPO_HASH} \
-  -t $LORIS_IMAGE_NAME:$APP_TAG \
-  --cache-from $LORIS_IMAGE_NAME:$DOCKER_CACHE_TAG \
-  $REPOSITORY_DIR/$UCD_DAMS_REPO_NAME/services/loris
-
 # DAMS - Image Utils Service
 docker build \
   --build-arg FIN_SERVER_IMAGE=${SERVER_IMAGE_NAME}:${FIN_TAG} \
