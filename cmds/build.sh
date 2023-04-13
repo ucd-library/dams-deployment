@@ -27,7 +27,6 @@ echo    "Fin - Base Service      : $SERVER_IMAGE_NAME:$FIN_TAG"
 echo -e "\nBuilding images:"
 echo    "UCD DAMS - Init         : $UCD_DAMS_INIT_IMAGE_NAME:$APP_TAG"
 echo    "UCD DAMS - Base Service : $UCD_DAMS_SERVER_IMAGE_NAME:$APP_TAG"
-echo    "UCD DAMS - Loris        : $LORIS_IMAGE_NAME:$APP_TAG"
 echo -e "UCD DAMS - Image Utils  : $IMAGE_UTILS_IMAGE_NAME:$APP_TAG\n"
 
 # UCD DAMS - Init Service
