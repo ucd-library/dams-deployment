@@ -59,3 +59,9 @@ docker build \
   -t $IMAGE_UTILS_IMAGE_NAME:$APP_TAG \
   --cache-from $IMAGE_UTILS_IMAGE_NAME:$DOCKER_CACHE_TAG \
   $REPOSITORY_DIR/$UCD_DAMS_REPO_NAME/services/image-utils
+
+# DAMS - Image Utils Service
+docker build \
+  -t $IIIF_IMAGE_NAME:$APP_TAG \
+  --cache-from $IIIF_IMAGE_NAME:$DOCKER_CACHE_TAG \
+  $REPOSITORY_DIR/$UCD_DAMS_REPO_NAME/services/iipimage

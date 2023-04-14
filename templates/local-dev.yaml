@@ -336,6 +336,25 @@ services:
       - 8443:8443
     command: ["start-dev --import-realm"]
 
+  iiif:
+    image: {{IIIF_IMAGE_NAME}}:{{APP_TAG}}
+    cap_add:
+      - SYS_ADMIN
+    devices:
+      - /dev/fuse
+    environment:
+      - GOOGLE_APPLICATION_CREDENTIALS=/etc/fin/service-account.json
+      - FUSE_DIR=/etc/gcs-fuse
+      - GCS_BUCKET=dams-client-media-dev
+      - VERBOSITY=5
+    volumes:
+      - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
+      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/iipimage/setup-gcsfuse.sh:/etc/iipimage-server/setup-gcsfuse.sh
+      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/iipimage/start.sh:/etc/iipimage-server/start.sh
+      - gcs-fuse:/etc/gcs-fuse
+    ports:
+      - 9000:9000
+    command: bash -c "tail -f /dev/null"
 
 ###
 # Docker data volumes
@@ -350,4 +369,6 @@ volumes:
   es-data:
     driver: local
   redis-data:
+    driver: local
+  gcs-fuse:
     driver: local
