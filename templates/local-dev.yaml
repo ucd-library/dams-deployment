@@ -9,7 +9,7 @@ services:
   # Front end apache server for proxying to gateway from host port
   ###
   lb:
-    image: {{LB_IMAGE_NAME}}:{{APP_TAG}}
+    image: {{LB_IMAGE_NAME}}:{{FIN_TAG}}
     ports:
       - ${HOST_PORT:-3000}:80
 
@@ -40,7 +40,7 @@ services:
   # Fedora Repository
   ###
   fcrepo:
-    image: {{FCREPO_IMAGE_NAME}}:{{APP_TAG}}
+    image: {{DAMS_FCREPO_IMAGE_NAME}}:{{APP_TAG}}
     ports:
       - 8080:8080
     # Example for change logging.  Note, don't forget to still include the fcrepo.properties file location!
@@ -61,7 +61,7 @@ services:
   # Fedora Postgres Service
   ###
   postgres:
-    image: {{POSTGRES_IMAGE_NAME}}:{{APP_TAG}}
+    image: {{POSTGRES_IMAGE_NAME}}:{{FIN_TAG}}
     environment: 
       - POSTGRES_HOST_AUTH_METHOD=trust
     volumes:
@@ -228,7 +228,7 @@ services:
   # Search
   ###
   elasticsearch:
-    image: {{ELASTIC_SEARCH_IMAGE_NAME}}:{{APP_TAG}}
+    image: {{ELASTIC_SEARCH_IMAGE_NAME}}:{{FIN_TAG}}
     ulimits:
       memlock:
         soft: -1
@@ -344,7 +344,7 @@ services:
       - /dev/fuse
     environment:
       - GOOGLE_APPLICATION_CREDENTIALS=/etc/fin/service-account.json
-      - FUSE_DIR=/etc/gcs-fuse
+      - FUSE_DIR=/etc/gcs-fuse/fcrepo/rest
       - GCS_BUCKET=dams-client-media-dev
       - VERBOSITY=5
     volumes:
@@ -354,7 +354,7 @@ services:
       - gcs-fuse:/etc/gcs-fuse
     ports:
       - 9000:9000
-    command: bash -c "tail -f /dev/null"
+    # command: bash -c "tail -f /dev/null"
 
 ###
 # Docker data volumes

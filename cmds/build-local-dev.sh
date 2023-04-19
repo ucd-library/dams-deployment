@@ -12,11 +12,16 @@ cd $ROOT_DIR/..
 
 export LOCAL_DEV=true
 
+# Store fin branch override form local fs
+cd ./repositories/fin/devops
+source ./config.sh 
+export FIN_VERSION_OVERRIDE=$FIN_BRANCH_NAME
+
+cd $ROOT_DIR/..
 source config.sh
 
 # build local fin
-$REPOSITORY_DIR/$FIN_SERVER_REPO_NAME/devops/build.sh 
-export FIN_VERSION_OVERRIDE=$APP_TAG
+$REPOSITORY_DIR/$FIN_SERVER_REPO_NAME/devops/build.sh
 
 ./cmds/build.sh
 

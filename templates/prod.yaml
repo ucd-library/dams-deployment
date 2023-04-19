@@ -34,7 +34,7 @@ services:
   # Fedora Repository
   ###
   fcrepo:
-    image: {{FCREPO_IMAGE_NAME}}:{{APP_TAG}}
+    image: {{DAMS_FCREPO_IMAGE_NAME}}:{{APP_TAG}}
     ports:
       - ${FCREPO_HOST_PORT:-8080}:8080
     volumes:
