@@ -144,6 +144,7 @@ services:
     image: {{UCD_DAMS_SERVER_IMAGE_NAME}}:{{APP_TAG}}
     volumes:
       - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-./service-account.json}:/etc/fin/service-account.json
+      - gcs-disk-cache:/etc/gcs-disk-cache
     env_file:
       - .env
     depends_on:
@@ -208,6 +209,24 @@ services:
     restart: unless-stopped
     command: npm run oidc
 
+  iiif:
+    image: {{IIIF_IMAGE_NAME}}:{{APP_TAG}}
+    cap_add:
+      - SYS_ADMIN
+    devices:
+      - /dev/fuse
+    environment:
+      - GOOGLE_APPLICATION_CREDENTIALS=/etc/fin/service-account.json
+      - FUSE_DIR=/etc/gcs-fuse/fcrepo/rest
+      - GCS_BUCKET=dams-client-media-dev
+      - VERBOSITY=5
+    volumes:
+      - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
+      - gcs-fuse:/etc/gcs-fuse
+    ports:
+      - 9000:9000
+    # command: bash -c "tail -f /dev/null"
+
 
 ###
 # Docker data volumes
@@ -222,4 +241,8 @@ volumes:
   es-data:
     driver: local
   redis-data:
+    driver: local
+  gcs-fuse:
+    driver: local
+  gcs-disk-cache:
     driver: local

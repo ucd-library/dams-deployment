@@ -208,6 +208,7 @@ services:
   gcs:
     image: {{UCD_DAMS_SERVER_IMAGE_NAME}}:{{APP_TAG}}
     volumes:
+      - gcs-disk-cache:/etc/gcs-disk-cache
       - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
       - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/api:/fin/services/api
       - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/dbsync:/fin/services/dbsync
@@ -371,4 +372,6 @@ volumes:
   redis-data:
     driver: local
   gcs-fuse:
+    driver: local
+  gcs-disk-cache:
     driver: local
