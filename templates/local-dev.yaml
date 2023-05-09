@@ -357,6 +357,15 @@ services:
       - 9000:9000
     # command: bash -c "tail -f /dev/null"
 
+  pg-rest:
+    image: {{PGREST_IMAGE_NAME}}:{{APP_TAG}}
+    volumes:
+      - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/pg-rest/start.sh:/start.sh
+    env_file:
+      - .env
+    # command: bash -c "tail -f /dev/null"
+
 ###
 # Docker data volumes
 ###
