@@ -19,10 +19,16 @@ services:
   gateway:
     image: {{UCD_DAMS_SERVER_IMAGE_NAME}}:{{APP_TAG}}
     volumes:
+      - fedora-data:/data
       - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
       - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/api:/fin/services/api
       - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/dbsync:/fin/services/dbsync
       - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/gateway:/fin/services/gateway
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/admin-ui/config.js:/fin/services/admin-ui/config.js
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/admin-ui/controllers:/fin/services/admin-ui/controllers
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/admin-ui/client/public/index.html:/fin/services/admin-ui/client/public/index.html
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/admin-ui/client/public/src:/fin/services/admin-ui/client/public/src
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/admin-ui/client/public/elements:/fin/services/admin-ui/client/public/elements
       - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/node-utils:/fin/services/node-utils
       - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/fin-api/index.js:/fin/api/index.js
       - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/fin-api/lib:/fin/api/lib

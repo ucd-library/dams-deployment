@@ -20,6 +20,7 @@ services:
   gateway:
     image: {{UCD_DAMS_SERVER_IMAGE_NAME}}:{{APP_TAG}}
     volumes:
+      - fedora-data:/data
       - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-./service-account.json}:/etc/fin/service-account.json
     env_file:
       - .env
