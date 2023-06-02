@@ -35,8 +35,7 @@ echo -e "UCD DAMS - Image Utils  : $IMAGE_UTILS_IMAGE_NAME:$APP_TAG\n"
 # UCD DAMS - Init Service
 docker build \
   -t $UCD_DAMS_INIT_IMAGE_NAME:$APP_TAG \
-  --build-arg INIT_BASE=$INIT_IMAGE_NAME:$FIN_TAG \
-  --build-arg FIN_SERVER_IMAGE=${SERVER_IMAGE_NAME}:${FIN_TAG} \
+  --build-arg FIN_INIT=$INIT_IMAGE_NAME:$FIN_TAG \
   --cache-from $UCD_DAMS_INIT_IMAGE_NAME:$DOCKER_CACHE_TAG \
   $REPOSITORY_DIR/$UCD_DAMS_REPO_NAME/services/init
 
