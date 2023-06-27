@@ -11,7 +11,7 @@ else
   BUILD_NUM=-1
 fi
 
-FIN_TAG=sandbox
+FIN_TAG=2.0.1
 if [[ ! -z "$FIN_VERSION_OVERRIDE" ]]; then
   echo "Using FIN_VERSION_OVERRIDE: $FIN_VERSION_OVERRIDE"
   echo "  -> GitOps version was: $FIN_TAG"

@@ -80,7 +80,7 @@ services:
     image: {{UCD_DAMS_INIT_IMAGE_NAME}}:{{APP_TAG}}
     volumes:
       - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/init/postgres:/etc/ucdlib-service-init/postgres
-      # - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/init/fcrepo:/etc/ucdlib-service-init/fcrepo
+      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/init/fcrepo/fin:/etc/ucdlib-service-init/fcrepo/fin
 
   ###
   # Session, admin store

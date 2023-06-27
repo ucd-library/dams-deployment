@@ -130,7 +130,7 @@ services:
   es-index-management:
     image: gcr.io/ucdlib-pubreg/dams-base-service:sandbox
     volumes:
-      - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
+      - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-./service-account.json}:/etc/fin/service-account.json
     env_file:
       - .env
     depends_on:
@@ -212,17 +212,20 @@ services:
 
   iiif:
     image: gcr.io/ucdlib-pubreg/dams-iipimage-server:sandbox
-    cap_add:
-      - SYS_ADMIN
-    devices:
-      - /dev/fuse
+    privileged: true
+    # cap_add:
+    #   - SYS_ADMIN
+    # devices:
+    #   - /dev/fuse
+    # security_opt:
+    #   - seccomp:unconfined
     environment:
       - GOOGLE_APPLICATION_CREDENTIALS=/etc/fin/service-account.json
       - FUSE_DIR=/etc/gcs-fuse/fcrepo/rest
       - GCS_BUCKET=dams-client-media-dev
       - VERBOSITY=5
     volumes:
-      - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
+      - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-./service-account.json}:/etc/fin/service-account.json
       - gcs-fuse:/etc/gcs-fuse
     ports:
       - 9000:9000
@@ -231,7 +234,7 @@ services:
   pg-rest:
     image: gcr.io/ucdlib-pubreg/fin-pg-rest:sandbox
     volumes:
-      - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
+      - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-./service-account.json}:/etc/fin/service-account.json
     env_file:
       - .env
     # command: bash -c "tail -f /dev/null"
