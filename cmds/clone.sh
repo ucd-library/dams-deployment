@@ -11,6 +11,8 @@ if [ -d $REPOSITORY_DIR ] ; then
 fi
 mkdir -p $REPOSITORY_DIR
 
+echo "Cloning $UCD_DAMS_REPO_URL.git @ $DAMS_REPO_TAG"
+
 # Dams
 $GIT_CLONE $UCD_DAMS_REPO_URL.git \
   --branch $DAMS_REPO_TAG \

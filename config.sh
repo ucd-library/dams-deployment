@@ -12,6 +12,8 @@ else
 fi
 
 FIN_TAG=2.0.2
+DAMS_REPO_TAG=2.0.1
+
 if [[ ! -z "$FIN_VERSION_OVERRIDE" ]]; then
   echo "Using FIN_VERSION_OVERRIDE: $FIN_VERSION_OVERRIDE"
   echo "  -> GitOps version was: $FIN_TAG"
