@@ -11,7 +11,7 @@ else
   BUILD_NUM=-1
 fi
 
-FIN_TAG=2.0.1
+FIN_TAG=2.0.2
 if [[ ! -z "$FIN_VERSION_OVERRIDE" ]]; then
   echo "Using FIN_VERSION_OVERRIDE: $FIN_VERSION_OVERRIDE"
   echo "  -> GitOps version was: $FIN_TAG"
@@ -36,7 +36,7 @@ else
   UCD_DAMS_DEPLOYMENT_SHA=$SHORT_SHA
 fi
 
-if [[ "$UCD_DAMS_DEPLOYMENT_BRANCH" == "main" && ! -z "$UCD_DAMS_DEPLOYMENT_TAG" ]]; then
+if [[ ! -z "$UCD_DAMS_DEPLOYMENT_TAG" ]]; then
   APP_TAG=$UCD_DAMS_DEPLOYMENT_TAG
 else
   APP_TAG=$UCD_DAMS_DEPLOYMENT_BRANCH
