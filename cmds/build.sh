@@ -26,11 +26,11 @@ echo    "Fin - Init              : $INIT_IMAGE_NAME:$FIN_TAG"
 echo    "Fin - Fcrepo            : $FCREPO_IMAGE_NAME:$FIN_TAG"
 echo    "Fin - Base Service      : $SERVER_IMAGE_NAME:$FIN_TAG"
 echo -e "\nBuilding images:"
-echo    "UCD DAMS - Init         : $UCD_DAMS_INIT_IMAGE_NAME:$APP_TAG"
-echo    "UCD DAMS - Fcrepo       : $DAMS_FCREPO_IMAGE_NAME:$APP_TAG"
-echo    "UCD DAMS - IIP Server   : $IIIF_IMAGE_NAME:$APP_TAG"
-echo    "UCD DAMS - Base Service : $UCD_DAMS_SERVER_IMAGE_NAME:$APP_TAG"
-echo -e "UCD DAMS - Image Utils  : $IMAGE_UTILS_IMAGE_NAME:$APP_TAG\n"
+echo    "UCD DAMS - Init         : $UCD_DAMS_INIT_IMAGE_NAME:$APP_TAG and :$DOCKER_CACHE_TAG"
+echo    "UCD DAMS - Fcrepo       : $DAMS_FCREPO_IMAGE_NAME:$APP_TAG and :$DOCKER_CACHE_TAG"
+echo    "UCD DAMS - IIP Server   : $IIIF_IMAGE_NAME:$APP_TAG and :$DOCKER_CACHE_TAG"
+echo    "UCD DAMS - Base Service : $UCD_DAMS_SERVER_IMAGE_NAME:$APP_TAG and :$DOCKER_CACHE_TAG"
+echo -e "UCD DAMS - Image Utils  : $IMAGE_UTILS_IMAGE_NAME:$APP_TAG and :$DOCKER_CACHE_TAG\n"
 
 # UCD DAMS - Init Service
 docker build \
@@ -38,6 +38,7 @@ docker build \
   --build-arg FIN_INIT=$INIT_IMAGE_NAME:$FIN_TAG \
   --cache-from $UCD_DAMS_INIT_IMAGE_NAME:$DOCKER_CACHE_TAG \
   $REPOSITORY_DIR/$UCD_DAMS_REPO_NAME/services/init
+docker tag $UCD_DAMS_INIT_IMAGE_NAME:$APP_TAG $UCD_DAMS_INIT_IMAGE_NAME:$DOCKER_CACHE_TAG
 
 # UCD DAMS - Fcrepo
 docker build \
@@ -45,6 +46,7 @@ docker build \
   --build-arg FIN_FCREPO_BASE_IMAGE=$FCREPO_IMAGE_NAME:$FIN_TAG \
   --cache-from $DAMS_FCREPO_IMAGE_NAME:$DOCKER_CACHE_TAG \
   $REPOSITORY_DIR/$UCD_DAMS_REPO_NAME/services/fcrepo
+docker tag $DAMS_FCREPO_IMAGE_NAME:$APP_TAG $DAMS_FCREPO_IMAGE_NAME:$DOCKER_CACHE_TAG
 
 # UCD DAMS - Main service image
 docker build \
@@ -61,6 +63,7 @@ docker build \
   --cache-from $UCD_DAMS_SERVER_IMAGE_NAME:$DOCKER_CACHE_TAG \
   -f $REPOSITORY_DIR/$UCD_DAMS_REPO_NAME/services/fin/Dockerfile \
   $REPOSITORY_DIR/$UCD_DAMS_REPO_NAME
+docker tag $UCD_DAMS_SERVER_IMAGE_NAME:$APP_TAG $UCD_DAMS_SERVER_IMAGE_NAME:$DOCKER_CACHE_TAG
 
 # DAMS - Image Utils Service
 docker build \
@@ -68,9 +71,11 @@ docker build \
   -t $IMAGE_UTILS_IMAGE_NAME:$APP_TAG \
   --cache-from $IMAGE_UTILS_IMAGE_NAME:$DOCKER_CACHE_TAG \
   $REPOSITORY_DIR/$UCD_DAMS_REPO_NAME/services/image-utils
+docker tag $IMAGE_UTILS_IMAGE_NAME:$APP_TAG $IMAGE_UTILS_IMAGE_NAME:$DOCKER_CACHE_TAG
 
 # DAMS - IIP Server
 docker build \
   -t $IIIF_IMAGE_NAME:$APP_TAG \
   --cache-from $IIIF_IMAGE_NAME:$DOCKER_CACHE_TAG \
   $REPOSITORY_DIR/$UCD_DAMS_REPO_NAME/services/iipimage
+docker tag $IIIF_IMAGE_NAME:$APP_TAG $IIIF_IMAGE_NAME:$DOCKER_CACHE_TAG

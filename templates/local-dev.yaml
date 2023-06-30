@@ -17,7 +17,7 @@ services:
   # Front End NodeJS Application Server
   ###
   gateway:
-    image: {{UCD_DAMS_SERVER_IMAGE_NAME}}:{{APP_TAG}}
+    image: {{UCD_DAMS_SERVER_IMAGE_NAME}}:{{DOCKER_CACHE_TAG}}
     volumes:
       - fedora-data:/data
       - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
@@ -46,7 +46,7 @@ services:
   # Fedora Repository
   ###
   fcrepo:
-    image: {{DAMS_FCREPO_IMAGE_NAME}}:{{APP_TAG}}
+    image: {{DAMS_FCREPO_IMAGE_NAME}}:{{DOCKER_CACHE_TAG}}
     ports:
       - 8080:8080
     # Example for change logging.  Note, don't forget to still include the fcrepo.properties file location!
@@ -77,7 +77,7 @@ services:
   # Fin Init Service
   ###
   init:
-    image: {{UCD_DAMS_INIT_IMAGE_NAME}}:{{APP_TAG}}
+    image: {{UCD_DAMS_INIT_IMAGE_NAME}}:{{DOCKER_CACHE_TAG}}
     volumes:
       - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/init/postgres:/etc/ucdlib-service-init/postgres
       - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/init/fcrepo/fin:/etc/ucdlib-service-init/fcrepo/fin
@@ -96,7 +96,7 @@ services:
   # UC DAMS Client API
   ###
   api:
-    image: {{UCD_DAMS_SERVER_IMAGE_NAME}}:{{APP_TAG}}
+    image: {{UCD_DAMS_SERVER_IMAGE_NAME}}:{{DOCKER_CACHE_TAG}}
     volumes:
       - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
       - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/api:/fin/services/api
@@ -114,7 +114,7 @@ services:
   # command: bash -c 'tail -f /dev/null'
 
   finac:
-    image: {{UCD_DAMS_SERVER_IMAGE_NAME}}:{{APP_TAG}}
+    image: {{UCD_DAMS_SERVER_IMAGE_NAME}}:{{DOCKER_CACHE_TAG}}
     volumes:
       - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
       - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/fin-ac:/fin/services/fin-ac
@@ -131,7 +131,7 @@ services:
   # UC DAMS Client UI
   ###
   ucd-lib-client:
-    image: {{UCD_DAMS_SERVER_IMAGE_NAME}}:{{APP_TAG}}
+    image: {{UCD_DAMS_SERVER_IMAGE_NAME}}:{{DOCKER_CACHE_TAG}}
     volumes:
       - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
       - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/api:/fin/services/api
@@ -169,7 +169,7 @@ services:
   # External Database Sync Service
   ###
   dbsync:
-    image: {{UCD_DAMS_SERVER_IMAGE_NAME}}:{{APP_TAG}}
+    image: {{UCD_DAMS_SERVER_IMAGE_NAME}}:{{DOCKER_CACHE_TAG}}
     volumes:
       - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
       - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/api:/fin/services/api
@@ -190,7 +190,7 @@ services:
   # ES Index Management Service
   ###
   es-index-management:
-    image: {{UCD_DAMS_SERVER_IMAGE_NAME}}:{{APP_TAG}}
+    image: {{UCD_DAMS_SERVER_IMAGE_NAME}}:{{DOCKER_CACHE_TAG}}
     volumes:
       - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
       - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/api:/fin/services/api
@@ -211,7 +211,7 @@ services:
   # GCS - Sccess & Sync
   ###
   gcs:
-    image: {{UCD_DAMS_SERVER_IMAGE_NAME}}:{{APP_TAG}}
+    image: {{UCD_DAMS_SERVER_IMAGE_NAME}}:{{DOCKER_CACHE_TAG}}
     volumes:
       - gcs-disk-cache:/etc/gcs-disk-cache
       - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
@@ -265,7 +265,7 @@ services:
   # Fin Workflows
   ###
   workflow:
-    image: {{UCD_DAMS_SERVER_IMAGE_NAME}}:{{APP_TAG}}
+    image: {{UCD_DAMS_SERVER_IMAGE_NAME}}:{{DOCKER_CACHE_TAG}}
     volumes:
       - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
       - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/node-utils/lib:/fin/services/node-utils/lib
@@ -283,7 +283,7 @@ services:
   # Image Utils OCR Services
   ###
   image-utils:
-    image: {{IMAGE_UTILS_IMAGE_NAME}}:{{APP_TAG}}
+    image: {{IMAGE_UTILS_IMAGE_NAME}}:{{DOCKER_CACHE_TAG}}
     volumes:
       - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
       - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/node-utils/lib:/fin/services/node-utils/lib
@@ -305,7 +305,7 @@ services:
   # OIDC AuthenticationService
   ###
   oidc:
-    image: {{UCD_DAMS_SERVER_IMAGE_NAME}}:{{APP_TAG}}
+    image: {{UCD_DAMS_SERVER_IMAGE_NAME}}:{{DOCKER_CACHE_TAG}}
     volumes:
       - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
       - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/api:/fin/services/api
@@ -324,7 +324,7 @@ services:
     command: npm run oidc
     
   keycloak:
-    image: {{KEYCLOAK_IMAGE_NAME}}:{{APP_TAG}}
+    image: {{KEYCLOAK_IMAGE_NAME}}:{{DOCKER_CACHE_TAG}}
     environment:
       KC_HEALTH_ENABLED: true
       KC_METRICS_ENABLED: true
@@ -343,7 +343,7 @@ services:
     command: ["start-dev --import-realm"]
 
   iiif:
-    image: {{IIIF_IMAGE_NAME}}:{{APP_TAG}}
+    image: {{IIIF_IMAGE_NAME}}:{{DOCKER_CACHE_TAG}}
     cap_add:
       - SYS_ADMIN
     devices:
@@ -363,7 +363,7 @@ services:
     # command: bash -c "tail -f /dev/null"
 
   pg-rest:
-    image: {{PGREST_IMAGE_NAME}}:{{APP_TAG}}
+    image: {{PGREST_IMAGE_NAME}}:{{DOCKER_CACHE_TAG}}
     volumes:
       - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
       - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/pg-rest/start.sh:/start.sh
