@@ -13,6 +13,8 @@ docker push $DAMS_FCREPO_IMAGE_NAME:$APP_TAG
 
 docker push $IMAGE_UTILS_IMAGE_NAME:$APP_TAG
 
+docker push $IIIF_IMAGE_NAME:$APP_TAG
+
 for image in "${ALL_DOCKER_BUILD_IMAGES[@]}"; do
   docker push $image:$DOCKER_CACHE_TAG || true
 done
