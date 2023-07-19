@@ -62,6 +62,8 @@ services:
   ###
   init:
     image: {{UCD_DAMS_INIT_IMAGE_NAME}}:{{APP_TAG}}
+    env_file:
+      - .env
 
   ###
   # Session, admin store

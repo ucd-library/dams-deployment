@@ -81,6 +81,8 @@ services:
     volumes:
       - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/init/postgres:/etc/ucdlib-service-init/postgres
       - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/init/fcrepo/fin:/etc/ucdlib-service-init/fcrepo/fin
+    env_file:
+      - .env
 
   ###
   # Session, admin store

@@ -11,8 +11,8 @@ else
   BUILD_NUM=-1
 fi
 
-FIN_TAG=2.0.3
-DAMS_REPO_TAG=2.0.2
+FIN_TAG=2.1.3
+DAMS_REPO_TAG=2.0.3
 
 if [[ ! -z "$FIN_VERSION_OVERRIDE" ]]; then
   echo "Using FIN_VERSION_OVERRIDE: $FIN_VERSION_OVERRIDE"
@@ -38,19 +38,22 @@ else
   UCD_DAMS_DEPLOYMENT_SHA=$SHORT_SHA
 fi
 
-if [[ ! -z "$UCD_DAMS_DEPLOYMENT_TAG" ]]; then
-  APP_TAG=$UCD_DAMS_DEPLOYMENT_TAG
-else
-  APP_TAG=$UCD_DAMS_DEPLOYMENT_BRANCH
+if [[ -z $DAMS_REPO_TAG ]]; then
+  DAMS_REPO_TAG=$UCD_DAMS_DEPLOYMENT_BRANCH
 fi
+
+
+# if [[ ! -z "$UCD_DAMS_DEPLOYMENT_TAG" ]]; then
+#   APP_TAG=$UCD_DAMS_DEPLOYMENT_TAG
+# else
+#   APP_TAG=$UCD_DAMS_DEPLOYMENT_BRANCH
+# fi
+APP_TAG=$DAMS_REPO_TAG
 
 # Main version number we are tagging the app with. Always update
 # this when you cut a new version of the app!
 APP_VERSION=${APP_TAG}.${BUILD_NUM}
 
-if [[ -z $DAMS_REPO_TAG ]]; then
-  DAMS_REPO_TAG=$UCD_DAMS_DEPLOYMENT_BRANCH
-fi
 
 #### End main config ####
 
