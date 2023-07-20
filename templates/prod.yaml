@@ -234,7 +234,7 @@ services:
     # command: bash -c "tail -f /dev/null"
 
   pg-rest:
-    image: {{PGREST_IMAGE_NAME}}:{{APP_TAG}}
+    image: {{PGREST_IMAGE_NAME}}:{{FIN_TAG}}
     volumes:
       - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-./service-account.json}:/etc/fin/service-account.json
     env_file:

@@ -8,7 +8,7 @@ cd $ROOT_DIR/../templates
 # Store fin branch override form local fs
 cd ../repositories/fin/devops
 source ./config.sh 
-export FIN_VERSION_OVERRIDE=$FIN_BRANCH_NAME
+
 
 cd $ROOT_DIR/../templates
 source ../config.sh
@@ -17,6 +17,9 @@ cork-template \
   -c ../config.sh \
   -t prod.yaml \
   -o ../docker-compose.yaml
+
+export FIN_VERSION_OVERRIDE=$FIN_BRANCH_NAME
+source ../config.sh
 
 LOCAL_DEV=true cork-template \
   -c ../config.sh \
