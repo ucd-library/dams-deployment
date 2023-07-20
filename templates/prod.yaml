@@ -9,7 +9,7 @@ services:
   # Front end apache server for proxying to gateway from host port
   ###
   lb:
-    image: {{LB_IMAGE_NAME}}:{{APP_TAG}}
+    image: {{LB_IMAGE_NAME}}:{{FIN_TAG}}
     ports:
       - ${HOST_PORT:-3000}:80
     restart: unless-stopped
@@ -50,7 +50,7 @@ services:
   # Fedora Postgres Service
   ###
   postgres:
-    image: {{POSTGRES_IMAGE_NAME}}:{{APP_TAG}}
+    image: {{POSTGRES_IMAGE_NAME}}:{{FIN_TAG}}
     environment: 
       - POSTGRES_HOST_AUTH_METHOD=trust
     volumes:
@@ -159,7 +159,7 @@ services:
   # Search
   ###
   elasticsearch:
-    image: {{ELASTIC_SEARCH_IMAGE_NAME}}:{{APP_TAG}}
+    image: {{ELASTIC_SEARCH_IMAGE_NAME}}:{{FIN_TAG}}
     ulimits:
       memlock:
         soft: -1
