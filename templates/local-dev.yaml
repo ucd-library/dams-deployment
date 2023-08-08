@@ -80,7 +80,13 @@ services:
     image: {{UCD_DAMS_INIT_IMAGE_NAME}}:{{DOCKER_CACHE_TAG}}
     volumes:
       - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/init/postgres:/etc/ucdlib-service-init/postgres
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/init/fcrepo:/etc/ucdlib-service-init/fcrepo
+      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/init/postgres/003-fin-cache.sql:/etc/ucdlib-service-init/postgres/003-fin-cache.sql
+      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/init/fcrepo/application:/etc/ucdlib-service-init/fcrepo/application
+      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/init/fcrepo/collection:/etc/ucdlib-service-init/fcrepo/collection
       - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/init/fcrepo/fin:/etc/ucdlib-service-init/fcrepo/fin
+      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/init/fcrepo/item:/etc/ucdlib-service-init/fcrepo/item
+      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/init/fcrepo/service:/etc/ucdlib-service-init/fcrepo/service
     env_file:
       - .env
 
