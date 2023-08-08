@@ -76,7 +76,7 @@ FIN_SERVER_REPO_URL=$GITHUB_ORG_URL/$FIN_SERVER_REPO_NAME
 if [[ -z $A6T_REG_HOST ]]; then
   A6T_REG_HOST=gcr.io/ucdlib-pubreg
 
-  # set local-dev tags used by 
+  # set local-dev tags used by
   # local development docker-compose file
   if [[ $LOCAL_DEV == 'true' ]]; then
     A6T_REG_HOST=localhost/local-dev
@@ -115,7 +115,7 @@ GIT=git
 GIT_CLONE="$GIT clone"
 
 ALL_GIT_REPOSITORIES=( \
-  $UCD_DAMS_REPO_NAME $FIN_SERVER_REPO_URL \
+  $UCD_DAMS_REPO_NAME $FIN_SERVER_REPO_NAME \
 )
 
 # directory we are going to cache our various git repos at different tags

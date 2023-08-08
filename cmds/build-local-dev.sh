@@ -3,7 +3,7 @@
 ###
 # Build images for local development.  They will be tagged with local-dev and are
 # meant to be used with ./rp-local-dev/docker-compose.yaml
-# Note: these images should never be pushed to docker hub 
+# Note: these images should never be pushed to docker hub
 ###
 
 set -e
@@ -14,7 +14,7 @@ export LOCAL_DEV=true
 
 # Store fin branch override form local fs
 cd ./repositories/fin/devops
-source ./config.sh 
+source ./config.sh
 export FIN_VERSION_OVERRIDE=$FIN_BRANCH_NAME
 
 cd $ROOT_DIR/..
