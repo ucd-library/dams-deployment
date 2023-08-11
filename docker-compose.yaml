@@ -9,7 +9,7 @@ services:
   # Front end apache server for proxying to gateway from host port
   ###
   lb:
-    image: gcr.io/ucdlib-pubreg/fin-apache-lb:2.2.5
+    image: gcr.io/ucdlib-pubreg/fin-apache-lb:2.2.7
     ports:
       - ${HOST_PORT:-3000}:80
     restart: unless-stopped
@@ -18,7 +18,7 @@ services:
   # Font End NodeJS Application Server
   ###
   gateway:
-    image: gcr.io/ucdlib-pubreg/dams-base-service:2.1.0
+    image: gcr.io/ucdlib-pubreg/dams-base-service:2.1.1
     volumes:
       - fedora-data:/data
       - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-./service-account.json}:/etc/fin/service-account.json
@@ -35,7 +35,7 @@ services:
   # Fedora Repository
   ###
   fcrepo:
-    image: gcr.io/ucdlib-pubreg/dams-fcrepo:2.1.0
+    image: gcr.io/ucdlib-pubreg/dams-fcrepo:2.1.1
     ports:
       - ${FCREPO_HOST_PORT:-8080}:8080
     volumes:
@@ -50,7 +50,7 @@ services:
   # Fedora Postgres Service
   ###
   postgres:
-    image: gcr.io/ucdlib-pubreg/fin-postgres:2.2.5
+    image: gcr.io/ucdlib-pubreg/fin-postgres:2.2.7
     environment: 
       - POSTGRES_HOST_AUTH_METHOD=trust
     volumes:
@@ -61,7 +61,7 @@ services:
   # Fin Init Service
   ###
   init:
-    image: gcr.io/ucdlib-pubreg/dams-init:2.1.0
+    image: gcr.io/ucdlib-pubreg/dams-init:2.1.1
     env_file:
       - .env
 
@@ -79,7 +79,7 @@ services:
   # UC DAMS Client API
   ###
   api:
-    image: gcr.io/ucdlib-pubreg/dams-base-service:2.1.0
+    image: gcr.io/ucdlib-pubreg/dams-base-service:2.1.1
     volumes:
       - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-./service-account.json}:/etc/fin/service-account.json
     env_file:
@@ -90,7 +90,7 @@ services:
     command: npm run api
 
   finac:
-    image: gcr.io/ucdlib-pubreg/dams-base-service:2.1.0
+    image: gcr.io/ucdlib-pubreg/dams-base-service:2.1.1
     volumes:
       - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-./service-account.json}:/etc/fin/service-account.jso
     env_file:
@@ -102,7 +102,7 @@ services:
   # UC DAMS Client UI
   ###
   ucd-lib-client:
-    image: gcr.io/ucdlib-pubreg/dams-base-service:2.1.0
+    image: gcr.io/ucdlib-pubreg/dams-base-service:2.1.1
     volumes:
       - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-./service-account.json}:/etc/fin/service-account.json
     env_file:
@@ -116,7 +116,7 @@ services:
   # External Database Sync Service
   ###
   dbsync:
-    image: gcr.io/ucdlib-pubreg/dams-base-service:2.1.0
+    image: gcr.io/ucdlib-pubreg/dams-base-service:2.1.1
     volumes:
       - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-./service-account.json}:/etc/fin/service-account.json
     env_file:
@@ -130,7 +130,7 @@ services:
   # ES Index Management Service
   ###
   es-index-management:
-    image: gcr.io/ucdlib-pubreg/dams-base-service:2.1.0
+    image: gcr.io/ucdlib-pubreg/dams-base-service:2.1.1
     volumes:
       - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-./service-account.json}:/etc/fin/service-account.json
     env_file:
@@ -144,7 +144,7 @@ services:
   # GCS - Access & Sync
   ###
   gcs:
-    image: gcr.io/ucdlib-pubreg/dams-base-service:2.1.0
+    image: gcr.io/ucdlib-pubreg/dams-base-service:2.1.1
     volumes:
       - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-./service-account.json}:/etc/fin/service-account.json
       - gcs-disk-cache:/etc/gcs-disk-cache
@@ -159,7 +159,7 @@ services:
   # Search
   ###
   elasticsearch:
-    image: gcr.io/ucdlib-pubreg/fin-elastic-search:2.2.5
+    image: gcr.io/ucdlib-pubreg/fin-elastic-search:2.2.7
     ulimits:
       memlock:
         soft: -1
@@ -188,7 +188,7 @@ services:
   # Fin Workflows
   ###
   workflow:
-    image: gcr.io/ucdlib-pubreg/dams-base-service:2.1.0
+    image: gcr.io/ucdlib-pubreg/dams-base-service:2.1.1
     volumes:
       - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-./service-account.json}:/etc/fin/service-account.json
     env_file:
@@ -202,7 +202,7 @@ services:
   # OIDC AuthenticationService
   ###
   oidc:
-    image: gcr.io/ucdlib-pubreg/dams-base-service:2.1.0
+    image: gcr.io/ucdlib-pubreg/dams-base-service:2.1.1
     volumes:
       - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-./service-account.json}:/etc/fin/service-account.json
     env_file:
@@ -213,7 +213,7 @@ services:
     command: npm run oidc
 
   iiif:
-    image: gcr.io/ucdlib-pubreg/dams-iipimage-server:2.1.0
+    image: gcr.io/ucdlib-pubreg/dams-iipimage-server:2.1.1
     privileged: true
     # cap_add:
     #   - SYS_ADMIN
@@ -234,7 +234,7 @@ services:
     # command: bash -c "tail -f /dev/null"
 
   pg-rest:
-    image: gcr.io/ucdlib-pubreg/fin-pg-rest:2.2.5
+    image: gcr.io/ucdlib-pubreg/fin-pg-rest:2.2.7
     volumes:
       - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-./service-account.json}:/etc/fin/service-account.json
     env_file:
