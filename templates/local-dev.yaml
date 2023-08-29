@@ -118,6 +118,14 @@ services:
     command: npm run api
   # command: bash -c 'tail -f /dev/null'
 
+  rabbitmq:
+    image : {{RABBITMQ_IMAGE_NAME}}:{{DOCKER_CACHE_TAG}}
+    ports:
+      - 15672:15672
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+      # - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/rabbitmq/advanced.config:/etc/rabbitmq/advanced.config
+
   finac:
     image: {{UCD_DAMS_SERVER_IMAGE_NAME}}:{{DOCKER_CACHE_TAG}}
     volumes:
@@ -393,4 +401,6 @@ volumes:
   gcs-fuse:
     driver: local
   gcs-disk-cache:
+    driver: local
+  rabbitmq-data:
     driver: local
