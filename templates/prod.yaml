@@ -79,7 +79,7 @@ services:
   # RabbitMQ - for messaging
   ###
   rabbitmq:
-    image: {{RABBITMQ_IMAGE_NAME}}:{{APP_TAG}}
+    image: {{RABBITMQ_IMAGE_NAME}}:{{FIN_TAG}}
     ports:
       - 15672:15672
     volumes:

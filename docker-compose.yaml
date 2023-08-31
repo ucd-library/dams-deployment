@@ -79,7 +79,7 @@ services:
   # RabbitMQ - for messaging
   ###
   rabbitmq:
-    image: gcr.io/ucdlib-pubreg/fin-rabbitmq:2.2.0
+    image: gcr.io/ucdlib-pubreg/fin-rabbitmq:2.3.0
     ports:
       - 15672:15672
     volumes:
