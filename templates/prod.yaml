@@ -76,6 +76,16 @@ services:
       - fcrepo
 
   ###
+  # RabbitMQ - for messaging
+  ###
+  rabbitmq:
+    image: {{RABBITMQ_IMAGE_NAME}}:{{APP_TAG}}
+    ports:
+      - 15672:15672
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+
+  ###
   # UC DAMS Client API
   ###
   api:
@@ -258,4 +268,6 @@ volumes:
   gcs-fuse:
     driver: local
   gcs-disk-cache:
+    driver: local
+  rabbitmq-data:
     driver: local
