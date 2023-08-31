@@ -27,7 +27,6 @@ echo    "Fin - Fcrepo            : $FCREPO_IMAGE_NAME:$FIN_TAG"
 echo    "Fin - Base Service      : $SERVER_IMAGE_NAME:$FIN_TAG"
 echo -e "\nBuilding images:"
 echo    "UCD DAMS - Init         : $UCD_DAMS_INIT_IMAGE_NAME:$APP_TAG and :$DOCKER_CACHE_TAG"
-echo    "UCD DAMS - Fcrepo       : $DAMS_FCREPO_IMAGE_NAME:$APP_TAG and :$DOCKER_CACHE_TAG"
 echo    "UCD DAMS - IIP Server   : $IIIF_IMAGE_NAME:$APP_TAG and :$DOCKER_CACHE_TAG"
 echo    "UCD DAMS - Base Service : $UCD_DAMS_SERVER_IMAGE_NAME:$APP_TAG and :$DOCKER_CACHE_TAG"
 echo -e "UCD DAMS - Image Utils  : $IMAGE_UTILS_IMAGE_NAME:$APP_TAG and :$DOCKER_CACHE_TAG\n"
@@ -39,14 +38,6 @@ docker build \
   --cache-from $UCD_DAMS_INIT_IMAGE_NAME:$DOCKER_CACHE_TAG \
   $REPOSITORY_DIR/$UCD_DAMS_REPO_NAME/services/init
 docker tag $UCD_DAMS_INIT_IMAGE_NAME:$APP_TAG $UCD_DAMS_INIT_IMAGE_NAME:$DOCKER_CACHE_TAG
-
-# UCD DAMS - Fcrepo
-docker build \
-  -t $DAMS_FCREPO_IMAGE_NAME:$APP_TAG \
-  --build-arg FIN_FCREPO_BASE_IMAGE=$FCREPO_IMAGE_NAME:$FIN_TAG \
-  --cache-from $DAMS_FCREPO_IMAGE_NAME:$DOCKER_CACHE_TAG \
-  $REPOSITORY_DIR/$UCD_DAMS_REPO_NAME/services/fcrepo
-docker tag $DAMS_FCREPO_IMAGE_NAME:$APP_TAG $DAMS_FCREPO_IMAGE_NAME:$DOCKER_CACHE_TAG
 
 # UCD DAMS - Main service image
 docker build \

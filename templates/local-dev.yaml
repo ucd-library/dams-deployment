@@ -46,7 +46,7 @@ services:
   # Fedora Repository
   ###
   fcrepo:
-    image: {{DAMS_FCREPO_IMAGE_NAME}}:{{DOCKER_CACHE_TAG}}
+    image: {{FCREPO_IMAGE_NAME}}:{{DOCKER_CACHE_TAG}}
     ports:
       - 8080:8080
     # Example for change logging.  Note, don't forget to still include the fcrepo.properties file location!
