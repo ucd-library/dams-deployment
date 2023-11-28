@@ -1,4 +1,4 @@
-version: '3'
+version: '3'  
 
 ###
 # Fin Server from deployed DockerHub container images
@@ -17,22 +17,33 @@ services:
   # Front End NodeJS Application Server
   ###
   gateway:
-    image: {{UCD_DAMS_SERVER_IMAGE_NAME}}:{{DOCKER_CACHE_TAG}}
+    build: &base_service_build
+      context: ../../{{UCD_DAMS_REPO_NAME}}
+      dockerfile: services/fin/Dockerfile
+      args:
+        - FIN_SERVER_IMAGE=localhost/local-dev/fin-base-service:sandbox
+    develop: &base_service_develop
+      watch:
+        - action: sync
+          path: ../../{{FIN_SERVER_REPO_NAME}}/services/fin
+          target: /fin/services
+          ignore:
+            - node_modules/
+            - admin-ui/client/dist
+            - admin-ui/client/public/node_modules/
+        - action: sync
+          path: ../../{{FIN_SERVER_REPO_NAME}}/fin-api
+          target: /fin/api
+          ignore:
+            - node_modules/
+        - action: sync
+          path: ../../{{UCD_DAMS_REPO_NAME}}/services/fin/models
+          target: /fin/services/models
+          ignore:
+            - node_modules/
     volumes:
       - fedora-data:/data
       - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/api:/fin/services/api
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/dbsync:/fin/services/dbsync
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/gateway:/fin/services/gateway
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/admin-ui/config.js:/fin/services/admin-ui/config.js
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/admin-ui/controllers:/fin/services/admin-ui/controllers
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/admin-ui/client/public/index.html:/fin/services/admin-ui/client/public/index.html
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/admin-ui/client/public/src:/fin/services/admin-ui/client/public/src
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/admin-ui/client/public/elements:/fin/services/admin-ui/client/public/elements
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/node-utils:/fin/services/node-utils
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/fin-api/index.js:/fin/api/index.js
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/fin-api/lib:/fin/api/lib
-      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/fin/models:/fin/services/models
     env_file:
       - .env
     depends_on:
@@ -101,16 +112,12 @@ services:
   # UC DAMS Client API
   ###
   api:
-    image: {{UCD_DAMS_SERVER_IMAGE_NAME}}:{{DOCKER_CACHE_TAG}}
+    build: 
+      <<: *base_service_build
+    develop:
+      <<: *base_service_develop
     volumes:
       - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/api:/fin/services/api
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/dbsync:/fin/services/dbsync
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/gateway:/fin/services/gateway
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/node-utils:/fin/services/node-utils
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/fin-api/index.js:/fin/api/index.js
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/fin-api/lib:/fin/api/lib
-      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/fin/models:/fin/services/models
     env_file:
       - .env
     depends_on:
@@ -127,14 +134,12 @@ services:
       # - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/rabbitmq/advanced.config:/etc/rabbitmq/advanced.config
 
   finac:
-    image: {{UCD_DAMS_SERVER_IMAGE_NAME}}:{{DOCKER_CACHE_TAG}}
+    build: 
+      <<: *base_service_build
+    develop:
+      <<: *base_service_develop
     volumes:
       - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/fin-ac:/fin/services/fin-ac
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/node-utils:/fin/services/node-utils
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/fin-api/index.js:/fin/api/index.js
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/fin-api/lib:/fin/api/lib
-      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/fin/models:/fin/services/models
     env_file:
       - .env
     command: node fin-ac/index.js
@@ -144,54 +149,38 @@ services:
   # UC DAMS Client UI
   ###
   ucd-lib-client:
-    image: {{UCD_DAMS_SERVER_IMAGE_NAME}}:{{DOCKER_CACHE_TAG}}
+    build: 
+      <<: *base_service_build
+    develop:
+      <<: *base_service_develop
+      watch:
+        - action: sync
+          path: ../../{{UCD_DAMS_REPO_NAME}}/services/fin/ucd-lib-client
+          target: /fin/services/ucd-lib-client
+          ignore:
+            - node_modules/
+            - ucd-lib-client/client/dist
+            - ucd-lib-client/client/public/node_modules/
     volumes:
       - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/api:/fin/services/api
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/dbsync:/fin/services/dbsync
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/gateway:/fin/services/gateway
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/node-utils:/fin/services/node-utils
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/fin-api/index.js:/fin/api/index.js
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/fin-api/lib:/fin/api/lib
-      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/fin/models:/fin/services/models
-      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/fin/ucd-lib-client/index.js:/fin/services/ucd-lib-client/index.js
-      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/fin/ucd-lib-client/config.js:/fin/services/ucd-lib-client/config.js
-      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/fin/ucd-lib-client/client/public/elements:/fin/services/ucd-lib-client/client/public/elements
-      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/fin/ucd-lib-client/client/public/fonts:/fin/services/ucd-lib-client/client/public/fonts
-      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/fin/ucd-lib-client/client/public/images:/fin/services/ucd-lib-client/client/public/images
-      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/fin/ucd-lib-client/client/public/lib:/fin/services/ucd-lib-client/client/public/lib
-      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/fin/ucd-lib-client/client/public/loader:/fin/services/ucd-lib-client/client/public/loader
-      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/fin/ucd-lib-client/client/public/index.html:/fin/services/ucd-lib-client/client/public/index.html
-      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/fin/ucd-lib-client/client/public/manifest.json:/fin/services/ucd-lib-client/client/public/manifest.json
-      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/fin/ucd-lib-client/client/babel.config.js:/fin/services/ucd-lib-client/client/babel.config.js
-      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/fin/ucd-lib-client/client/watch.sh:/fin/services/ucd-lib-client/client/watch.sh
-      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/fin/ucd-lib-client/client/build.sh:/fin/services/ucd-lib-client/client/build.sh
-      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/fin/ucd-lib-client/client/webpack-dist.config.js:/fin/services/ucd-lib-client/client/webpack-dist.config.js
-      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/fin/ucd-lib-client/client/webpack.config.js:/fin/services/ucd-lib-client/client/webpack.config.js
-      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/fin/ucd-lib-client/controllers:/fin/services/ucd-lib-client/controllers
-      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/fin/ucd-lib-client/lib:/fin/services/ucd-lib-client/lib
-      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/fin/ucd-lib-client/model:/fin/services/ucd-lib-client/model
     env_file:
       - .env
     depends_on:
       - elasticsearch
-    command: node ucd-lib-client/index.js
+    working_dir: /fin/services/ucd-lib-client
+    command: bash -c 'npm run watch & node index.js'
     # command: bash -c 'tail -f /dev/null'
 
   ###
   # External Database Sync Service
   ###
   dbsync:
-    image: {{UCD_DAMS_SERVER_IMAGE_NAME}}:{{DOCKER_CACHE_TAG}}
+    build: 
+      <<: *base_service_build
+    develop:
+      <<: *base_service_develop
     volumes:
       - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/api:/fin/services/api
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/dbsync:/fin/services/dbsync
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/gateway:/fin/services/gateway
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/node-utils:/fin/services/node-utils
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/fin-api/index.js:/fin/api/index.js
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/fin-api/lib:/fin/api/lib
-      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/fin/models:/fin/services/models
     env_file:
       - .env
     depends_on:
@@ -203,17 +192,12 @@ services:
   # ES Index Management Service
   ###
   es-index-management:
-    image: {{UCD_DAMS_SERVER_IMAGE_NAME}}:{{DOCKER_CACHE_TAG}}
+    build: 
+      <<: *base_service_build
+    develop:
+      <<: *base_service_develop
     volumes:
       - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/api:/fin/services/api
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/dbsync:/fin/services/dbsync
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/es-index-management:/fin/services/es-index-management
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/gateway:/fin/services/gateway
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/node-utils:/fin/services/node-utils
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/fin-api/index.js:/fin/api/index.js
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/fin-api/lib:/fin/api/lib
-      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/fin/models:/fin/services/models
     env_file:
       - .env
     depends_on:
@@ -224,18 +208,13 @@ services:
   # GCS - Sccess & Sync
   ###
   gcs:
-    image: {{UCD_DAMS_SERVER_IMAGE_NAME}}:{{DOCKER_CACHE_TAG}}
+    build: 
+      <<: *base_service_build
+    develop:
+      <<: *base_service_develop
     volumes:
       - gcs-disk-cache:/etc/gcs-disk-cache
       - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/api:/fin/services/api
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/dbsync:/fin/services/dbsync
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/gateway:/fin/services/gateway
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/node-utils:/fin/services/node-utils
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/fin-api/index.js:/fin/api/index.js
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/fin-api/lib:/fin/api/lib
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/gcs/lib:/fin/services/gcs/lib
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/gcs/index.js:/fin/services/gcs/index.js
     env_file:
       - .env
     depends_on:
@@ -278,13 +257,12 @@ services:
   # Fin Workflows
   ###
   workflow:
-    image: {{UCD_DAMS_SERVER_IMAGE_NAME}}:{{DOCKER_CACHE_TAG}}
+    build: 
+      <<: *base_service_build
+    develop:
+      <<: *base_service_develop
     volumes:
       - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/node-utils/lib:/fin/services/node-utils/lib
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/node-utils/config.js:/fin/services/node-utils/config.js
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/node-utils/index.js:/fin/services/node-utils/index.js
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/workflow/index.js:/fin/services/workflow/index.js
     env_file:
       - .env
     depends_on:
@@ -296,16 +274,15 @@ services:
   # Image Utils OCR Services
   ###
   image-utils:
-    image: {{IMAGE_UTILS_IMAGE_NAME}}:{{DOCKER_CACHE_TAG}}
+    build:
+      context: ../../{{UCD_DAMS_REPO_NAME}}/services/image-utils
+      dockerfile: Dockerfile
+      args:
+        - FIN_SERVER_IMAGE=localhost/local-dev/fin-base-service:sandbox
+    develop:
+      <<: *base_service_develop
     volumes:
       - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/node-utils/lib:/fin/services/node-utils/lib
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/node-utils/config.js:/fin/services/node-utils/config.js
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/node-utils/index.js:/fin/services/node-utils/index.js
-      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/image-utils/index.js:/fin/services/image-utils/index.js
-      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/image-utils/cli:/fin/services/image-utils/cli
-      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/image-utils/controllers:/fin/services/image-utils/controllers
-      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/image-utils/lib:/fin/services/image-utils/lib
     env_file:
       - .env
     depends_on:
@@ -318,17 +295,12 @@ services:
   # OIDC AuthenticationService
   ###
   oidc:
-    image: {{UCD_DAMS_SERVER_IMAGE_NAME}}:{{DOCKER_CACHE_TAG}}
+    build: 
+      <<: *base_service_build
+    develop:
+      <<: *base_service_develop
     volumes:
       - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/api:/fin/services/api
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/oidc:/fin/services/oidc
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/dbsync:/fin/services/dbsync
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/gateway:/fin/services/gateway
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fin/node-utils:/fin/services/node-utils
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/fin-api/index.js:/fin/api/index.js
-      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/fin-api/lib:/fin/api/lib
-      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/fin/models:/fin/services/models
     env_file:
       - .env
     depends_on:
@@ -336,24 +308,24 @@ services:
     # command: bash -c 'tail -f /dev/null'
     command: npm run oidc
     
-  keycloak:
-    image: {{KEYCLOAK_IMAGE_NAME}}:{{DOCKER_CACHE_TAG}}
-    environment:
-      KC_HEALTH_ENABLED: true
-      KC_METRICS_ENABLED: true
-      KEYCLOAK_ADMIN: admin
-      KEYCLOAK_ADMIN_PASSWORD: admin
-      KC_DB: postgres
-      KC_DB_URL: jdbc:postgresql://postgres/postgres
-      KC_DB_USERNAME: postgres
-      KC_DB_PASSWORD: postgres
-      KC_HOSTNAME: localhost
-    volumes:
-      - ../keycloak/dams-local-dev-realm.json:/opt/keycloak/data/import/dams-local-dev-realm.json
-    ports:
-      - 8081:8080
-      - 8443:8443
-    command: ["start-dev --import-realm"]
+  # keycloak:
+  #   image: {{KEYCLOAK_IMAGE_NAME}}:{{DOCKER_CACHE_TAG}}
+  #   environment:
+  #     KC_HEALTH_ENABLED: true
+  #     KC_METRICS_ENABLED: true
+  #     KEYCLOAK_ADMIN: admin
+  #     KEYCLOAK_ADMIN_PASSWORD: admin
+  #     KC_DB: postgres
+  #     KC_DB_URL: jdbc:postgresql://postgres/postgres
+  #     KC_DB_USERNAME: postgres
+  #     KC_DB_PASSWORD: postgres
+  #     KC_HOSTNAME: localhost
+  #   volumes:
+  #     - ../keycloak/dams-local-dev-realm.json:/opt/keycloak/data/import/dams-local-dev-realm.json
+  #   ports:
+  #     - 8081:8080
+  #     - 8443:8443
+  #   command: ["start-dev --import-realm"]
 
   iiif:
     image: {{IIIF_IMAGE_NAME}}:{{DOCKER_CACHE_TAG}}
