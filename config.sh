@@ -13,7 +13,7 @@ fi
 
 # FIN_TAG=2.3.1
 FIN_TAG=sandbox
-DAMS_REPO_TAG=2.2.5
+DAMS_REPO_TAG=sandbox
 
 if [[ ! -z "$FIN_VERSION_OVERRIDE" ]]; then
   echo "Using FIN_VERSION_OVERRIDE: $FIN_VERSION_OVERRIDE"
