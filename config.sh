@@ -28,7 +28,7 @@ else
 fi
 
 if [[ -z "$TAG_NAME" ]]; then
-  UCD_DAMS_DEPLOYMENT_TAG=$(git describe --tags --abbrev=0) || true
+  UCD_DAMS_DEPLOYMENT_TAG=$(git tag --points-at HEAD) || true
 else
   UCD_DAMS_DEPLOYMENT_TAG=$TAG_NAME
 fi

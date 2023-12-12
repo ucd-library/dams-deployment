@@ -50,7 +50,7 @@ services:
       - fcrepo
       - redis
       - elasticsearch
-    command: npm run gateway
+    command: bash -c "npm run admin-ui-watch & npm run gateway"
     # command: bash -c 'tail -f /dev/null'
 
   ###
