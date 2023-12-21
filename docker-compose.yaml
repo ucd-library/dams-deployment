@@ -24,6 +24,8 @@ services:
       - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-./service-account.json}:/etc/fin/service-account.json
     env_file:
       - .env
+    environment:
+      - FIN_SERVICE_NAME=gateway
     depends_on:
       - fcrepo
       - redis
@@ -64,6 +66,8 @@ services:
     image: gcr.io/ucdlib-pubreg/dams-init:sandbox
     env_file:
       - .env
+    environment:
+      - FIN_SERVICE_NAME=init
 
   ###
   # Session, admin store
@@ -86,27 +90,25 @@ services:
       - rabbitmq-data:/var/lib/rabbitmq
 
   ###
-  # UC DAMS Client API
+  # Fin uber utils service - lots of small tasks
   ###
-  api:
+  uber:
     image: gcr.io/ucdlib-pubreg/dams-base-service:sandbox
     volumes:
+      - fs-tests:/fs-tests
       - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-./service-account.json}:/etc/fin/service-account.json
     env_file:
       - .env
+    environment:
+      - FIN_SERVICE_NAME=uber
+      - FIN_METRICS_FS_ENABLED=true
+      - FIN_METRICS_FIN_ENABLED=true
+      - FIN_METRICS_FCREPO_ENABLED=true
     depends_on:
       - elasticsearch
     restart: unless-stopped
-    command: npm run api
+    command: npm run uber
 
-  finac:
-    image: gcr.io/ucdlib-pubreg/dams-base-service:sandbox
-    volumes:
-      - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-./service-account.json}:/etc/fin/service-account.jso
-    env_file:
-      - .env
-    restart: unless-stopped
-    command: node fin-ac/index.js
 
   ###
   # UC DAMS Client UI
@@ -117,6 +119,8 @@ services:
       - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-./service-account.json}:/etc/fin/service-account.json
     env_file:
       - .env
+    environment:
+      - FIN_SERVICE_NAME=ucd-lib-client
     depends_on:
       - elasticsearch
     restart: unless-stopped
@@ -131,24 +135,12 @@ services:
       - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-./service-account.json}:/etc/fin/service-account.json
     env_file:
       - .env
+    environment:
+      - FIN_SERVICE_NAME=dbsync
     depends_on:
       - gateway
     restart: unless-stopped
     command: npm run dbsync
-
-  ###
-  # ES Index Management Service
-  ###
-  es-index-management:
-    image: gcr.io/ucdlib-pubreg/dams-base-service:sandbox
-    volumes:
-      - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-./service-account.json}:/etc/fin/service-account.json
-    env_file:
-      - .env
-    depends_on:
-      - gateway
-    restart: unless-stopped
-    command: npm run es-index-management
 
   ###
   # GCS - Access & Sync
@@ -160,6 +152,8 @@ services:
       - gcs-disk-cache:/etc/gcs-disk-cache
     env_file:
       - .env
+    environment:
+      - FIN_SERVICE_NAME=gcs
     depends_on:
       - gateway
     restart: unless-stopped
@@ -203,24 +197,13 @@ services:
       - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-./service-account.json}:/etc/fin/service-account.json
     env_file:
       - .env
+    environment:
+      - FIN_SERVICE_NAME=workflow
     depends_on:
       - gateway
     restart: unless-stopped
     command: node workflow/index.js
 
-  ###
-  # OIDC AuthenticationService
-  ###
-  oidc:
-    image: gcr.io/ucdlib-pubreg/dams-base-service:sandbox
-    volumes:
-      - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-./service-account.json}:/etc/fin/service-account.json
-    env_file:
-      - .env
-    depends_on:
-      - gateway
-    restart: unless-stopped
-    command: npm run oidc
 
   iiif:
     image: gcr.io/ucdlib-pubreg/dams-iipimage-server:sandbox
@@ -236,6 +219,7 @@ services:
       - FUSE_DIR=/etc/gcs-fuse/fcrepo/rest
       - GCS_BUCKET=dams-client-media-dev
       - VERBOSITY=5
+      - FIN_SERVICE_NAME=iiif
     volumes:
       - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-./service-account.json}:/etc/fin/service-account.json
       - gcs-fuse:/etc/gcs-fuse
@@ -249,12 +233,16 @@ services:
       - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-./service-account.json}:/etc/fin/service-account.json
     env_file:
       - .env
+    environment:
+      - FIN_SERVICE_NAME=pg-rest
     # command: bash -c "tail -f /dev/null"
 
 ###
 # Docker data volumes
 ###
 volumes:
+  fs-tests:
+    driver: local
   fedora-data:
     driver: local
   activemq-data:

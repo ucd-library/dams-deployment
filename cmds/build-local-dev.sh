@@ -21,11 +21,11 @@ cd $ROOT_DIR/..
 source config.sh
 
 # build local fin
-$REPOSITORY_DIR/$FIN_SERVER_REPO_NAME/devops/build.sh
+$REPOSITORY_DIR/$FIN_SERVER_REPO_NAME/devops/build-context.sh
 
 ./cmds/build.sh
 
 # now build keycloak
-docker build \
-  -t $KEYCLOAK_IMAGE_NAME:$APP_TAG \
-  $ROOT_DIR/../keycloak
+# docker build \
+#   -t $KEYCLOAK_IMAGE_NAME:$APP_TAG \
+#   $ROOT_DIR/../keycloak

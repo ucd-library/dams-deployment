@@ -1,0 +1,382 @@
+version: '3'  
+
+###
+# Fin Server from deployed DockerHub container images
+###
+services:
+
+  ###
+  # Front end apache server for proxying to gateway from host port
+  ###
+  lb:
+    image: {{LB_IMAGE_NAME}}:{{FIN_TAG}}
+    ports:
+      - ${HOST_PORT:-3000}:80
+
+  ###
+  # Front End NodeJS Application Server
+  ###
+  gateway:
+    build: &base_service_build
+      context: ../../{{UCD_DAMS_REPO_NAME}}
+      dockerfile: services/fin/Dockerfile
+      args:
+        - FIN_SERVER_IMAGE=localhost/local-dev/fin-base-service:sandbox
+      cache_to: 
+        - type=inline,mode=max
+      cache_from:
+        - gateway:latest
+    develop: &base_service_develop
+      watch:
+        - action: sync
+          path: ../../{{FIN_SERVER_REPO_NAME}}/services/fin
+          target: /fin/services
+          ignore:
+            - node_modules/
+            - admin-ui/client/dist
+            - admin-ui/client/public/node_modules/
+        - action: sync
+          path: ../../{{FIN_SERVER_REPO_NAME}}/fin-api
+          target: /fin/api
+          ignore:
+            - node_modules/
+        - action: sync
+          path: ../../{{UCD_DAMS_REPO_NAME}}/services/fin/models
+          target: /fin/services/models
+          ignore:
+            - node_modules/
+    volumes:
+      - fedora-data:/data
+      - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
+    env_file:
+      - .env
+    depends_on:
+      - fcrepo
+      - redis
+      - elasticsearch
+    command: bash -c "npm run admin-ui-watch & npm run gateway"
+    # command: bash -c 'tail -f /dev/null'
+
+  ###
+  # Fedora Repository
+  ###
+  fcrepo:
+    image: {{FCREPO_IMAGE_NAME}}:{{DOCKER_CACHE_TAG}}
+    ports:
+      - 8080:8080
+    # Example for change logging.  Note, don't forget to still include the fcrepo.properties file location!
+    # See: https://wiki.lyrasis.org/display/FEDORA6x/Logging
+    # environment:
+    #  - CATALINA_OPTS=-Dfcrepo.log.auth=DEBUG -Dfcrepo.config.file=/etc/fin/fcrepo.properties
+    volumes:
+      - fedora-data:/usr/local/tomcat/fcrepo-home/data
+      - activemq-data:/usr/local/tomcat/ActiveMQ
+      - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fcrepo/activemq.xml:/usr/local/tomcat/webapps/fcrepo/WEB-INF/classes/config/activemq.xml
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fcrepo/fcrepo.properties:/etc/fin/fcrepo.properties
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/fcrepo/root-authorization.ttl:/etc/fin/root-authorization.ttl
+    env_file:
+      - .env
+
+  ###
+  # Fedora Postgres Service
+  ###
+  postgres:
+    image: {{POSTGRES_IMAGE_NAME}}:{{FIN_TAG}}
+    environment: 
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+
+  ###
+  # Fin Init Service
+  ###
+  init:
+    image: {{UCD_DAMS_INIT_IMAGE_NAME}}:{{DOCKER_CACHE_TAG}}
+    volumes:
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/init/postgres:/etc/ucdlib-service-init/postgres
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/init/fcrepo:/etc/ucdlib-service-init/fcrepo
+      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/init/postgres:/etc/ucdlib-service-init/postgres-dams
+      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/init/fcrepo:/etc/ucdlib-service-init/fcrepo-dams
+    env_file:
+      - .env
+    # command: bash -c 'tail -f /dev/null'
+
+  ###
+  # Session, admin store
+  ###
+  redis:
+    image: redis:3.2
+    volumes:
+      - redis-data:/data
+    depends_on:
+      - fcrepo
+
+  ###
+  # UC DAMS Client API
+  ###
+  api:
+    build: 
+      <<: *base_service_build
+    develop:
+      <<: *base_service_develop
+    volumes:
+      - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
+    env_file:
+      - .env
+    depends_on:
+      - elasticsearch
+    command: npm run api
+  # command: bash -c 'tail -f /dev/null'
+
+  rabbitmq:
+    image : {{RABBITMQ_IMAGE_NAME}}:{{DOCKER_CACHE_TAG}}
+    ports:
+      - 15672:15672
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+      # - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/rabbitmq/advanced.config:/etc/rabbitmq/advanced.config
+
+  finac:
+    build: 
+      <<: *base_service_build
+    develop:
+      <<: *base_service_develop
+    volumes:
+      - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
+    env_file:
+      - .env
+    command: node fin-ac/index.js
+    # command: bash -c 'tail -f /dev/null'
+
+  ###
+  # UC DAMS Client UI
+  ###
+  ucd-lib-client:
+    build: 
+      <<: *base_service_build
+    develop:
+      <<: *base_service_develop
+      watch:
+        - action: sync
+          path: ../../{{UCD_DAMS_REPO_NAME}}/services/fin/ucd-lib-client
+          target: /fin/services/ucd-lib-client
+          ignore:
+            - node_modules/
+            - ucd-lib-client/client/dist
+            - ucd-lib-client/client/public/node_modules/
+    volumes:
+      - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
+    env_file:
+      - .env
+    depends_on:
+      - elasticsearch
+    working_dir: /fin/services/ucd-lib-client
+    command: bash -c 'npm run watch & node index.js'
+    # command: bash -c 'tail -f /dev/null'
+
+  ###
+  # External Database Sync Service
+  ###
+  dbsync:
+    build: 
+      <<: *base_service_build
+    develop:
+      <<: *base_service_develop
+    volumes:
+      - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
+    env_file:
+      - .env
+    depends_on:
+      - gateway
+    command: npm run dbsync
+    # command: bash -c 'tail -f /dev/null'
+
+  ###
+  # ES Index Management Service
+  ###
+  es-index-management:
+    build: 
+      <<: *base_service_build
+    develop:
+      <<: *base_service_develop
+    volumes:
+      - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
+    env_file:
+      - .env
+    depends_on:
+      - gateway
+    command: npm run es-index-management
+
+  ###
+  # GCS - Sccess & Sync
+  ###
+  gcs:
+    build: 
+      <<: *base_service_build
+    develop:
+      <<: *base_service_develop
+    volumes:
+      - gcs-disk-cache:/etc/gcs-disk-cache
+      - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
+    env_file:
+      - .env
+    depends_on:
+      - gateway
+    command: npm run gcs
+    # command: bash -c 'tail -f /dev/null'
+
+  ###
+  # Search
+  ###
+  elasticsearch:
+    image: {{ELASTIC_SEARCH_IMAGE_NAME}}:{{FIN_TAG}}
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    env_file:
+      - .env
+    volumes:
+      - es-data:/usr/share/elasticsearch/data
+    depends_on:
+      - fcrepo
+    # command: bash -c 'tail -f /dev/null'
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.4.3
+    ports:
+      - 5601:5601
+    env_file:
+      - .env
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
+      - xpack.security.enabled=false
+      - telemetry.enabled=false
+    depends_on:
+      - elasticsearch
+
+  ###
+  # Fin Workflows
+  ###
+  workflow:
+    build: 
+      <<: *base_service_build
+    develop:
+      <<: *base_service_develop
+    volumes:
+      - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
+    env_file:
+      - .env
+    depends_on:
+      - gateway
+    command: npm run workflow
+    # command: bash -c 'tail -f /dev/null'
+
+  ###
+  # Image Utils OCR Services
+  ###
+  image-utils:
+    build:
+      context: ../../{{UCD_DAMS_REPO_NAME}}/services/image-utils
+      dockerfile: Dockerfile
+      args:
+        - FIN_SERVER_IMAGE=localhost/local-dev/fin-base-service:sandbox
+    develop:
+      <<: *base_service_develop
+    volumes:
+      - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
+    env_file:
+      - .env
+    depends_on:
+      - gateway
+    ports:
+      - 8082:3000
+    # command: bash -c 'tail -f /dev/null'
+
+  ###
+  # OIDC AuthenticationService
+  ###
+  oidc:
+    build: 
+      <<: *base_service_build
+    develop:
+      <<: *base_service_develop
+    volumes:
+      - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
+    env_file:
+      - .env
+    depends_on:
+      - gateway
+    # command: bash -c 'tail -f /dev/null'
+    command: npm run oidc
+    
+  # keycloak:
+  #   image: {{KEYCLOAK_IMAGE_NAME}}:{{DOCKER_CACHE_TAG}}
+  #   environment:
+  #     KC_HEALTH_ENABLED: true
+  #     KC_METRICS_ENABLED: true
+  #     KEYCLOAK_ADMIN: admin
+  #     KEYCLOAK_ADMIN_PASSWORD: admin
+  #     KC_DB: postgres
+  #     KC_DB_URL: jdbc:postgresql://postgres/postgres
+  #     KC_DB_USERNAME: postgres
+  #     KC_DB_PASSWORD: postgres
+  #     KC_HOSTNAME: localhost
+  #   volumes:
+  #     - ../keycloak/dams-local-dev-realm.json:/opt/keycloak/data/import/dams-local-dev-realm.json
+  #   ports:
+  #     - 8081:8080
+  #     - 8443:8443
+  #   command: ["start-dev --import-realm"]
+
+  iiif:
+    image: {{IIIF_IMAGE_NAME}}:{{DOCKER_CACHE_TAG}}
+    cap_add:
+      - SYS_ADMIN
+    devices:
+      - /dev/fuse
+    environment:
+      - GOOGLE_APPLICATION_CREDENTIALS=/etc/fin/service-account.json
+      - FUSE_DIR=/etc/gcs-fuse/fcrepo/rest
+      - GCS_BUCKET=dams-client-media-dev
+      - VERBOSITY=5
+    volumes:
+      - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
+      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/iipimage/setup-gcsfuse.sh:/etc/iipimage-server/setup-gcsfuse.sh
+      - ../{{REPOSITORY_DIR}}/{{UCD_DAMS_REPO_NAME}}/services/iipimage/start.sh:/etc/iipimage-server/start.sh
+      - gcs-fuse:/etc/gcs-fuse
+    ports:
+      - 9000:9000
+    # command: bash -c "tail -f /dev/null"
+
+  pg-rest:
+    image: {{PGREST_IMAGE_NAME}}:{{DOCKER_CACHE_TAG}}
+    volumes:
+      - ${GCLOUD_SERVICE_ACCOUNT_MOUNT:-../service-account.json}:/etc/fin/service-account.json
+      - ../{{REPOSITORY_DIR}}/{{FIN_SERVER_REPO_NAME}}/services/pg-rest/start.sh:/start.sh
+    env_file:
+      - .env
+    # command: bash -c "tail -f /dev/null"
+
+###
+# Docker data volumes
+###
+volumes:
+  fedora-data:
+    driver: local
+  activemq-data:
+    driver: local
+  pg-data:
+    driver: local
+  es-data:
+    driver: local
+  redis-data:
+    driver: local
+  gcs-fuse:
+    driver: local
+  gcs-disk-cache:
+    driver: local
+  rabbitmq-data:
+    driver: local
