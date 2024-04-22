@@ -123,3 +123,10 @@ ALL_GIT_REPOSITORIES=( \
 # if using pull.sh or the directory we will look for repositories (can by symlinks)
 # if local development
 REPOSITORY_DIR=repositories
+
+# Google Cloud
+GC_PROJECT_ID=ucdlib-dams
+GKE_CLUSTER_NAME=dams
+GKE_REGION=us-central1
+GKE_CLUSTER_ZONE=${GKE_REGION}-a
+GKE_KUBECTL_CONTEXT=gke_${GC_PROJECT_ID}_${GKE_CLUSTER_ZONE}_${GKE_CLUSTER_NAME}
