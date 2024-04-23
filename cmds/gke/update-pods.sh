@@ -8,13 +8,13 @@ cd $ROOT_DIR
 
 # core services
 kubectl apply -k ./kustomize/elastic-search/base
-kubectl apply -k ./kustomize/postgres
-kubectl apply -k ./kustomize/fcrepo
-kubectl apply -k ./kustomize/rabbitmq
-kubectl apply -k ./kustomize/redis
+kubectl apply -k ./kustomize/postgres/base
+kubectl apply -k ./kustomize/fcrepo/base
+kubectl apply -k ./kustomize/rabbitmq/base
+kubectl apply -k ./kustomize/redis/base
 
 # fin services
-kubectl apply -k ./kustomize/fin/gateway
-kubectl apply -k ./kustomize/fin/dbsync
-kubectl apply -k ./kustomize/fin/init
-kubectl apply -k ./kustomize/fin/uber
+kubectl apply -k ./kustomize/fin/gateway/base
+kubectl apply -k ./kustomize/fin/dbsync/base
+kubectl apply -k ./kustomize/fin/init/overlays/prod
+kubectl apply -k ./kustomize/fin/uber/base

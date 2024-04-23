@@ -6,3 +6,4 @@ resources:
 
 patches:
 - path: volume.yaml
+- path: volume-claim.yaml

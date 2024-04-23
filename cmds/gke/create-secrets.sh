@@ -17,9 +17,9 @@ gcloud secrets versions access latest --secret=production-env > $SECRET_DIR/env
 # gcloud secrets versions access latest --secret=ssl-dams-cert > $SECRET_DIR/ssl-dams.crt
 # gcloud secrets versions access latest --secret=ssl-dams-key > $SECRET_DIR/ssl-dams.key
 
-kubectl delete secret env || true
-kubectl create secret generic env \
-  --from-env-file=$SECRET_DIR/env
+kubectl delete secret env-config || true
+kubectl create secret generic env-config \
+  --from-file=.env=$SECRET_DIR/env
 
 kubectl delete secret service-account || true
 kubectl create secret generic service-account \

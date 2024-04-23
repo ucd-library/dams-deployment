@@ -8,4 +8,5 @@ cd $ROOT_DIR
 source ../../config.sh
 ./setup-kubectl.sh
 
+kubectl apply -k ./kustomize/nfs-server
 kubectl apply -k ./kustomize/ocfl-volume/overlays/prod
