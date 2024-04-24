@@ -1,20 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: fin-service-deployment
+  name: ucd-lib-client
 spec:
   selector:
     matchLabels:
-      app: fin-service-deployment
+      app: ucd-lib-client
   template:
     metadata:
       labels:
-        app: fin-service-deployment
+        app: ucd-lib-client
     spec:
       containers:
       - name: service
-        image: gcr.io/ucdlib-pubreg/fin-base-service:sandbox
+        image: gcr.io/ucdlib-pubreg/dams-base-service:sandbox
         imagePullPolicy: Always
+        command: ["node", "ucd-lib-client/index.js"]
         ports:
         - containerPort: 3000
         resources:
@@ -35,9 +36,6 @@ spec:
         - name: env-config
           mountPath: /etc/fin/.env
           subPath: .env
-        - name: ocfl-volume
-          mountPath: /data
-          readOnly: true
       volumes:
       - name: service-account
         secret:
@@ -45,7 +43,3 @@ spec:
       - name: env-config
         secret:
           secretName: env-config
-      - name: ocfl-volume
-        persistentVolumeClaim:
-          claimName: ocfl-volume-claim
-          readOnly: true

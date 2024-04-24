@@ -33,6 +33,6 @@ gcloud beta container clusters create ${GKE_CLUSTER_NAME} \
 
 ./create-secrets.sh
 
-# ./setup-k8s-service-accounts.sh
+./setup-service-accounts.sh
 
 ./create-volumes.sh

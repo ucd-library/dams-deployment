@@ -4,4 +4,4 @@ spec:
   template:
     spec:
       containers:
-        - image: gcr.io/ucdlib-pubreg/dams-base-service:jm-gke
+      - image: 

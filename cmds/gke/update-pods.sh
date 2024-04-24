@@ -14,7 +14,10 @@ kubectl apply -k ./kustomize/rabbitmq/base
 kubectl apply -k ./kustomize/redis/base
 
 # fin services
-kubectl apply -k ./kustomize/fin/gateway/base
-kubectl apply -k ./kustomize/fin/dbsync/base
+kubectl apply -k ./kustomize/fin/gateway/overlays/prod
+kubectl apply -k ./kustomize/fin/dbsync/overlays/prod
 kubectl apply -k ./kustomize/fin/init/overlays/prod
-kubectl apply -k ./kustomize/fin/uber/base
+kubectl apply -k ./kustomize/fin/uber/overlays/prod
+kubectl apply -k ./kustomize/fin/workflow/overlays/prod
+kubectl apply -k ./kustomize/iiif/base
+kubectl apply -k ./kustomize/ucd-lib-client/baseßßßß

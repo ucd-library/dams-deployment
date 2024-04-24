@@ -2,23 +2,72 @@
 
 FIN_REPO=https://github.com/ucd-library/fin.git
 TMP_DIR=fin-tmp
+FIN_DEPLOYMENT_TEMPLATE=./kustomize/templates/fin/deployment.yaml
+FIN_KUSTOMIZE_FILE=./kustomize/templates/fin/kustomization.yaml
+TEMPLATE_ROOT=./kustomize/fin
 
-if [[ -z "$1" ]]; then
-  echo "No fin tag or branch provided, exiting"
-  exit -1;
-fi
+LATEST_TAG=$(git describe --tags --abbrev=0)
+DEV_TAG=dev
+SANDBOX_TAG=sandbox
+LOCAL_DEV_TAG=$(git rev-parse --abbrev-ref HEAD)
+
+# if [[ -z "$1" ]]; then
+#   echo "No fin tag or branch provided, exiting"
+#   exit -1;
+# fi
 
 set -e
 ROOT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 cd $ROOT_DIR
 
+source ../../config.sh
+
+for file in "$TEMPLATE_ROOT"/*; do
+  if [[ -d $file ]]; then
+    basename=$(basename "$file")
+    if [[ $basename == .* ]]; then
+      continue
+    fi
+
+    if [[ $file == "$TEMPLATE_ROOT/base" ]]; then
+      continue
+    fi
+    echo "Updating deployment $file"
+    
+    root=$file/overlays/prod
+    mkdir -p $root
+    cat $FIN_DEPLOYMENT_TEMPLATE | \
+      yq eval ".spec.template.spec.containers[0].image = \"${UCD_DAMS_SERVER_IMAGE_NAME}:${LATEST_TAG}\"" > $root/deployment.yaml
+    cp $FIN_KUSTOMIZE_FILE $root/kustomization.yaml
+
+    root=$file/overlays/dev
+    mkdir -p $root
+    cat $FIN_DEPLOYMENT_TEMPLATE | \
+      yq eval ".spec.template.spec.containers[0].image = \"${UCD_DAMS_SERVER_IMAGE_NAME}:${DEV_TAG}\"" > $root/deployment.yaml
+    cp $FIN_KUSTOMIZE_FILE $root/kustomization.yaml
+
+    root=$file/overlays/sandbox
+    mkdir -p $root
+    cat $FIN_DEPLOYMENT_TEMPLATE | \
+      yq eval ".spec.template.spec.containers[0].image = \"${UCD_DAMS_SERVER_IMAGE_NAME}:${SANDBOX_TAG}\"" > $root/deployment.yaml
+    cp $FIN_KUSTOMIZE_FILE $root/kustomization.yaml
+
+    root=$file/overlays/local-dev
+    mkdir -p $root
+    cat $FIN_DEPLOYMENT_TEMPLATE | \
+      yq eval ".spec.template.spec.containers[0].image = \"${LOCAL_DEV_BASE}/dams-base-service:${LOCAL_DEV_TAG}\"" > $root/deployment.yaml
+    cp $FIN_KUSTOMIZE_FILE $root/kustomization.yaml
+ 
+  fi
+done
+
 if [[ -d $TMP_DIR ]]; then
   rm -rf $TMP_DIR
 fi
 
-echo "Pulling kustomize templates from fin repo @ $1"
+echo "Pulling kustomize templates from fin repo @ $FIN_TAG"
 git clone $FIN_REPO \
-  --branch $1 \
+  --branch $FIN_TAG \
   --depth 1 \
   --single-branch \
   $TMP_DIR

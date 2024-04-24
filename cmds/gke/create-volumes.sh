@@ -10,3 +10,4 @@ source ../../config.sh
 
 kubectl apply -k ./kustomize/nfs-server
 kubectl apply -k ./kustomize/ocfl-volume/overlays/prod
+kubectl apply -k ./kustomize/gcs-fuse/base

@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: iiif
+spec:
+  selector:
+    matchLabels:
+      app: iiif
+  replicas: 1
+  serviceName: 
+  template:
+    metadata:
+      labels:
+        app: iiif
+      annotations:
+        gke-gcsfuse/volumes: "true"  
+    spec:
+      containers:
+      - name: service
+        image: gcr.io/ucdlib-pubreg/dams-iipimage-server:sandbox
+        imagePullPolicy: Always
+        env:
+        - name: FUSE_DIR
+          value: "/etc/gcs-fuse/fcrepo/rest"
+        - name: VERBOSITY
+          value: "5"
+        - name: GCS_BUCKET
+          value: "client-media"
+        - name: FIN_SERVICE_NAME
+          value: "iiif"
+        resources:
+          requests:
+            memory: "250Mi"
+            cpu: "0.5"
+        ports:
+        - containerPort: 9000
+        volumeMounts:
+        - name: gcs-fuse
+          mountPath: /etc/gcs-fuse 
+      serviceAccountName: pgfarm-ksa
+      volumes:
+      - name: gcs-fuse
+        persistentVolumeClaim:
+          claimName: gcs-fuse-pvc
+      - name: service-account
+        secret:
+          secretName: service-account

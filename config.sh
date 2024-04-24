@@ -74,13 +74,14 @@ FIN_SERVER_REPO_URL=$GITHUB_ORG_URL/$FIN_SERVER_REPO_NAME
 # Registery
 ##
 
+LOCAL_DEV_BASE=localhost/local-dev
 if [[ -z $A6T_REG_HOST ]]; then
   A6T_REG_HOST=gcr.io/ucdlib-pubreg
 
   # set local-dev tags used by
   # local development docker-compose file
   if [[ $LOCAL_DEV == 'true' ]]; then
-    A6T_REG_HOST=localhost/local-dev
+    A6T_REG_HOST=$LOCAL_DEV_BASE
   fi
 fi
 
@@ -130,3 +131,6 @@ GKE_CLUSTER_NAME=dams
 GKE_REGION=us-central1
 GKE_CLUSTER_ZONE=${GKE_REGION}-a
 GKE_KUBECTL_CONTEXT=gke_${GC_PROJECT_ID}_${GKE_CLUSTER_ZONE}_${GKE_CLUSTER_NAME}
+GCS_BUCKET=dams-client-media
+GC_SA_NAME=dams-production@ucdlib-dams.iam.gserviceaccount.com
+GKE_KSA_NAME=dams-production
