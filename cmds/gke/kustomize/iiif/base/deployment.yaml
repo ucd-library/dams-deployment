@@ -7,7 +7,6 @@ spec:
     matchLabels:
       app: iiif
   replicas: 1
-  serviceName: 
   template:
     metadata:
       labels:
@@ -25,7 +24,7 @@ spec:
         - name: VERBOSITY
           value: "5"
         - name: GCS_BUCKET
-          value: "client-media"
+          value: "dams-client-media"
         - name: FIN_SERVICE_NAME
           value: "iiif"
         resources:
@@ -37,7 +36,7 @@ spec:
         volumeMounts:
         - name: gcs-fuse
           mountPath: /etc/gcs-fuse 
-      serviceAccountName: pgfarm-ksa
+      serviceAccountName: dams-production
       volumes:
       - name: gcs-fuse
         persistentVolumeClaim:

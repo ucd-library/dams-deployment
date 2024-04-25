@@ -33,29 +33,44 @@ for file in "$TEMPLATE_ROOT"/*; do
       continue
     fi
     echo "Updating deployment $file"
+
+    IMAGE=$UCD_DAMS_SERVER_IMAGE_NAME
+    IMAGE_ROOT=dams-base-service
+    if [[ $basename == "init" ]]; then
+      IMAGE=$UCD_DAMS_INIT_IMAGE_NAME
+      v=dams-init
+    fi
     
     root=$file/overlays/prod
     mkdir -p $root
     cat $FIN_DEPLOYMENT_TEMPLATE | \
-      yq eval ".spec.template.spec.containers[0].image = \"${UCD_DAMS_SERVER_IMAGE_NAME}:${LATEST_TAG}\"" > $root/deployment.yaml
+      yq eval ".spec.template.spec.containers[0].image = \"${IMAGE}:${LATEST_TAG}\"" | \
+      yq eval ".metadata.name = \"$basename\"" \
+      > $root/deployment.yaml
     cp $FIN_KUSTOMIZE_FILE $root/kustomization.yaml
 
     root=$file/overlays/dev
     mkdir -p $root
     cat $FIN_DEPLOYMENT_TEMPLATE | \
-      yq eval ".spec.template.spec.containers[0].image = \"${UCD_DAMS_SERVER_IMAGE_NAME}:${DEV_TAG}\"" > $root/deployment.yaml
+      yq eval ".spec.template.spec.containers[0].image = \"${IMAGE}:${DEV_TAG}\"" | \
+      yq eval ".metadata.name = \"$basename\"" \
+      > $root/deployment.yaml
     cp $FIN_KUSTOMIZE_FILE $root/kustomization.yaml
 
     root=$file/overlays/sandbox
     mkdir -p $root
     cat $FIN_DEPLOYMENT_TEMPLATE | \
-      yq eval ".spec.template.spec.containers[0].image = \"${UCD_DAMS_SERVER_IMAGE_NAME}:${SANDBOX_TAG}\"" > $root/deployment.yaml
+      yq eval ".spec.template.spec.containers[0].image = \"${IMAGE}:${SANDBOX_TAG}\"" | \
+      yq eval ".metadata.name = \"$basename\"" \
+      > $root/deployment.yaml
     cp $FIN_KUSTOMIZE_FILE $root/kustomization.yaml
 
     root=$file/overlays/local-dev
     mkdir -p $root
     cat $FIN_DEPLOYMENT_TEMPLATE | \
-      yq eval ".spec.template.spec.containers[0].image = \"${LOCAL_DEV_BASE}/dams-base-service:${LOCAL_DEV_TAG}\"" > $root/deployment.yaml
+      yq eval ".spec.template.spec.containers[0].image = \"${LOCAL_DEV_BASE}/${IMAGE_ROOT}:${LOCAL_DEV_TAG}\"" | \
+      yq eval ".metadata.name = \"$basename\"" \
+      > $root/deployment.yaml
     cp $FIN_KUSTOMIZE_FILE $root/kustomization.yaml
  
   fi

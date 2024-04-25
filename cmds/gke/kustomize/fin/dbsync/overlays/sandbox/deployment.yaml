@@ -1,0 +1,9 @@
+kind: Deployment
+metadata:
+  name: dbsync
+spec:
+  template:
+    spec:
+      containers:
+        - name: service
+          image: gcr.io/ucdlib-pubreg/dams-base-service:sandbox

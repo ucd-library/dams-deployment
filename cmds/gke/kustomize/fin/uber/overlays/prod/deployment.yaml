@@ -1,7 +1,9 @@
-apiVersion: apps/v1
 kind: Deployment
+metadata:
+  name: uber
 spec:
   template:
     spec:
       containers:
-        - image: gcr.io/ucdlib-pubreg/dams-base-service:jm-gke
+        - name: service
+          image: gcr.io/ucdlib-pubreg/dams-base-service:2.1.4

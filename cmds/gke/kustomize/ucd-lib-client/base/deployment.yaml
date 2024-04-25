@@ -17,7 +17,7 @@ spec:
         imagePullPolicy: Always
         command: ["node", "ucd-lib-client/index.js"]
         ports:
-        - containerPort: 3000
+        - containerPort: 8000
         resources:
           requests:
             memory: "500Mi"

@@ -15,4 +15,4 @@ spec:
     - implicit-dirs
   csi:
     driver: gcsfuse.csi.storage.gke.io
-    volumeHandle: client-media
+    volumeHandle: dams-client-media
