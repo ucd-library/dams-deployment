@@ -1,9 +1,0 @@
-- op: replace
-  path: /spec/loadBalancerIP
-  value: "35.238.136.107"
-- op: replace
-  path: /spec/ports/0/port
-  value: 80
-- op: replace
-  path: /spec/type
-  value: LoadBalancer

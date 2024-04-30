@@ -7,6 +7,3 @@ spec:
       containers:
         - name: service
           image: gcr.io/ucdlib-pubreg/dams-base-service:sandbox
-          env:
-            - name: LOG_LEVEL
-              value: debug

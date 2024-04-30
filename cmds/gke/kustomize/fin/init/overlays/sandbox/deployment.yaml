@@ -7,4 +7,3 @@ spec:
       containers:
         - name: service
           image: gcr.io/ucdlib-pubreg/dams-init:sandbox
-          # command: ["bash", "-c", "tail -f /dev/null"]
