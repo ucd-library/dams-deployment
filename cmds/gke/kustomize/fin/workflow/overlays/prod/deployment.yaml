@@ -7,3 +7,6 @@ spec:
       containers:
         - name: service
           image: gcr.io/ucdlib-pubreg/dams-base-service:2.1.4
+          env:
+          - name: FIN_METRICS_EXPORT_GC
+            value: "true"

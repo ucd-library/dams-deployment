@@ -14,22 +14,22 @@ gcloud beta container clusters create ${GKE_CLUSTER_NAME} \
   --zone ${GKE_CLUSTER_ZONE} \
   --addons GcsFuseCsiDriver \
   --addons GcePersistentDiskCsiDriver \
-  --num-nodes 4 \
+  --num-nodes 3 \
   --disk-size 50GB \
   --release-channel=regular \
   --machine-type e2-standard-4 \
   --workload-pool=${GC_PROJECT_ID}.svc.id.goog \
   --node-labels=intendedfor=services
 
-# gcloud beta container node-pools create worker-pool \
-#   --cluster ${GKE_CLUSTER_NAME} \
-#   --zone ${GKE_CLUSTER_ZONE} \
-#   --machine-type e2-standard-4 \
-#   --num-nodes 1 \
-#   --disk-size 50GB \
-#   --workload-metadata=GKE_METADATA \
-#   --node-labels=intendedfor=worker-pool \
-#   --enable-autoscaling --min-nodes 1 --max-nodes 8
+gcloud beta container node-pools create scalable-pool \
+  --cluster ${GKE_CLUSTER_NAME} \
+  --zone ${GKE_CLUSTER_ZONE} \
+  --machine-type e2-standard-2 \
+  --num-nodes 1 \
+  --disk-size 50GB \
+  --workload-metadata=GKE_METADATA \
+  --node-labels=intendedfor=scalable-pool \
+  --enable-autoscaling --min-nodes 1 --max-nodes 4
 
 ./create-secrets.sh
 

@@ -26,6 +26,6 @@ kubectl apply -k ./kustomize/fin/dbsync/overlays/$ENV
 # kubectl apply -k ./kustomize/fin/init/overlays/$ENV
 kubectl apply -k ./kustomize/fin/uber/overlays/$ENV
 kubectl apply -k ./kustomize/fin/workflow/overlays/$ENV
-kubectl apply -k ./kustomize/fin/gcs/overlays/$ENV
+kubectl apply -k ./kustomize/fin/workflow/overlays/$ENV
 kubectl apply -k ./kustomize/iiif/base
 kubectl apply -k ./kustomize/ucd-lib-client/base

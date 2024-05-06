@@ -1,6 +1,7 @@
-kind: Deployment
+apiVersion: batch/v1
+kind: Job
 metadata:
-  name: init
+  name: fin-init
 spec:
   template:
     spec:

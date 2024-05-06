@@ -23,11 +23,11 @@ spec:
           mountPath: /usr/local/tomcat/ActiveMQ
         resources:
           requests:
-            memory: "2Gi"
+            memory: "4Gi"
             cpu: "1"
         env:
         - name: CATALINA_OPTS
-          value: "-Dfcrepo.config.file=/etc/fin/fcrepo.properties -Dfcrepo.log=DEBUG -Dfcrepo.log.auth=DEBUG -Dfcrepo.log.kernel=DEBUG"
+          value: "-Dfcrepo.config.file=/etc/fin/fcrepo.properties -Djava.awt.headless=true -Dfile.encoding=UTF-8 -Xms1G -Xmx4G -XX:+UseG1GC -XX:+DisableExplicitGC"
         ports:
         - containerPort: 8080
       volumes:

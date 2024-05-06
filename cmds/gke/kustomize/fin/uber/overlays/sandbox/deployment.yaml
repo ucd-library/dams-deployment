@@ -7,3 +7,14 @@ spec:
       containers:
         - name: service
           image: gcr.io/ucdlib-pubreg/dams-base-service:sandbox
+          env:
+          - name: FIN_METRICS_EXPORT_GC
+            value: "true"
+          - name: FIN_METRICS_FS_ENABLED
+            value: "true"
+          - name: FIN_METRICS_FIN_ENABLED
+            value: "true"
+          - name: FIN_METRICS_FCREPO_ENABLED
+            value: "true"
+      nodeSelector:
+        intendedfor: scalable-pool
