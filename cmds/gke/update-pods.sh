@@ -16,6 +16,7 @@ fi
 kubectl apply -k ./kustomize/elastic-search/base
 kubectl apply -k ./kustomize/postgres/base
 kubectl apply -k ./kustomize/fcrepo/base
+kubectl apply -k ./kustomize/fcrepo-ro/base
 kubectl apply -k ./kustomize/rabbitmq/base
 kubectl apply -k ./kustomize/redis/base
 kubectl apply -k ./kustomize/pg-rest/base

@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: fcrepo
+  name: fcrepo-ro
 spec:
   selector:
     matchLabels:
-      app: fcrepo
-  replicas: 1
+      app: fcrepo-ro
+  replicas: 2
   template:
     metadata:
       labels:
-        app: fcrepo
+        app: fcrepo-ro
     spec:
       containers:
       - name: service
@@ -19,6 +19,7 @@ spec:
         volumeMounts:
         - name: ocfl-volume
           mountPath: /usr/local/tomcat/fcrepo-home/data
+          # readOnly: true
         - name: activemq-volume
           mountPath: /usr/local/tomcat/ActiveMQ
         resources:
@@ -30,6 +31,8 @@ spec:
           value: "-Dfcrepo.config.file=/etc/fin/fcrepo.properties -Djava.awt.headless=true -Dfile.encoding=UTF-8 -Xms1G -Xmx4G -XX:+UseG1GC -XX:+DisableExplicitGC"
         ports:
         - containerPort: 8080
+      nodeSelector:
+        intendedfor: scalable-pool
       volumes:
       - name: ocfl-volume
         persistentVolumeClaim:
@@ -41,4 +44,4 @@ spec:
         accessModes: [ "ReadWriteOnce" ]
         resources:
           requests:
-            storage: 2Gi
+            storage: 100Mi

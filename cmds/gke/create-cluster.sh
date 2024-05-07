@@ -24,12 +24,12 @@ gcloud beta container clusters create ${GKE_CLUSTER_NAME} \
 gcloud beta container node-pools create scalable-pool \
   --cluster ${GKE_CLUSTER_NAME} \
   --zone ${GKE_CLUSTER_ZONE} \
-  --machine-type e2-standard-2 \
+  --machine-type e2-standard-4 \
   --num-nodes 1 \
   --disk-size 50GB \
   --workload-metadata=GKE_METADATA \
   --node-labels=intendedfor=scalable-pool \
-  --enable-autoscaling --min-nodes 1 --max-nodes 4
+  --enable-autoscaling --min-nodes 1 --max-nodes 6
 
 ./create-secrets.sh
 
