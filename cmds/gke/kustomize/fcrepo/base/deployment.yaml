@@ -23,13 +23,14 @@ spec:
           mountPath: /usr/local/tomcat/ActiveMQ
         resources:
           requests:
-            memory: "4Gi"
+            memory: "6Gi"
             cpu: "1"
         env:
         - name: CATALINA_OPTS
           value: "-Dfcrepo.config.file=/etc/fin/fcrepo.properties -Djava.awt.headless=true -Dfile.encoding=UTF-8 -Xms1G -Xmx4G -XX:+UseG1GC -XX:+DisableExplicitGC"
         ports:
         - containerPort: 8080
+        - containerPort: 5672
       volumes:
       - name: ocfl-volume
         persistentVolumeClaim:

@@ -16,5 +16,8 @@ spec:
             value: "true"
           - name: FIN_METRICS_FCREPO_ENABLED
             value: "true"
+          readinessProbe:
+            httpGet:
+              port: 3004 # check api endpoint
       nodeSelector:
         intendedfor: scalable-pool

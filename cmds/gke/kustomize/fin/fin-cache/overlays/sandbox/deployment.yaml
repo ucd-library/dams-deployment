@@ -1,6 +1,6 @@
 kind: Deployment
 metadata:
-  name: gateway
+  name: fin-cache
 spec:
   template:
     spec:
@@ -10,8 +10,3 @@ spec:
           env:
           - name: FIN_METRICS_EXPORT_GC
             value: "true"
-          - name: FCREPO_RO_ENABLED
-            value: "true"
-          # command: ["bash", "-c", "tail -f /dev/null"]
-      nodeSelector:
-        intendedfor: scalable-pool
