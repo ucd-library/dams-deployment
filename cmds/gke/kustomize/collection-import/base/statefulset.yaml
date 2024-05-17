@@ -15,7 +15,7 @@ spec:
       containers:
       - name: importer
         imagePullPolicy: Always
-        image: gcr.io/ucdlib-pubreg/fin-base-service:sandbox
+        image: gcr.io/ucdlib-pubreg/dams-base-service:sandbox
         command: ["/bin/sh", "-c", "tail -f /dev/null"]  
         env:
         - name: GOOGLE_APPLICATION_CREDENTIALS
