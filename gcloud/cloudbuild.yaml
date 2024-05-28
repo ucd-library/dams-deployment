@@ -83,46 +83,46 @@ steps:
   #   - name: 'config'
   #     path: '/config'
 
-  - name: 'gcr.io/cloud-builders/git'
-    secretEnv: ['SANDBOX_SSH_KEY', 'SANDBOX_KNOWN_HOSTS']
-    entrypoint: 'bash'
-    args:
-    - -c
-    - |
-      echo "$$SANDBOX_SSH_KEY" >> /root/.ssh/gcb
-      chmod 400 /root/.ssh/gcb
-      echo "$$SANDBOX_KNOWN_HOSTS" >> /root/.ssh/known_hosts
-    volumes:
-    - name: 'ssh'
-      path: /root/.ssh
+  # - name: 'gcr.io/cloud-builders/git'
+  #   secretEnv: ['SANDBOX_SSH_KEY', 'SANDBOX_KNOWN_HOSTS']
+  #   entrypoint: 'bash'
+  #   args:
+  #   - -c
+  #   - |
+  #     echo "$$SANDBOX_SSH_KEY" >> /root/.ssh/gcb
+  #     chmod 400 /root/.ssh/gcb
+  #     echo "$$SANDBOX_KNOWN_HOSTS" >> /root/.ssh/known_hosts
+  #   volumes:
+  #   - name: 'ssh'
+  #     path: /root/.ssh
 
-  - name: 'gcr.io/cloud-builders/git'
-    entrypoint: "bash"
-    args: ["-c", "./gcloud/deploy.sh"]
-    volumes:
-    - name: 'ssh'
-      path: /root/.ssh
-    env: 
-      - 'REPO_NAME=$REPO_NAME'
-      - 'BRANCH_NAME=$BRANCH_NAME'
-      - 'SHORT_SHA=$SHORT_SHA'
-      - 'TAG_NAME=$TAG_NAME'
-      - 'PROJECT_BUILD_BUCKET=$_CONFIG_BUCKET'
-      - 'PROJECT_ID=$_CONFIG_PROJECT'
+  # - name: 'gcr.io/cloud-builders/git'
+  #   entrypoint: "bash"
+  #   args: ["-c", "./gcloud/deploy.sh"]
+  #   volumes:
+  #   - name: 'ssh'
+  #     path: /root/.ssh
+  #   env: 
+  #     - 'REPO_NAME=$REPO_NAME'
+  #     - 'BRANCH_NAME=$BRANCH_NAME'
+  #     - 'SHORT_SHA=$SHORT_SHA'
+  #     - 'TAG_NAME=$TAG_NAME'
+  #     - 'PROJECT_BUILD_BUCKET=$_CONFIG_BUCKET'
+  #     - 'PROJECT_ID=$_CONFIG_PROJECT'
 
-  - name: 'gcr.io/cloud-builders/gcloud'
-    entrypoint: "bash"
-    args: ["-c", "./gcloud/deploy-image-utils.sh"]
-    volumes:
-    - name: 'ssh'
-      path: /root/.ssh
-    env: 
-      - 'REPO_NAME=$REPO_NAME'
-      - 'BRANCH_NAME=$BRANCH_NAME'
-      - 'SHORT_SHA=$SHORT_SHA'
-      - 'TAG_NAME=$TAG_NAME'
-      - 'PROJECT_BUILD_BUCKET=$_CONFIG_BUCKET'
-      - 'PROJECT_ID=$_CONFIG_PROJECT'
+  # - name: 'gcr.io/cloud-builders/gcloud'
+  #   entrypoint: "bash"
+  #   args: ["-c", "./gcloud/deploy-image-utils.sh"]
+  #   volumes:
+  #   - name: 'ssh'
+  #     path: /root/.ssh
+  #   env: 
+  #     - 'REPO_NAME=$REPO_NAME'
+  #     - 'BRANCH_NAME=$BRANCH_NAME'
+  #     - 'SHORT_SHA=$SHORT_SHA'
+  #     - 'TAG_NAME=$TAG_NAME'
+  #     - 'PROJECT_BUILD_BUCKET=$_CONFIG_BUCKET'
+  #     - 'PROJECT_ID=$_CONFIG_PROJECT'
   
 
 substitutions:
