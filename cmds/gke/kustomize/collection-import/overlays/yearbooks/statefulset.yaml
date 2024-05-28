@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: import-yearbooks
+spec:
+  selector:
+    matchLabels:
+      app: import-yearbooks
+  template:
+    metadata:
+      labels:
+        app: import-yearbooks
+    spec:
+      containers:
+      - name: importer
+        env:
+          - name: COLLECTION_NAME
+            value: yearbooks
+  volumeClaimTemplates:
+    - metadata:
+        name: data-volume
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        resources:
+          requests:
+            storage: 750Gi

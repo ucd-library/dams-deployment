@@ -24,7 +24,6 @@ kubectl apply -k ./kustomize/pg-rest/base
 # fin services
 kubectl apply -k ./kustomize/fin/gateway/overlays/$ENV
 kubectl apply -k ./kustomize/fin/dbsync/overlays/$ENV
-kubectl apply -k ./kustomize/fin/fin-cache/overlays/$ENV
 kubectl apply -k ./kustomize/fin/uber/overlays/$ENV
 kubectl apply -k ./kustomize/fin/workflow/overlays/$ENV
 kubectl apply -k ./kustomize/fin/gcs/overlays/$ENV

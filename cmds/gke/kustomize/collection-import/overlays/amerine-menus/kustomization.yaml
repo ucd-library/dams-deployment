@@ -5,6 +5,9 @@ resources:
 - ../../base
 
 patches:
-  - path: deployment.yaml
+  - path: statefulset.yaml
     target:
-      kind: Deployment
+      kind: StatefulSet
+      name: import
+    options:
+      allowNameChange: true
