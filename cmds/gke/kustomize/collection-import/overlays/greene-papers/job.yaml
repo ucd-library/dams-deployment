@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: import-amerine-menus
+  name: import-greene-papers
 spec:
   template:
     spec:
@@ -9,11 +9,11 @@ spec:
       - name: importer
         env:
           - name: COLLECTION_NAME
-            value: amerine-menus
+            value: greene-papers
         volumeMounts:
         - name: import-volume
           mountPath: /data
       volumes:
       - name: import-volume
         persistentVolumeClaim:
-          claimName: import-amerine-menus-volume-claim
+          claimName: import-greene-papers-volume-claim
