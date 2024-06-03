@@ -135,12 +135,12 @@ substitutions:
   _GITHUB_PR_USER: ''
   _GITHUB_PR_MERGED_BY: ''
 
-availableSecrets:
-  secretManager:
-  - versionName: projects/digital-ucdavis-edu/secrets/sandbox-vm-ssh/versions/latest
-    env: 'SANDBOX_SSH_KEY'
-  - versionName: projects/digital-ucdavis-edu/secrets/sandbox-vm-known-hosts/versions/latest
-    env: 'SANDBOX_KNOWN_HOSTS'
+# availableSecrets:
+#   secretManager:
+#   - versionName: projects/digital-ucdavis-edu/secrets/sandbox-vm-ssh/versions/latest
+#     env: 'SANDBOX_SSH_KEY'
+#   - versionName: projects/digital-ucdavis-edu/secrets/sandbox-vm-known-hosts/versions/latest
+#     env: 'SANDBOX_KNOWN_HOSTS'
 
 
 timeout: 1800s

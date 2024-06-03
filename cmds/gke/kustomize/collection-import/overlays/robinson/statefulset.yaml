@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: import-amerine-menus
+  name: import-robinson
 spec:
   selector:
     matchLabels:
-      app: import-amerine-menus
+      app: import-robinson
   template:
     metadata:
       labels:
-        app: import-amerine-menus
+        app: import-robinson
     spec:
       containers:
       - name: importer
         env:
           - name: COLLECTION_NAME
-            value: amerine-menus
+            value: robinson
   volumeClaimTemplates:
     - metadata:
         name: data-volume
@@ -23,4 +23,4 @@ spec:
         accessModes: [ "ReadWriteOnce" ]
         resources:
           requests:
-            storage: 175Gi
+            storage: 235Gi

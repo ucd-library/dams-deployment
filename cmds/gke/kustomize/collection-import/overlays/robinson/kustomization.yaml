@@ -2,13 +2,12 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-- volume.yaml
 - ../../base
 
 patches:
-  - path: job.yaml
+  - path: statefulset.yaml
     target:
-      kind: Job
+      kind: StatefulSet
       name: import
     options:
       allowNameChange: true

@@ -32,7 +32,7 @@ spec:
             memory: "250Mi"
             cpu: "0.5"
         ports:
-        - containerPort: 9000
+        - containerPort: 80
         volumeMounts:
         - name: gcs-fuse
           mountPath: /etc/gcs-fuse/fcrepo/rest

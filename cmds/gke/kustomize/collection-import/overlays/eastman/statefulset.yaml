@@ -1,21 +1,21 @@
-apiVersion: apps/v1
-kind: StatefulSet
+apiVersion: batch/v1
+kind: Job
 metadata:
-  name: import-yearbooks
+  name: import-eastman
 spec:
   selector:
     matchLabels:
-      app: import-yearbooks
+      app: import-eastman
   template:
     metadata:
       labels:
-        app: import-yearbooks
+        app: import-eastman
     spec:
       containers:
       - name: importer
         env:
           - name: COLLECTION_NAME
-            value: yearbooks
+            value: eastman
   volumeClaimTemplates:
     - metadata:
         name: data-volume
@@ -23,4 +23,4 @@ spec:
         accessModes: [ "ReadWriteOnce" ]
         resources:
           requests:
-            storage: 750Gi
+            storage: 70Gi

@@ -1,31 +1,32 @@
-apiVersion: apps/v1
-kind: StatefulSet
+apiVersion: batch/v1
+kind: Job
 metadata:
   name: import
 spec:
-  selector:
-    matchLabels:
-      app: import
-  replicas: 1
   template:
-    metadata:
-      labels:
-        app: import
     spec:
+      restartPolicy: OnFailure
       containers:
       - name: importer
         imagePullPolicy: Always
         image: gcr.io/ucdlib-pubreg/dams-base-service:sandbox
-        command: ["/bin/sh", "-c", "tail -f /dev/null"]  
+        command: ["/bin/bash", "-c", "/collection-import/import.sh"]  
         env:
         - name: GOOGLE_APPLICATION_CREDENTIALS
           value: /etc/fin/service-account.json
+        - name: GCS_BINARY_BACKUP_BUCKET
+          value: "dams-collections-binary-backups"
+        - name: FIN_URL
+          value: "http://dams.justinmerz.net"
+        - name: ROOT_DIR
+          value: "/data"
         volumeMounts:
         - name: service-account
           mountPath: /etc/fin/service-account.json
           subPath: service-account.json
-        - name: data-volume
-          mountPath: /data
+        - name: env-config
+          mountPath: /etc/fin/.env
+          subPath: .env
         resources:
           requests:
             memory: "1Gi"
@@ -34,11 +35,6 @@ spec:
       - name: service-account
         secret:
           secretName: service-account
-  volumeClaimTemplates:
-    - metadata:
-        name: data-volume
-      spec:
-        accessModes: [ "ReadWriteOnce" ]
-        resources:
-          requests:
-            storage: 5Gi
+      - name: env-config
+        secret:
+          secretName: env-config
