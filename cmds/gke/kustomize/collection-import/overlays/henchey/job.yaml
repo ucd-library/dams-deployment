@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: import-picnic-day
+  name: import-henchey
 spec:
   template:
     spec:
@@ -9,11 +9,11 @@ spec:
       - name: importer
         env:
           - name: COLLECTION_NAME
-            value: Picnic_Day
+            value: henchey
         volumeMounts:
         - name: import-volume
           mountPath: /data
       volumes:
       - name: import-volume
         persistentVolumeClaim:
-          claimName: import-picnic-day-volume-claim
+          claimName: import-henchey-volume-claim

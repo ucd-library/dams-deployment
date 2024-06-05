@@ -1,11 +1,11 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: import-picnic-day-volume-claim
+  name: import-nvwl-volume-claim
 spec:
   accessModes:
   - ReadWriteOnce
   storageClassName: standard-rwo
   resources:
     requests:
-      storage: 150Gi
+      storage: 4Gi

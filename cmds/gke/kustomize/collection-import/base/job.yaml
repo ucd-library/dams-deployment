@@ -3,9 +3,10 @@ kind: Job
 metadata:
   name: import
 spec:
+  backoffLimit: 0
   template:
     spec:
-      restartPolicy: OnFailure
+      restartPolicy: Never
       containers:
       - name: importer
         imagePullPolicy: Always
@@ -31,6 +32,8 @@ spec:
           requests:
             memory: "1Gi"
             cpu: "1"
+      nodeSelector:
+        intendedfor: scalable-pool
       volumes:
       - name: service-account
         secret:

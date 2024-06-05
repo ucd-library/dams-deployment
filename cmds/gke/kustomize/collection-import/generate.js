@@ -17,7 +17,7 @@ spec:
       - name: importer
         env:
           - name: COLLECTION_NAME
-            value: {{collection}}
+            value: {{collectionOrg}}
         volumeMounts:
         - name: import-volume
           mountPath: /data
@@ -54,7 +54,11 @@ patches:
       allowNameChange: true`;
 
 for( let collection in COLLECTIONS) {
-  let args = {collection, size: COLLECTIONS[collection]}
+  let args = {
+    collection : collection.toLowerCase().replace(/( |_)/g, '-'),
+    collectionOrg: collection, 
+    size: COLLECTIONS[collection]
+  }
 
   let job = render(args, JOB_TEMPLATE);
   let volume = render(args, VOLUME_TEMPLATE);
