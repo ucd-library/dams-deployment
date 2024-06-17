@@ -3,6 +3,7 @@ kind: Kustomization
 
 resources:
 - ../../base
+- ingress-lb-service.yaml
 
 patches:
   - path: deployment.yaml

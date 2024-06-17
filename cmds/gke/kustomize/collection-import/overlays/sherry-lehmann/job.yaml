@@ -7,9 +7,12 @@ spec:
     spec:
       containers:
       - name: importer
+        # command: ["/bin/bash", "-c", "tail -f /dev/null"]  
         env:
           - name: COLLECTION_NAME
             value: sherry-lehmann
+          - name: IGNORE_BINARY_SYNC
+            value: "true"
         volumeMounts:
         - name: import-volume
           mountPath: /data
