@@ -9,5 +9,5 @@ spec:
           image: gcr.io/ucdlib-pubreg/dams-base-service:sandbox
           # command: ["/bin/sh", "-c", "tail -f /dev/null"]
           env:
-          - name: FIN_METRICS_EXPORT_GC
-            value: "true"
+            - name: FIN_METRICS_EXPORT_GC
+              value: "true"

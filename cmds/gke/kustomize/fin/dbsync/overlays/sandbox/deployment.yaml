@@ -8,7 +8,7 @@ spec:
         - name: service
           image: gcr.io/ucdlib-pubreg/dams-base-service:sandbox
           env:
-          - name: FIN_METRICS_EXPORT_GC
-            value: "true"
+            - name: FIN_METRICS_EXPORT_GC
+              value: "true"
       nodeSelector:
         intendedfor: scalable-pool

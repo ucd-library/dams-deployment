@@ -1,5 +1,11 @@
 #! /bin/bash
 
+set -e
+ROOT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+cd $ROOT_DIR
+
+source ../../config.sh
+
 FIN_REPO=https://github.com/ucd-library/fin.git
 TMP_DIR=fin-tmp
 FIN_DEPLOYMENT_TEMPLATE=./kustomize/templates/fin/deployment.yaml
@@ -10,17 +16,17 @@ LATEST_TAG=$(git describe --tags --abbrev=0)
 DEV_TAG=dev
 SANDBOX_TAG=sandbox
 LOCAL_DEV_TAG=$(git rev-parse --abbrev-ref HEAD)
+IMAGE=$UCD_DAMS_SERVER_IMAGE_NAME
 
-# if [[ -z "$1" ]]; then
-#   echo "No fin tag or branch provided, exiting"
-#   exit -1;
-# fi
+if [[ -z "$1" ]]; then
+  echo "No branch provided, exiting"
+  exit -1;
+fi
+if [[ ! -z "$2" ]]; then
+  LATEST_TAG=$2
+fi
+BRANCH=$1
 
-set -e
-ROOT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-cd $ROOT_DIR
-
-source ../../config.sh
 
 for file in "$TEMPLATE_ROOT"/*; do
   if [[ -d $file ]]; then
@@ -32,11 +38,15 @@ for file in "$TEMPLATE_ROOT"/*; do
     if [[ $file == "$TEMPLATE_ROOT/base" ]]; then
       continue
     fi
-    echo "Updating deployment $file"
 
-    cat $root/$FILE | \
-      yq eval ".spec.template.spec.containers[0].image = \"${IMAGE}:${LATEST_TAG}\"" 
-      > $root/$FILE
+    if [[ -f $file/overlays/$BRANCH/deployment.yaml ]]; then
+
+      echo "Updating deployment $file"
+      cat $file/overlays/$BRANCH/deployment.yaml | \
+        yq eval ".spec.template.spec.containers[0].image = \"${IMAGE}:${LATEST_TAG}\"" \
+        > $file/overlays/$BRANCH/deployment.tmp.yaml &&
+        mv $file/overlays/$BRANCH/deployment.tmp.yaml $file/overlays/$BRANCH/deployment.yaml
+    fi
     # cp $FIN_KUSTOMIZE_FILE $root/kustomization.yaml
 
     # root=$file/overlays/dev

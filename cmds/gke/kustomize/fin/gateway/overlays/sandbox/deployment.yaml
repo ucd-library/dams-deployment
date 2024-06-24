@@ -8,19 +8,19 @@ spec:
         - name: service
           image: gcr.io/ucdlib-pubreg/dams-base-service:sandbox
           env:
-          - name: FIN_METRICS_EXPORT_GC
-            value: "true"
-          - name: FCREPO_RO_ENABLED
-            value: "true"
-          - name: FIN_GATEWAY_HTTPS_ENABLED
-            value: "true"
+            - name: FIN_METRICS_EXPORT_GC
+              value: "true"
+            - name: FCREPO_RO_ENABLED
+              value: "true"
+            - name: FIN_GATEWAY_HTTPS_ENABLED
+              value: "true"
           volumeMounts:
             - mountPath: /etc/fin/certs/sandbox.dams.library.ucdavis.edu
               name: dams-ssl
-          # command: ["bash", "-c", "tail -f /dev/null"]
+              # command: ["bash", "-c", "tail -f /dev/null"]
       nodeSelector:
         intendedfor: scalable-pool
       volumes:
-      - name: dams-ssl
-        secret:
-          secretName: dams-ssl
+        - name: dams-ssl
+          secret:
+            secretName: dams-ssl
