@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
 - ../../base
 - ingress-lb-service.yaml
+- ingress-test.yaml
 
 patches:
   - path: deployment.yaml
