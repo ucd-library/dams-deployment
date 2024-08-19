@@ -13,6 +13,8 @@ DOCKER="docker"
 DOCKER_BUILD="$DOCKER buildx build --output=type=docker --cache-to=type=inline,mode=max "
 if [[ $LOCAL_DEV != 'true' ]]; then
   DOCKER_BUILD="$DOCKER_BUILD --pull "
+else
+  DOCKER_BUILD="$DOCKER_BUILD --load"
 fi
 DOCKER_PUSH="$DOCKER push "
 

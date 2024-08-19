@@ -3,4 +3,6 @@ kind: PersistentVolumeClaim
 metadata:
   name: ocfl-volume-claim
 spec:
-  storageClassName: ""
+  accessModes:
+    - ReadWriteMany
+  volumeName: ocfl-volume

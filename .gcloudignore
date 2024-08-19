@@ -1,6 +1,8 @@
-service-account.json
+*service-account.json
 node_modules
 .env
 repositories
 dams-local-dev
+dams-local-dev-realm.json
 secrets
+ocfl-volume

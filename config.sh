@@ -4,6 +4,8 @@
 # Setup your application deployment here
 ################################
 
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+
 # Grab build number is mounted in CI system
 if [[ -f /config/.buildenv ]]; then
   source /config/.buildenv
@@ -123,7 +125,7 @@ ALL_GIT_REPOSITORIES=( \
 # directory we are going to cache our various git repos at different tags
 # if using pull.sh or the directory we will look for repositories (can by symlinks)
 # if local development
-REPOSITORY_DIR=repositories
+REPOSITORY_DIR=$SCRIPT_DIR/..
 
 # Google Cloud
 GC_PROJECT_ID=ucdlib-dams

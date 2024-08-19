@@ -47,31 +47,6 @@ for file in "$TEMPLATE_ROOT"/*; do
         > $file/overlays/$BRANCH/deployment.tmp.yaml &&
         mv $file/overlays/$BRANCH/deployment.tmp.yaml $file/overlays/$BRANCH/deployment.yaml
     fi
-    # cp $FIN_KUSTOMIZE_FILE $root/kustomization.yaml
-
-    # root=$file/overlays/dev
-    # mkdir -p $root
-    # cat $FIN_DEPLOYMENT_TEMPLATE | \
-    #   yq eval ".spec.template.spec.containers[0].image = \"${IMAGE}:${DEV_TAG}\"" | \
-    #   yq eval ".metadata.name = \"$basename\"" \
-    #   > $root/$FILE
-    # cp $FIN_KUSTOMIZE_FILE $root/kustomization.yaml
-
-    # root=$file/overlays/sandbox
-    # mkdir -p $root
-    # cat $FIN_DEPLOYMENT_TEMPLATE | \
-    #   yq eval ".spec.template.spec.containers[0].image = \"${IMAGE}:${SANDBOX_TAG}\"" | \
-    #   yq eval ".metadata.name = \"$basename\"" \
-    #   > $root/$FILE
-    # cp $FIN_KUSTOMIZE_FILE $root/kustomization.yaml
-
-    # root=$file/overlays/local-dev
-    # mkdir -p $root
-    # cat $FIN_DEPLOYMENT_TEMPLATE | \
-    #   yq eval ".spec.template.spec.containers[0].image = \"${LOCAL_DEV_BASE}/${IMAGE_ROOT}:${LOCAL_DEV_TAG}\"" | \
-    #   yq eval ".metadata.name = \"$basename\"" \
-    #   > $root/$FILE
-    # cp $FIN_KUSTOMIZE_FILE $root/kustomization.yaml
  
   fi
 done

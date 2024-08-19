@@ -3,6 +3,8 @@ kind: PersistentVolume
 metadata:
   name: ocfl-volume
 spec:
+  capacity:
+    storage: 4T
   nfs:
     server: nfs-server.default.svc.cluster.local
     path: "/"
