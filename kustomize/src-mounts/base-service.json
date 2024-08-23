@@ -1,0 +1,62 @@
+[
+  {
+    "name" : "src-fin-admin-ui",
+    "containerPath" : "/fin/services/admin-ui",
+    "hostPath" : "../../../fin/services/fin/admin-ui"
+  },
+  {
+    "name" : "src-fin-api",
+    "containerPath" : "/fin/services/api",
+    "hostPath" : "../../../fin/services/fin/api"
+  },
+  {
+    "name" : "src-fin-dbsync",
+    "containerPath" : "/fin/services/dbsync",
+    "hostPath" : "../../../fin/services/fin/dbsync"
+  },
+  {
+    "name" : "src-fin-workflow",
+    "containerPath" : "/fin/services/workflow",
+    "hostPath" : "../../../fin/services/fin/workflow"
+  },
+  {
+    "name" : "src-fin-gcs",
+    "containerPath" : "/fin/services/gcs",
+    "hostPath" : "../../../fin/services/fin/gcs"
+  },
+  {
+    "name" : "src-fin-es-index-management",
+    "containerPath" : "/fin/services/es-index-management",
+    "hostPath" : "../../../fin/services/fin/es-index-management"
+  },
+  {
+    "name" : "src-fin-ac",
+    "containerPath" : "/fin/services/fin-ac",
+    "hostPath" : "../../../fin/services/fin/fin-ac"
+  },
+  {
+    "name" : "src-fin-gateway",
+    "containerPath" : "/fin/services/fin-gateway",
+    "hostPath" : "../../../fin/services/fin/fin-gateway"
+  },
+  {
+    "name" : "src-fin-monitoring",
+    "containerPath" : "/fin/services/fin-monitoring",
+    "hostPath" : "../../../fin/services/fin/fin-monitoring"
+  },
+  {
+    "name" : "src-fin-node-utils",
+    "containerPath" : "/fin/services/fin-node-utils",
+    "hostPath" : "../../../fin/services/fin/fin-node-utils"
+  },
+  {
+    "name" : "src-fin-uber",
+    "containerPath" : "/fin/services/fin-uber",
+    "hostPath" : "../../../fin/services/fin/fin-uber"
+  },
+  {
+    "name" : "src-fin-oidc",
+    "containerPath" : "/fin/services/fin-oidc",
+    "hostPath" : "../../../fin/services/fin/fin-oidc"
+  }
+]

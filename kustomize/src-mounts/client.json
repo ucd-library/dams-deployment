@@ -1,0 +1,7 @@
+[
+  {
+    "name" : "src-dams-client",
+    "containerPath" : "/fin/services/ucd-lib-client",
+    "hostPath" : "../../../dams/services/fin/ucd-lib-client"
+  }
+]

@@ -7,4 +7,4 @@ spec:
   capacity:
     storage: 25Gi
   hostPath:
-    path: {{REPO_DIR}}/ocfl-volume
+    path: /tmp/ocfl-volume

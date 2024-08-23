@@ -1,0 +1,9 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: fcrepo-ro
+spec:
+  template:
+    spec:
+      containers:
+        - name: gcr.io/ucdlib-pubreg/fin-fcrepo:dev

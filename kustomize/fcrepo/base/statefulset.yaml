@@ -14,17 +14,12 @@ spec:
     spec:
       containers:
       - name: service
-        imagePullPolicy: Always
         image: gcr.io/ucdlib-pubreg/fin-fcrepo:sandbox
         volumeMounts:
         - name: ocfl-volume
           mountPath: /usr/local/tomcat/fcrepo-home/data
         - name: activemq-volume
           mountPath: /usr/local/tomcat/ActiveMQ
-        resources:
-          requests:
-            memory: "6Gi"
-            cpu: "1"
         env:
         - name: CATALINA_OPTS
           value: "-Dfcrepo.config.file=/etc/fin/fcrepo.properties -Dfcrepo.log=DEBUG -Dfcrepo.log.auth=DEBUG -Dfcrepo.log.kernel=DEBUG"

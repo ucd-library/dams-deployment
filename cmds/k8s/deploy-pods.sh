@@ -37,10 +37,10 @@ else
 fi
 
 # core services
-kubectl apply -k ./kustomize/elastic-search/base
+kubectl apply -k ./kustomize/elastic-search/overlays/$ENV
 kubectl apply -k ./kustomize/postgres/base
-kubectl apply -k ./kustomize/fcrepo/base
-kubectl apply -k ./kustomize/fcrepo-ro/base
+kubectl apply -k ./kustomize/fcrepo/overlays/$ENV
+kubectl apply -k ./kustomize/fcrepo-ro/$ENV
 kubectl apply -k ./kustomize/rabbitmq/base
 kubectl apply -k ./kustomize/redis/base
 kubectl apply -k ./kustomize/pg-rest/base

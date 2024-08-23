@@ -16,10 +16,10 @@ CMD=$1
 K8S_BACKEND=${K8S_BACKEND:-docker}
 ./cmds/setup-gcloud-kubectl.sh local-dev
 
-if [[ $CMD == "start" ]]; then  
+if [[ $CMD == "start" || $CMD == "deploy"  ]]; then  
 
   # deploy all pods
-  ./cmds/k8s/deploy-pods.sh local-dev
+  ./cmds/k8s/deploy-local-dev-pods.sh
 elif [[ $CMD == "stop" ]]; then
 
   kubectl delete statefulsets --all -n $K8S_NAMESPACE
