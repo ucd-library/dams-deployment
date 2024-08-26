@@ -19,6 +19,12 @@ spec:
           value: "uber"
         - name: FIN_METRICS_FS_ENABLED
           value: "true"
+        - name: FIN_METRICS_EXPORT_GC
+          value: "true"
+        - name: FIN_METRICS_FS_ENABLED
+          value: "true"
+        - name: FIN_METRICS_FIN_ENABLED
+          value: "false"
         volumeMounts:
         - name: fs-tests-volume
           mountPath: /fs-tests
@@ -27,6 +33,9 @@ spec:
         - containerPort: 3002
         - containerPort: 3003
         - containerPort: 3004
+        readinessProbe:
+          httpGet:
+            port: 3004 # check api endpoint
       volumes:
       - name: fs-tests-volume
         emptyDir: {}

@@ -17,3 +17,5 @@ spec:
         env:
         - name: FIN_SERVICE_NAME
           value: "gateway"
+      nodeSelector:
+        intendedfor: scalable-pool

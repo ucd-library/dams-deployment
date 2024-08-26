@@ -3,6 +3,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: gcs-fuse-pvc
 spec:
-  accessModes:
-  - ReadWriteMany
-  volumeName: gcs-fuse-pv
+  storageClassName: hostpath
+  resources:
+    requests:
+      storage: 5Gi

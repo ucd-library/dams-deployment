@@ -96,7 +96,21 @@
       {
         "label": "Client Watch",
         "type": "shell",
-        "command": "./cmds/local-dev.sh exec ucd-lib-client \"npm run client-watch\"",
+        "command": "./cmds/local-dev.sh exec ucd-lib-client \"npm  --prefix ./ucd-lib-client run watch\"",
+        "presentation": {
+            "echo": true,
+            "reveal": "always",
+            "focus": false,
+            "panel": "dedicated",
+            "showReuseMessage": false,
+            "clear": false
+        },
+        "problemMatcher": []
+      },
+      {
+        "label": "Admin Client Watch",
+        "type": "shell",
+        "command": "./cmds/local-dev.sh exec gateway \"npm run admin-ui-watch\"",
         "presentation": {
             "echo": true,
             "reveal": "always",

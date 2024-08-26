@@ -7,3 +7,4 @@ spec:
     spec:
       containers:
         - name: gcr.io/ucdlib-pubreg/dams-iipimage-server:main
+      serviceAccountName: dams-production

@@ -1,0 +1,7 @@
+[
+  {
+    "name" : "src-fin-init-ui",
+    "containerPath" : "/fin/services/admin-ui",
+    "hostPath" : "../../../fin/services/fin/admin-ui"
+  }
+]

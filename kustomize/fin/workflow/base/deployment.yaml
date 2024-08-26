@@ -17,3 +17,5 @@ spec:
         env:
         - name: FIN_SERVICE_NAME
           value: "workflow"
+        - name: FIN_METRICS_EXPORT_GC
+          value: "true"

@@ -36,7 +36,6 @@ spec:
         volumeMounts:
         - name: gcs-fuse
           mountPath: /etc/gcs-fuse/fcrepo/rest
-      serviceAccountName: dams-production
       volumes:
       - name: gcs-fuse
         persistentVolumeClaim:

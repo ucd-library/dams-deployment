@@ -30,7 +30,7 @@ function stdOpts() {
   if [[ ! -z "$IMAGE" ]]; then
     IMAGE="--edit \"spec.template.spec.containers[*].image=$IMAGE\""
   fi
-  echo "$IMAGE --local-dev --overlay $ENV $(debugOpts)"
+  echo "$IMAGE --local-dev --overlay local-dev,sandbox $(debugOpts)"
 }
 
 function deployFin() {
@@ -50,6 +50,13 @@ cork-kube apply \
   $(debugOpts) \
   $YAML_DIR/ocfl-volume
 
+cork-kube apply \
+  --edit "spec.hostPath.path=$REPO_DIR/gcs-fuse-volume" \
+  --overlay local-dev \
+  $(debugOpts) \
+  $YAML_DIR/gcs-fuse
+
+
 # deploy core pods
 # elastic-search
 cork-kube apply \
@@ -60,7 +67,7 @@ cork-kube apply \
 cork-kube apply \
   --overlay $ENV \
   $(stdOpts $FCREPO_IMAGE_NAME:$FIN_TAG) \
-  $YAML_DIR/elastic-search
+  $YAML_DIR/fcrepo
 
 # pg-rest
 cork-kube apply \
@@ -89,6 +96,7 @@ deployFin uber
 deployFin workflow
 deployFin gcs
 
+
 # DAMS client
 cork-kube apply \
   $(stdOpts $UCD_DAMS_SERVER_IMAGE_NAME:$APP_TAG) \
@@ -99,3 +107,11 @@ cork-kube apply \
 cork-kube apply \
   $(stdOpts $IIIF_IMAGE_NAME:$APP_TAG) \
   -- $YAML_DIR/iiif
+
+# init job
+cork-kube apply \
+  --source-mount $YAML_DIR/src-mounts/base-service.json \
+  $(stdOpts $UCD_DAMS_INIT_IMAGE_NAME:$APP_TAG) \
+  $YAML_DIR/fin/init
+
+echo "Done deploying $ENV pods to local dev environment"

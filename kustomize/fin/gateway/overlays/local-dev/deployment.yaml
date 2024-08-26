@@ -1,3 +1,4 @@
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: gateway
@@ -6,4 +7,4 @@ spec:
     spec:
       containers:
         - name: service
-          image: localhost/local-dev/dams-base-service:sandbox
+          image: gcr.io/ucdlib-pubreg/fin-base-service:local-dev

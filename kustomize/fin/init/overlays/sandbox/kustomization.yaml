@@ -8,3 +8,6 @@ patches:
   - path: job.yaml
     target:
       kind: Job
+      name: fin-init
+    options:
+      allowNameChange: true

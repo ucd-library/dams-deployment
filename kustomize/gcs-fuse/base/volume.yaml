@@ -5,14 +5,3 @@ metadata:
 spec:
   accessModes:
   - ReadWriteMany
-  capacity:
-    storage: 4Ti
-  storageClassName: gcs-storage-class
-  claimRef:
-    namespace: default
-    name: gcs-fuse-pvc
-  mountOptions:
-    - implicit-dirs
-  csi:
-    driver: gcsfuse.csi.storage.gke.io
-    volumeHandle: dams-client-media-prod

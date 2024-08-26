@@ -1,9 +1,0 @@
-kind: Deployment
-metadata:
-  name: gcs
-spec:
-  template:
-    spec:
-      containers:
-        - name: service
-          image: localhost/local-dev/dams-base-service:sandbox
