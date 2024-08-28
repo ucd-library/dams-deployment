@@ -58,5 +58,10 @@
     "name" : "src-fin-oidc",
     "containerPath" : "/fin/services/fin-oidc",
     "hostPath" : "../../../fin/services/fin/fin-oidc"
+  },
+  {
+    "name" : "src-dams-models",
+    "containerPath" : "/fin/services/models",
+    "hostPath" : "../../../dams/services/fin/models"
   }
 ]
