@@ -4,7 +4,13 @@ set -e
 ROOT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 cd $ROOT_DIR
 
-./setup-kubectl.sh
+ENV=$1
+if [[ -z "$ENV" ]]; then
+  echo "No environment provided, exiting"
+  exit -1;
+fi
+
+../setup-gcloud-kubectl.sh $ENV
 
 # fin services
 kubectl rollout restart deployment/gateway

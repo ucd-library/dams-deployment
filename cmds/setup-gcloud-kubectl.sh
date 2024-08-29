@@ -21,7 +21,7 @@ if [[ $GC_PROJECT_ID != $CURRENT_PROJECT ]]; then
   gcloud config set project $GC_PROJECT_ID
 fi
 
-if [[ $LOCAL_DEV == "true" || $ENV="local-dev" ]]; then
+if [[ $LOCAL_DEV == "true" || $ENV == "local-dev" ]]; then
   if [[ $CURRENT_CONTEXT != "docker-desktop" ]]; then
     kubectl config use-context docker-desktop
   fi

@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ocfl-volume-claim
+spec:
+  storageClassName: ""
+  resources:
+    requests:
+      storage: 4T
