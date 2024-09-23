@@ -14,6 +14,10 @@ if [[ -z "$ENV" ]]; then
   exit -1;
 fi
 
+if [[ $1 == "local-dev" ]]; then
+  export LOCAL_DEV=true
+fi
+
 CURRENT_PROJECT=$(gcloud config get project)
 CURRENT_CONTEXT=$(kubectl config current-context)
 

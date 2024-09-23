@@ -125,6 +125,9 @@ ALL_GIT_REPOSITORIES=( \
 # if using pull.sh or the directory we will look for repositories (can by symlinks)
 # if local development
 REPOSITORY_DIR=$SCRIPT_DIR/..
+if [[ $GCLOUD_BUILD == 'true' ]]; then
+  REPOSITORY_DIR=$SCRIPT_DIR/repositories
+fi
 
 # Google Cloud
 GC_PROJECT_ID=ucdlib-dams

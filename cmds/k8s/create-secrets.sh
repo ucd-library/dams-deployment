@@ -9,12 +9,27 @@ if [[ ! -d $SECRET_DIR ]]; then
   mkdir $SECRET_DIR
 fi
 
+./cmds/setup-gcloud-kubectl.sh $1
 source ./config.sh
-./cmds/setup-gcloud-kubectl.sh
+
 
 if [[ $LOCAL_DEV == "true" ]]; then
   gcloud secrets versions access latest --secret=local-dev-env > $SECRET_DIR/env
   gcloud secrets versions access latest --secret=local-dev-service-account > $SECRET_DIR/service-account.json
+
+  # adding local kubeconfig as configmap for mounting
+  cp $HOME/.kube/config $SECRET_DIR/kubeconfig
+  yq eval '(.clusters[] | select(.name == "docker-desktop") | .cluster.server ) = "https://kubernetes.docker.internal:6443" | .'  $SECRET_DIR/kubeconfig > $SECRET_DIR/kubeconfig.tmp && \
+    mv $SECRET_DIR/kubeconfig.tmp $SECRET_DIR/kubeconfig
+
+  # make sure the dams service account has cluster-admin role
+  kubectl create clusterrolebinding dams-cluster-admin \
+    --clusterrole=cluster-admin \
+    --serviceaccount=dams:default || true
+
+  kubectl delete configmap kubeconfig -n $K8S_NAMESPACE || true
+  kubectl create configmap kubeconfig --from-file=$SECRET_DIR/kubeconfig -n $K8S_NAMESPACE || trues
+
 else
   gcloud secrets versions access latest --secret=production-env > $SECRET_DIR/env
   gcloud secrets versions access latest --secret=production-service-account > $SECRET_DIR/service-account.json

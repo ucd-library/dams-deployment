@@ -46,8 +46,8 @@
   },
   {
     "name" : "src-fin-node-utils",
-    "containerPath" : "/fin/services/fin-node-utils",
-    "hostPath" : "../../../fin/services/fin/fin-node-utils"
+    "containerPath" : "/fin/services/node-utils",
+    "hostPath" : "../../../fin/services/fin/node-utils"
   },
   {
     "name" : "src-fin-uber",

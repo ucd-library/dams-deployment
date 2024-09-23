@@ -1,0 +1,7 @@
+[  
+  {
+    "name" : "src-k8s-templates",
+    "containerPath" : "/etc/fin/k8s-templates",
+    "hostPath" : "../../kustomize"
+  }
+]

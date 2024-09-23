@@ -17,5 +17,11 @@ spec:
         env:
         - name: FIN_SERVICE_NAME
           value: "gateway"
+        - name: ADMIN_UI_EXTENSIONS_ENABLED
+          value: "true"
+        - name: ADMIN_UI_EXTENSIONS_SOURCE_PATH
+          value: "/fin/admin/js/dams-admin-ui-ext.js"
+        - name: ADMIN_UI_EXTENSIONS_ROUTES
+          value: "collection-import:dams-collection-import"
       nodeSelector:
         intendedfor: scalable-pool

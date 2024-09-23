@@ -108,6 +108,20 @@
         "problemMatcher": []
       },
       {
+        "label": "Admin IU Ext Watch",
+        "type": "shell",
+        "command": "./cmds/local-dev.sh exec gateway \"npm  --prefix ./ucd-lib-client run watch-admin-ext\"",
+        "presentation": {
+            "echo": true,
+            "reveal": "always",
+            "focus": false,
+            "panel": "dedicated",
+            "showReuseMessage": false,
+            "clear": false
+        },
+        "problemMatcher": []
+      },
+      {
         "label": "Admin Client Watch",
         "type": "shell",
         "command": "./cmds/local-dev.sh exec gateway \"npm run admin-ui-watch\"",
@@ -197,7 +211,9 @@
             "Proxy Dashboard",
             "Proxy Gateway HTTP",
             "Proxy Admin DB",
-            "Client Watch"
+            "Client Watch",
+            "Admin IU Ext Watch",
+            "Admin Client Watch"
         ]
       },
       {
