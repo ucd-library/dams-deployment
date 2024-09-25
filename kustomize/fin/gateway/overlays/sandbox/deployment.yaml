@@ -15,6 +15,14 @@ spec:
               value: "true"
             - name: FIN_GATEWAY_HTTPS_ENABLED
               value: "true"
+            - name: K8S_ENABLED
+              value: "true"
+            - name : "K8S_PLATFORM"
+              value: "gke"
+            - name: "K8S_CLUSTER"
+              value: "dams"
+            - name: "K8S_REGION"
+              value: "us-central1-a"
           volumeMounts:
             - mountPath: /etc/fin/certs/sandbox.dams.library.ucdavis.edu
               name: dams-ssl
