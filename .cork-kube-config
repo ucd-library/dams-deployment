@@ -1,0 +1,14 @@
+{
+  "local-dev" : {
+    "project" : "ucdlib-dams",
+    "platform" : "docker-desktop",
+    "namespace" : "dams"
+  },
+  "sandbox" : {
+    "platform" : "gke",
+    "namespace" : "default",
+    "cluster" : "dams",
+    "zone" : "us-central1-a",
+    "project" : "ucdlib-dams"
+  }
+}
