@@ -14,7 +14,7 @@ export LOCAL_DEV=true
 CMD=$1
 
 K8S_BACKEND=${K8S_BACKEND:-docker}
-./cmds/setup-gcloud-kubectl.sh local-dev
+cork-kube init local-dev
 
 if [[ $CMD == "start" || $CMD == "deploy"  ]]; then  
 

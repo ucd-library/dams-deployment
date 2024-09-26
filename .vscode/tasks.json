@@ -136,9 +136,9 @@
         "problemMatcher": []
       },
       {
-        "label": "Setup gcloud and kubectl",
+        "label": "Setup gcloud and kubectl for local development",
         "type": "shell",
-        "command": "./cmds/setup-gcloud-kubectl.sh local-dev",
+        "command": "cork-kube init local-dev",
         "presentation": {
             "echo": true,
             "reveal": "always",

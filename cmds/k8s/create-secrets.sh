@@ -9,7 +9,7 @@ if [[ ! -d $SECRET_DIR ]]; then
   mkdir $SECRET_DIR
 fi
 
-./cmds/setup-gcloud-kubectl.sh $1
+cork-kube init $1
 source ./config.sh
 
 

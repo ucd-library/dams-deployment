@@ -12,7 +12,7 @@ if [[ -z "$ENV" ]]; then
   exit -1;
 fi
 
-./cmds/setup-gcloud-kubectl.sh $ENV
+cork-kube init $ENV
 
 function deploy() {
   SERVICE_NAME=$1

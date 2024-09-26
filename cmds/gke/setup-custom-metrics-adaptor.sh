@@ -9,8 +9,7 @@ cd $ROOT_DIR
 
 source ../../config.sh
 
-gcloud config set project ${GC_PROJECT_ID}
-./setup-kubectl.sh
+cork-kube init sandbox
 
 kubectl create clusterrolebinding cluster-admin-binding \
   --clusterrole cluster-admin \

@@ -8,13 +8,11 @@ cd $ROOT_DIR
 
 source ../../config.sh
 
-gcloud config set project ${GC_PROJECT_ID}
+cork-kube init $1 -c ../..
 
 echo "This script expects the following bucket and google cloud service acount to exist:"
 echo "Bucket: ${GCS_BUCKET}"
 echo "Service Account: ${GC_SA_NAME}"
-
-./setup-kubectl.sh
 
 kubectl create serviceaccount ${GKE_KSA_NAME} \
     --namespace default
