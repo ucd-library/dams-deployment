@@ -78,7 +78,7 @@ elif [[ $CMD == "exec" ]]; then
   echo "executing: kubectl exec -ti $POD -- $POD_CMD"
   kubectl exec -ti $POD -- $POD_CMD
 elif [[ $CMD == "create-secrets" ]]; then
-  LOCAL_DEV=true ./cmds/k8s/create-secrets.sh
+  LOCAL_DEV=true ./cmds/k8s/create-secrets.sh local-dev
 else
   echo "Unknown command: $CMD.  Commands are 'start', 'stop', 'log', 'exec', 'create-dashboard', 'dashboard-token'"
   exit -1
