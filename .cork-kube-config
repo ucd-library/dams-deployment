@@ -198,7 +198,7 @@
       "environments" : {
         "local-dev" : {
           "template" : "local-dev",
-          "edit": {"jsonpath": "spec.template.spec.containers[*].image", "value": "${UCD_DAMS_INIT_IMAGE_NAME}:${APP_TAG}"}
+          "edit": {"jsonpath": "spec.template.spec.containers[*].image", "value": "${IIIF_IMAGE_NAME}:${APP_TAG}"}
         }
       }
     },
