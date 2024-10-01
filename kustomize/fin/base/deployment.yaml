@@ -23,7 +23,7 @@ spec:
             cpu: "200m"
         env:
         - name: FIN_METRICS_ENABLED
-          value: "true"
+          value: "false"
         - name: GOOGLE_APPLICATION_CREDENTIALS
           value: /etc/fin/service-account.json
         volumeMounts:

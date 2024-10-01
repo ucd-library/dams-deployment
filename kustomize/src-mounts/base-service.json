@@ -36,13 +36,13 @@
   },
   {
     "name" : "src-fin-gateway",
-    "containerPath" : "/fin/services/fin-gateway",
-    "hostPath" : "../../../fin/services/fin/fin-gateway"
+    "containerPath" : "/fin/services/gateway",
+    "hostPath" : "../../../fin/services/fin/gateway"
   },
   {
     "name" : "src-fin-monitoring",
-    "containerPath" : "/fin/services/fin-monitoring",
-    "hostPath" : "../../../fin/services/fin/fin-monitoring"
+    "containerPath" : "/fin/services/monitoring",
+    "hostPath" : "../../../fin/services/fin/monitoring"
   },
   {
     "name" : "src-fin-node-utils",
@@ -51,13 +51,13 @@
   },
   {
     "name" : "src-fin-uber",
-    "containerPath" : "/fin/services/fin-uber",
-    "hostPath" : "../../../fin/services/fin/fin-uber"
+    "containerPath" : "/fin/services/uber",
+    "hostPath" : "../../../fin/services/fin/uber"
   },
   {
     "name" : "src-fin-oidc",
-    "containerPath" : "/fin/services/fin-oidc",
-    "hostPath" : "../../../fin/services/fin/fin-oidc"
+    "containerPath" : "/fin/services/oidc",
+    "hostPath" : "../../../fin/services/fin/oidc"
   },
   {
     "name" : "src-dams-models",

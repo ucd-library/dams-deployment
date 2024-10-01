@@ -22,10 +22,7 @@ if [[ $CMD == "start" || $CMD == "deploy"  ]]; then
   ./cmds/k8s/deploy-local-dev-pods.sh
 elif [[ $CMD == "stop" ]]; then
 
-  kubectl delete statefulsets --all -n $K8S_NAMESPACE
-  kubectl delete deployments --all -n $K8S_NAMESPACE
-  kubectl delete services --all -n $K8S_NAMESPACE
-  kubectl delete jobs --all -n $K8S_NAMESPACE
+  cork-kube stop local-dev
   
 elif [[ $CMD == "build" ]]; then
 

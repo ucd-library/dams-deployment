@@ -14,5 +14,203 @@
       "zone" : "us-central1-a",
       "project" : "ucdlib-dams"
     }
-  }
+  },
+
+  "serviceTemplates" : {
+    "fin" : {
+      "sourceMount" : "kustomize/src-mounts/base-service.json",
+      "edit" : {"jsonpath": "spec.template.spec.containers[*].image", "value": "${UCD_DAMS_SERVER_IMAGE_NAME}:${APP_TAG}"}
+    },
+    "local-dev" : {
+      "config" : {
+        "args" : {"LOCAL_DEV": "true"},
+        "file" : "config.sh"
+      },
+      "localDev" : true,
+      "overlay" : ["local-dev"]
+    }
+  },
+
+  "secrets" : {
+    "local-dev" : [
+      {
+        "k8sName" : "kubeconfig",
+        "kubeconfig" : true
+      },
+      {
+        "k8sName" : "env-config",
+        "mappings" : [{
+          "gcsmName" : "local-dev-env",
+          "k8sProperty" : ".env"
+        }]
+      },
+      {
+        "k8sName" : "service-account",
+        "mappings" : [{
+          "gcsmName" : "local-dev-service-account",
+          "k8sProperty" : "service-account.json"
+        }]
+    }],
+    "sandbox" : [{
+        "k8sName" : "env-config",
+        "mappings" : [{
+          "gcsmName" : "sandbox-env",
+          "k8sProperty" : ".env"
+        }]
+      },
+      {
+        "k8sName" : "service-account",
+        "mappings" : [{
+          "gcsmName" : "sandbox-service-account",
+          "k8sProperty" : "service-account.json"
+        }]
+      },
+      {
+        "k8sName" : "dams-ssl",
+        "mappings" : [{
+          "gcsmName" : "dams-ssl",
+          "k8sProperty" : "dams-ssl.crt"
+        },
+        {
+          "gcsmName" : "dams-ssl-key",
+          "k8sProperty" : "dams-ssl.key"
+        }]
+    }]
+  },
+
+  "services" : [
+    {
+      "path" : "kustomize/ocfl-volume",
+      "environments" : {
+        "local-dev" : {
+          "template" : "local-dev",
+          "edit" : {"jsonpath": "spec.hostPath.path", "value": "${__DIRNAME}/ocfl-volume"}
+        }
+      }
+    },
+    {
+      "path" : "kustomize/gcs-fuse",
+      "environments" : {
+        "local-dev" : {
+          "template" : "local-dev",
+          "edit" : {"jsonpath": "spec.hostPath.path", "value": "${__DIRNAME}/gcs-fuse-volume"}
+        }
+      }
+    },
+    {
+      "path" : "kustomize/fcrepo",
+      "environments" : {
+        "local-dev" : {
+          "template" : "local-dev",
+          "edit" : {"jsonpath": "spec.template.spec.containers[*].image", "value": "${FCREPO_IMAGE_NAME}:${FIN_TAG}"}
+        }
+      }
+    },
+    { 
+      "path" : "kustomize/elastic-search",
+      "environments" : {
+        "local-dev" : {
+          "template" : "local-dev",
+          "edit" : {"jsonpath": "spec.template.spec.containers[*].image", "value": "${ELASTIC_SEARCH_IMAGE_NAME}:${FIN_TAG}"}
+        }
+      }
+    },
+    {
+      "path" : "kustomize/pg-rest",
+      "environments" : {
+        "local-dev" : {
+          "template" : "local-dev",
+          "edit" : {"jsonpath": "spec.template.spec.containers[*].image", "value": "${PGREST_IMAGE_NAME}:${FIN_TAG}"}
+        }
+      }
+    },
+    {
+      "path" : "kustomize/postgres",
+      "environments" : {
+        "local-dev" : {
+          "template" : "local-dev",
+          "edit" : {"jsonpath": "spec.template.spec.containers[*].image", "value": "${POSTGRES_IMAGE_NAME}:${FIN_TAG}"}
+        }
+      }
+    },
+    {
+      "path" : "kustomize/rabbitmq",
+      "environments" : {
+        "local-dev" : {
+          "template" : "local-dev",
+          "edit" : {"jsonpath": "spec.template.spec.containers[*].image", "value": "${RABBITMQ_IMAGE_NAME}:${FIN_TAG}"}
+        }
+      }
+    },
+    {
+      "path" : "kustomize/redis"
+    },
+    { 
+      "path" : "kustomize/fin/gateway",
+      "environments" : {
+        "local-dev" : {
+          "template" : ["local-dev", "fin"],
+          "sourceMount" : "kustomize/src-mounts/client.json"
+        }
+      }
+    },
+    {
+      "path" : "kustomize/fin/dbsync",
+      "environments" : {
+        "local-dev" : {
+          "template" : ["local-dev", "fin"]
+        }
+      }
+    },
+    {
+      "path" : "kustomize/fin/uber",
+      "environments" : {
+        "local-dev" : {
+          "template" : ["local-dev", "fin"],
+          "edit" : [
+            {"jsonpath": "spec.template.spec.containers[*].env[?(@.name=='K8S_COLLECTION_IMPORT_IMAGE')].value", "value": "${UCD_DAMS_SERVER_IMAGE_NAME}:${APP_TAG}"},
+            {"jsonpath": "spec.template.spec.containers[*].env[?(@.name=='K8S_COLLECTION_IMPORT_LOCAL_DEV_HOST_PATH')].value", "value": "${__DIRNAME}/collection-import"}
+          ],
+          "sourceMount" : "kustomize/src-mounts/collection-import.json"
+        }
+      }
+    },
+    {
+      "path" : "kustomize/fin/gcs",
+      "environments" : {
+        "local-dev" : {
+          "template" : ["local-dev", "fin"]
+        }
+      }
+    },
+    {
+      "path" : "kustomize/ucd-lib-client",
+      "environments" : {
+        "local-dev" : {
+          "template" : "local-dev",
+          "edit" : {"jsonpath": "spec.template.spec.containers[*].image", "value": "${UCD_DAMS_SERVER_IMAGE_NAME}:${APP_TAG}"},
+          "sourceMount" : "kustomize/src-mounts/client.json"
+        }
+      }
+    },
+    {
+      "path" : "kustomize/iiif",
+      "environments" : {
+        "local-dev" : {
+          "template" : "local-dev",
+          "edit": {"jsonpath": "spec.template.spec.containers[*].image", "value": "${UCD_DAMS_INIT_IMAGE_NAME}:${APP_TAG}"}
+        }
+      }
+    },
+    {
+      "path" : "kustomize/fin/init",
+      "environments" : {
+        "local-dev" : {
+          "template" : ["local-dev", "fin"],
+          "edit": {"jsonpath": "spec.template.spec.containers[*].image", "value": "${UCD_DAMS_INIT_IMAGE_NAME}:${APP_TAG}"}
+        }
+      }
+    }
+
+  ]
 }
