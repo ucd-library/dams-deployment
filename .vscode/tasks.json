@@ -26,7 +26,7 @@
       {
         "label": "Log Service",
         "type": "shell",
-        "command": "./cmds/local-dev.sh log ${input:podName}",
+        "command": "cork-kube pod logs local-dev ${input:podName}",
         "presentation": {
             "echo": true,
             "reveal": "always",
@@ -40,7 +40,21 @@
       {
         "label": "Open Service Shell",
         "type": "shell",
-        "command": "./cmds/local-dev.sh exec ${input:podName}",
+        "command": "cork-kube pod exec local-dev ${input:podName}",
+        "presentation": {
+            "echo": true,
+            "reveal": "always",
+            "focus": false,
+            "panel": "dedicated",
+            "showReuseMessage": false,
+            "clear": false
+        },
+        "problemMatcher": []
+      },
+      {
+        "label": "Restart fin pods",
+        "type": "shell",
+        "command": "cork-kube up local-dev -r -g fin",
         "presentation": {
             "echo": true,
             "reveal": "always",
@@ -96,7 +110,7 @@
       {
         "label": "Client Watch",
         "type": "shell",
-        "command": "./cmds/local-dev.sh exec ucd-lib-client \"npm  --prefix ./ucd-lib-client run watch\"",
+        "command": "cork-kube pod exec local-dev ucd-lib-client -e \"npm  --prefix ./ucd-lib-client run watch\"",
         "presentation": {
             "echo": true,
             "reveal": "always",
@@ -110,7 +124,7 @@
       {
         "label": "Admin IU Ext Watch",
         "type": "shell",
-        "command": "./cmds/local-dev.sh exec gateway \"npm  --prefix ./ucd-lib-client run watch-admin-ext\"",
+        "command": "cork-kube pod exec local-dev gateway -e \"npm  --prefix ./ucd-lib-client run watch-admin-ext\"",
         "presentation": {
             "echo": true,
             "reveal": "always",
@@ -124,7 +138,7 @@
       {
         "label": "Admin Client Watch",
         "type": "shell",
-        "command": "./cmds/local-dev.sh exec gateway \"npm run admin-ui-watch\"",
+        "command": "cork-kube pod exec local-dev gateway -e \"npm run admin-ui-watch\"",
         "presentation": {
             "echo": true,
             "reveal": "always",
@@ -166,7 +180,7 @@
       {
         "label": "Build Images",
         "type": "shell",
-        "command": "./cmds/local-dev.sh build",
+        "command": "./cmds/build-local-dev.sh",
         "presentation": {
             "echo": true,
             "reveal": "always",

@@ -147,6 +147,7 @@
     },
     { 
       "path" : "kustomize/fin/gateway",
+      "group" : "fin",
       "environments" : {
         "local-dev" : {
           "template" : ["local-dev", "fin"],
@@ -156,6 +157,7 @@
     },
     {
       "path" : "kustomize/fin/dbsync",
+      "group" : "fin",
       "environments" : {
         "local-dev" : {
           "template" : ["local-dev", "fin"]
@@ -164,6 +166,7 @@
     },
     {
       "path" : "kustomize/fin/uber",
+      "group" : "fin",
       "environments" : {
         "local-dev" : {
           "template" : ["local-dev", "fin"],
@@ -176,7 +179,17 @@
       }
     },
     {
+      "path" : "kustomize/fin/workflow",
+      "group" : "fin",
+      "environments" : {
+        "local-dev" : {
+          "template" : ["local-dev", "fin"]
+        }
+      }
+    },
+    {
       "path" : "kustomize/fin/gcs",
+      "group" : "fin",
       "environments" : {
         "local-dev" : {
           "template" : ["local-dev", "fin"]
@@ -185,6 +198,7 @@
     },
     {
       "path" : "kustomize/ucd-lib-client",
+      "group" : "fin",
       "environments" : {
         "local-dev" : {
           "template" : "local-dev",
@@ -195,6 +209,7 @@
     },
     {
       "path" : "kustomize/iiif",
+      "group" : "fin",
       "environments" : {
         "local-dev" : {
           "template" : "local-dev",
