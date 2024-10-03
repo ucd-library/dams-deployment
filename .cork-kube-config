@@ -54,21 +54,21 @@
     "sandbox" : [{
         "k8sName" : "env-config",
         "mappings" : [{
-          "gcsmName" : "sandbox-env",
+          "gcsmName" : "production-env",
           "k8sProperty" : ".env"
         }]
       },
       {
         "k8sName" : "service-account",
         "mappings" : [{
-          "gcsmName" : "sandbox-service-account",
+          "gcsmName" : "production-service-account",
           "k8sProperty" : "service-account.json"
         }]
       },
       {
         "k8sName" : "dams-ssl",
         "mappings" : [{
-          "gcsmName" : "dams-ssl",
+          "gcsmName" : "dams-ssl-cert",
           "k8sProperty" : "dams-ssl.crt"
         },
         {
