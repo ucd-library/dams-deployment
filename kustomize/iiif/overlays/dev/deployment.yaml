@@ -6,5 +6,6 @@ spec:
   template:
     spec:
       containers:
-        - name: gcr.io/ucdlib-pubreg/dams-iipimage-server:dev
+        - name: service
+          image: gcr.io/ucdlib-pubreg/dams-iipimage-server:dev
       serviceAccountName: dams-production

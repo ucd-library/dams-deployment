@@ -26,7 +26,7 @@ spec:
           mountPath: /usr/local/tomcat/ActiveMQ
         env:
         - name: CATALINA_OPTS
-          value: "-Dfcrepo.config.file=/etc/fin/fcrepo.properties -Dfcrepo.log=DEBUG -Dfcrepo.log.auth=DEBUG -Dfcrepo.log.kernel=DEBUG"
+          value: "-Dfcrepo.config.file=/etc/fin/fcrepo.properties"
         ports:
         - containerPort: 8080
         - containerPort: 5672
