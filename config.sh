@@ -132,8 +132,8 @@ fi
 # Google Cloud
 GC_PROJECT_ID=ucdlib-dams
 GKE_CLUSTER_NAME=dams
-GKE_REGION=us-central1
-GKE_CLUSTER_ZONE=${GKE_REGION}-a
+GKE_REGION=us-west1
+GKE_CLUSTER_ZONE=${GKE_REGION}-b
 GKE_KUBECTL_CONTEXT=gke_${GC_PROJECT_ID}_${GKE_CLUSTER_ZONE}_${GKE_CLUSTER_NAME}
 GCS_BUCKET=dams-client-media-prod
 GC_SA_NAME=dams-production@ucdlib-dams.iam.gserviceaccount.com

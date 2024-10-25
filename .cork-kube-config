@@ -13,6 +13,13 @@
       "cluster" : "dams",
       "zone" : "us-central1-a",
       "project" : "ucdlib-dams"
+    },
+    "prod" : {
+      "platform" : "gke",
+      "namespace" : "default",
+      "cluster" : "dams-prod",
+      "zone" : "us-west1-b",
+      "project" : "ucdlib-dams"
     }
   },
 
@@ -75,6 +82,31 @@
           "gcsmName" : "dams-ssl-key",
           "k8sProperty" : "dams-ssl.key"
         }]
+    }],
+    "prod" : [{
+        "k8sName" : "env-config",
+        "mappings" : [{
+          "gcsmName" : "production-env",
+          "k8sProperty" : ".env"
+        }]
+      },
+      {
+        "k8sName" : "service-account",
+        "mappings" : [{
+          "gcsmName" : "production-service-account",
+          "k8sProperty" : "service-account.json"
+        }]
+      },
+      {
+        "k8sName" : "dams-ssl",
+        "mappings" : [{
+          "gcsmName" : "dams-ssl-cert",
+          "k8sProperty" : "dams-ssl.crt"
+        },
+        {
+          "gcsmName" : "dams-ssl-key",
+          "k8sProperty" : "dams-ssl.key"
+        }]
     }]
   },
 
@@ -85,6 +117,14 @@
         "local-dev" : {
           "template" : "local-dev",
           "edit" : {"jsonpath": "spec.hostPath.path", "value": "${__DIRNAME}/ocfl-volume"}
+        }
+      }
+    },
+    {
+      "path" : "kustomize/nfs-server",
+      "environments" : {
+        "local-dev" : {
+          "ignore" : true
         }
       }
     },

@@ -1,0 +1,11 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nfs-server
+spec:
+  template:
+    spec:
+      volumes:
+        - name: nfs-pvc
+          gcePersistentDisk:
+            pdName: ocfl-volume
