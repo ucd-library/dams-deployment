@@ -30,8 +30,11 @@
     },
     "local-dev" : {
       "config" : {
-        "args" : {"LOCAL_DEV": "true"},
-        "file" : "config.sh"
+        "args" : {
+          "LOCAL_DEV": "true",
+          "ENV" : "${__ENV}"
+        },
+        "file" : "config/load.sh"
       },
       "localDev" : true,
       "overlay" : ["local-dev"]
@@ -268,5 +271,69 @@
       }
     }
 
-  ]
+  ],
+
+  "build" : {
+    "args" : {
+      "UCD_DAMS_REPO_NAME" : "ucd-lib/fin-server",
+      "UCD_DAMS_SERVER_IMAGE_NAME" : "fin-server",
+      "UCD_DAMS_INIT_IMAGE_NAME" : "fin-init",
+      "FIN_TAG" : "latest",
+      "APP_TAG" : "latest",
+      "FCREPO_IMAGE_NAME" : "fcrepo",
+      "ELASTIC_SEARCH_IMAGE_NAME" : "elasticsearch",
+      "PGREST_IMAGE_NAME" : "pg-rest",
+      "POSTGRES_IMAGE_NAME" : "postgres",
+      "RABBITMQ_IMAGE_NAME" : "rabbitmq",
+      "IIIF_IMAGE_NAME" : "iiif"
+    },
+
+    "environments" : {
+      "local-dev" : {
+        "args" : {
+          "APP_TAG" : "${__BRANCH_NAME}"
+        }
+      },
+      "sandbox" : {
+        "args" : {
+          "APP_TAG" : "sandbox"
+        }
+      },
+      "dev" : {
+        "args" : {
+          "APP_TAG" : "dev"
+        }
+      },
+      "prod" : {
+        "args" : {
+          "APP_TAG" : "prod"
+        }
+      }
+    },
+
+    "templates" : {
+      "local-dev" : {
+        "cmd" : "docker build buildx build --output=type=docker --cache-to=type=inline,mode=max",
+        "registry" : "localhost/local-dev",
+        "push" : false
+      },
+      "gc" : {
+        "cmd" : "docker build buildx build --output=type=docker --cache-to=type=inline,mode=max --pull",
+        "registry" : "gcr.io/ucdlib-dams",
+        "push" : true
+      }
+    },
+
+    "images" : [
+      {
+        "contextPath" : "${__DIRNAME}/../${UCD_DAMS_REPO_NAME}/services/init",
+        "tag" : "${__REGISTRY}/${UCD_DAMS_SERVER_IMAGE_NAME}:${APP_TAG}",
+        "options" : {
+          "build-arg" : "FIN_INIT=${INIT_IMAGE_NAME}:${FIN_TAG}"
+        }
+      }
+    ]
+  }
+  
+  
 }

@@ -5,7 +5,7 @@ set -e
 ROOT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 cd $ROOT_DIR
 
-source ../../config.sh
+source ../../config/load.sh $1
 
 gcloud config set project ${GC_PROJECT_ID}
 
@@ -31,8 +31,8 @@ gcloud beta container node-pools create scalable-pool \
   --node-labels=intendedfor=scalable-pool \
   --enable-autoscaling --min-nodes 1 --max-nodes 6
 
-./create-secrets.sh
+# ./create-secrets.sh
 
 ./setup-service-accounts.sh
 
-./create-volumes.sh
+# ./create-volumes.sh

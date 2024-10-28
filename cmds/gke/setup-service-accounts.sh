@@ -6,7 +6,7 @@
 ROOT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 cd $ROOT_DIR
 
-source ../../config.sh
+source ../../config/load.sh $1
 
 cork-kube init $1 -c ../..
 

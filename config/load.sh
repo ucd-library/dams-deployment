@@ -4,7 +4,27 @@
 # Setup your application deployment here
 ################################
 
-SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+if [[ -z $SCRIPT_DIR ]]; then
+  SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+fi
+cd $SCRIPT_DIR
+
+# Load environment 
+if [[ -z $ENV ]]; then
+  ENV=$1
+fi
+if [[ -z $ENV ]]; then
+  echo "ENV not set"
+  exit 1
+fi
+if [[ ! -f "./$ENV.sh" ]]; then
+pwd
+  echo "./$ENV.sh does not exist"
+  exit 1
+fi
+echo "Loading $ENV.sh"
+pwd
+source ./$ENV.sh
 
 # Grab build number is mounted in CI system
 if [[ -f /config/.buildenv ]]; then
@@ -13,9 +33,6 @@ else
   BUILD_NUM=-1
 fi
 
-# FIN_TAG=2.3.1
-FIN_TAG=sandbox
-DAMS_REPO_TAG=sandbox
 
 if [[ ! -z "$FIN_VERSION_OVERRIDE" ]]; then
   echo "Using FIN_VERSION_OVERRIDE: $FIN_VERSION_OVERRIDE"
@@ -46,12 +63,7 @@ if [[ -z $DAMS_REPO_TAG ]]; then
 fi
 
 
-# if [[ ! -z "$UCD_DAMS_DEPLOYMENT_TAG" ]]; then
-#   APP_TAG=$UCD_DAMS_DEPLOYMENT_TAG
-# else
-#   APP_TAG=$UCD_DAMS_DEPLOYMENT_BRANCH
-# fi
-APP_TAG=$DAMS_REPO_TAG
+
 
 # Main version number we are tagging the app with. Always update
 # this when you cut a new version of the app!
@@ -87,7 +99,7 @@ if [[ -z $A6T_REG_HOST ]]; then
   fi
 fi
 
-DOCKER_CACHE_TAG=$UCD_DAMS_DEPLOYMENT_BRANCH
+DOCKER_CACHE_TAG=$ENV
 
 # Docker Images
 FCREPO_IMAGE_NAME=$A6T_REG_HOST/fin-fcrepo
@@ -124,17 +136,18 @@ ALL_GIT_REPOSITORIES=( \
 # directory we are going to cache our various git repos at different tags
 # if using pull.sh or the directory we will look for repositories (can by symlinks)
 # if local development
-REPOSITORY_DIR=$SCRIPT_DIR/..
+REPOSITORY_DIR=$SCRIPT_DIR/../..
 if [[ $GCLOUD_BUILD == 'true' ]]; then
   REPOSITORY_DIR=$SCRIPT_DIR/repositories
 fi
 
 # Google Cloud
 GC_PROJECT_ID=ucdlib-dams
-GKE_CLUSTER_NAME=dams
+GKE_CLUSTER_NAME=dams-prod
 GKE_REGION=us-west1
 GKE_CLUSTER_ZONE=${GKE_REGION}-b
 GKE_KUBECTL_CONTEXT=gke_${GC_PROJECT_ID}_${GKE_CLUSTER_ZONE}_${GKE_CLUSTER_NAME}
 GCS_BUCKET=dams-client-media-prod
 GC_SA_NAME=dams-production@ucdlib-dams.iam.gserviceaccount.com
 GKE_KSA_NAME=dams-production
+
