@@ -19,15 +19,17 @@ kubectl create serviceaccount ${GKE_KSA_NAME} \
 
 # gcloud iam service-accounts create $GC_SA_NAME \
 #     --project=${GC_PROJECT_ID}
+echo "1"
+gcloud storage buckets add-iam-policy-binding gs://${GCS_BUCKET} \
+    --member "serviceAccount:$GC_SA_NAME" \
+    --role "roles/storage.objectAdmin"
 
-# gcloud storage buckets add-iam-policy-binding gs://${GCS_BACKUP_BUCKET} \
-#     --member "serviceAccount:$GC_SA_NAME" \
-#     --role "roles/storage.objectAdmin"
-
+echo "2"
 gcloud iam service-accounts add-iam-policy-binding $GC_SA_NAME \
     --role roles/iam.workloadIdentityUser \
     --member "serviceAccount:$GC_PROJECT_ID.svc.id.goog[default/$GKE_KSA_NAME]"
 
+echo "3"
 kubectl annotate serviceaccount ${GKE_KSA_NAME} \
     --namespace default \
     iam.gke.io/gcp-service-account=$GC_SA_NAME

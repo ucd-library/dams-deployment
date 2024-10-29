@@ -6,4 +6,4 @@ spec:
     spec:
       containers:
         - name: service
-          image: gcr.io/ucdlib-pubreg/dams-base-service:2.1.4
+          image: gcr.io/ucdlib-pubreg/dams-base-service:2.2.0

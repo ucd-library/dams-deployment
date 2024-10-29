@@ -149,6 +149,14 @@
         }
       }
     },
+    {
+      "path" : "kustomize/fcrepo-ro",
+      "environments" : {
+        "local-dev" : {
+          "ignore" : true
+        }
+      }
+    },
     { 
       "path" : "kustomize/elastic-search",
       "environments" : {

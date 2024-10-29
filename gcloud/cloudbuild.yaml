@@ -44,7 +44,7 @@ steps:
 
   - name: gcr.io/cloud-builders/git
     entrypoint: "bash"
-    args: ["-c", "./cmds/clone.sh"]
+    args: ["-c", "./cmds/clone.sh ${_ENV}"]
     env: 
       - 'GCLOUD_BUILD=true'
       - 'BRANCH_NAME=$BRANCH_NAME'
@@ -53,7 +53,7 @@ steps:
 
   - name: gcr.io/cloud-builders/docker
     entrypoint: "bash"
-    args: ["-c", "./cmds/build.sh"]
+    args: ["-c", "./cmds/build.sh ${_ENV}"]
     env: 
       - 'GCLOUD_BUILD=true'
       - 'BRANCH_NAME=$BRANCH_NAME'
@@ -114,6 +114,7 @@ substitutions:
   _GITHUB_REPOSITORY: ''
   _GITHUB_PR_USER: ''
   _GITHUB_PR_MERGED_BY: ''
+  _ENV: ''
 
 # availableSecrets:
 #   secretManager:

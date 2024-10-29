@@ -18,12 +18,9 @@ if [[ -z $ENV ]]; then
   exit 1
 fi
 if [[ ! -f "./$ENV.sh" ]]; then
-pwd
   echo "./$ENV.sh does not exist"
   exit 1
 fi
-echo "Loading $ENV.sh"
-pwd
 source ./$ENV.sh
 
 # Grab build number is mounted in CI system

@@ -6,4 +6,5 @@ spec:
   template:
     spec:
       containers:
-        - name: gcr.io/ucdlib-pubreg/fin-fcrepo:main
+        - name: service
+        - image: gcr.io/ucdlib-pubreg/fin-fcrepo:sandbox

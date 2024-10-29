@@ -3,6 +3,8 @@ kind: Kustomization
 
 resources:
 - ../../base
+- gcs-pvc.yaml
+- gcs-pv.yaml
 
 patches:
   - path: deployment.yaml

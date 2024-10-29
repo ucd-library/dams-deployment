@@ -6,4 +6,5 @@ spec:
   template:
     spec:
       containers:
-        - name: gcr.io/ucdlib-pubreg/fin-elastic-search:main
+        - name: elasticsearch
+        - image: gcr.io/ucdlib-pubreg/fin-elastic-search:sandbox

@@ -12,11 +12,11 @@ spec:
       labels:
         app: fcrepo-ro
     spec:
-      containers:
       initContainers:
       - name: wait-for-other-pg
         image: busybox
         command: ['sh', '-c', 'until nc -v -z "postgres" "5432" 2>&1 | grep -oE "open" ; do echo  "waiting for postgres"; sleep 2; done']
+      containers:
       - name: service
         imagePullPolicy: Always
         image: gcr.io/ucdlib-pubreg/fin-fcrepo:sandbox
