@@ -180,7 +180,7 @@
       {
         "label": "Build Images",
         "type": "shell",
-        "command": "./cmds/build-local-dev.sh",
+        "command": "./cmds/build-local-dev.sh local-dev",
         "presentation": {
             "echo": true,
             "reveal": "always",

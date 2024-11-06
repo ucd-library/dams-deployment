@@ -19,7 +19,9 @@ else
 fi
 DOCKER_PUSH="$DOCKER push "
 
-echo -e "Starting docker build\n"
+BUILD_DATETIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+
+echo -e "Starting docker build ($BUILD_NUM / $BUILD_DATETIME) \n"
 
 echo "DAMS Repository:"
 echo "Branch: $UCD_DAMS_REPO_BRANCH"
@@ -57,6 +59,7 @@ fi
 $DOCKER_BUILD \
   --build-arg APP_VERSION=$APP_VERSION \
   --build-arg BUILD_NUM=${BUILD_NUM} \
+  --build-arg BUILD_DATETIME=${BUILD_DATETIME} \
   --build-arg UCD_DAMS_REPO_BRANCH=${UCD_DAMS_REPO_BRANCH} \
   --build-arg UCD_DAMS_REPO_TAG=${UCD_DAMS_REPO_TAG} \
   --build-arg UCD_DAMS_REPO_SHA=${UCD_DAMS_REPO_SHA} \

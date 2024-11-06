@@ -17,6 +17,9 @@ if [[ -z $ENV ]]; then
   echo "ENV not set"
   exit 1
 fi
+if [[ $ENV == 'local-dev' ]]; then
+  ENV=sandbox
+fi
 if [[ ! -f "./$ENV.sh" ]]; then
   echo "./$ENV.sh does not exist"
   exit 1
