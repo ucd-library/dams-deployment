@@ -1,3 +1,0 @@
-APP_TAG=sandbox
-FIN_TAG=sandbox
-DAMS_REPO_TAG=sandbox

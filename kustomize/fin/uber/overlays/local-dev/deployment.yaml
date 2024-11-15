@@ -7,7 +7,7 @@ spec:
     spec:
       containers:
       - name: service
-        image: gcr.io/ucdlib-pubreg/fin-base-service:local-dev
+        image: us-west1-docker.pkg.dev/digital-ucdavis-edu/pub/fin-base-service:local-dev
         env:
         - name: K8S_ENABLED
           value: "true"
@@ -16,7 +16,7 @@ spec:
         - name : "K8S_PLATFORM"
           value: "docker-desktop"
         - name: K8S_COLLECTION_IMPORT_IMAGE
-          value: gcr.io/ucdlib-pubreg/fin-base-service:local-dev
+          value: us-west1-docker.pkg.dev/digital-ucdavis-edu/pub/fin-base-service:local-dev
         - name: K8S_COLLECTION_IMPORT_URL
           value: http://gateway:3000
         - name: K8S_COLLECTION_IMPORT_LOCAL_DEV_HOST_PATH

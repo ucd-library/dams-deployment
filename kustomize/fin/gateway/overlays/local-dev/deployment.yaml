@@ -7,7 +7,7 @@ spec:
     spec:
       containers:
         - name: service
-          image: gcr.io/ucdlib-pubreg/fin-base-service:local-dev
+          image: us-west1-docker.pkg.dev/digital-ucdavis-edu/pub/fin-base-service:sandbox
           env:
           - name: K8S_ENABLED
             value: "true"

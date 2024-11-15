@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: service
-        image: gcr.io/ucdlib-pubreg/dams-iipimage-server:sandbox
+        image: us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-iipimage-server:sandbox
         imagePullPolicy: Always
         env:
         - name: FUSE_DIR

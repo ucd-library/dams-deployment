@@ -6,4 +6,4 @@ spec:
   template:
     spec:
       containers:
-        - name: gcr.io/ucdlib-pubreg/fin-fcrepo:dev
+        - name: us-west1-docker.pkg.dev/digital-ucdavis-edu/pub/fin-fcrepo:dev

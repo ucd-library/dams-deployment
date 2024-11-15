@@ -178,9 +178,23 @@
         "problemMatcher": []
       },
       {
-        "label": "Build Images",
+        "label": "Build DAMS Images",
         "type": "shell",
-        "command": "./cmds/build-local-dev.sh local-dev",
+        "command": "./cmds/build-local-dev.sh",
+        "presentation": {
+            "echo": true,
+            "reveal": "always",
+            "focus": false,
+            "panel": "dedicated",
+            "showReuseMessage": false,
+            "clear": false
+        },
+        "problemMatcher": []
+      },
+      {
+        "label": "Build ALL Images",
+        "type": "shell",
+        "command": "./cmds/build-local-dev.sh ALL",
         "presentation": {
             "echo": true,
             "reveal": "always",

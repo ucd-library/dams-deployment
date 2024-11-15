@@ -6,7 +6,7 @@ spec:
     spec:
       containers:
         - name: service
-          image: gcr.io/ucdlib-pubreg/dams-base-service:sandbox
+          image: us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-base-service:sandbox
           # command: ["bash", "-c", "tail -f /dev/null"]
           env:
             - name: FIN_METRICS_EXPORT_GC

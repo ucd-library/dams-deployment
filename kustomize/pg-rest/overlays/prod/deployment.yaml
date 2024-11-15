@@ -1,10 +1,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: workflow
+  name: pg-rest
 spec:
   template:
     spec:
       containers:
         - name: service
-          image: us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-base-service:sandbox
+          image: us-west1-docker.pkg.dev/digital-ucdavis-edu/pub/fin-pg-rest:2.8.0

@@ -7,4 +7,4 @@ spec:
     spec:
       containers:
         - name: service
-          image: gcr.io/ucdlib-pubreg/dams-init:sandbox
+          image: us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-init:sandbox

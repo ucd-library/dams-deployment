@@ -18,7 +18,7 @@ spec:
         command: ['sh', '-c', 'until nc -v -z "postgres" "5432" 2>&1 | grep -oE "open" ; do echo  "waiting for postgres"; sleep 2; done']
       containers:
       - name: service
-        image: gcr.io/ucdlib-pubreg/fin-fcrepo:sandbox
+        image: us-west1-docker.pkg.dev/digital-ucdavis-edu/pub/fin-fcrepo:sandbox
         volumeMounts:
         - name: ocfl-volume
           mountPath: /usr/local/tomcat/fcrepo-home/data

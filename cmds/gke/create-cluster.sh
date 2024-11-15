@@ -33,6 +33,6 @@ gcloud beta container node-pools create scalable-pool \
 
 # ./create-secrets.sh
 
-./setup-service-accounts.sh
+# ./setup-service-accounts.sh
 
 # ./create-volumes.sh
