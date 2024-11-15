@@ -26,17 +26,9 @@
   "serviceTemplates" : {
     "fin" : {
       "sourceMount" : "kustomize/src-mounts/base-service.json",
-      "edit" : {"jsonpath": "spec.template.spec.containers[*].image", "value": "${UCD_DAMS_SERVER_IMAGE_NAME}:${APP_TAG}"}
+      "edit" : {"jsonpath": "spec.template.spec.containers[*].image", "value": "localhost/local-dev/dams-base-service:sandbox"}
     },
     "local-dev" : {
-      "config" : {
-        "args" : {
-          "SCRIPT_DIR" : "${__DIRNAME}/config",
-          "LOCAL_DEV": "true",
-          "ENV" : "${__ENV}"
-        },
-        "file" : "config/load.sh"
-      },
       "localDev" : true,
       "overlay" : ["local-dev"]
     }
@@ -146,7 +138,7 @@
       "environments" : {
         "local-dev" : {
           "template" : "local-dev",
-          "edit" : {"jsonpath": "spec.template.spec.containers[*].image", "value": "${FCREPO_IMAGE_NAME}:${FIN_TAG}"}
+          "edit" : {"jsonpath": "spec.template.spec.containers[*].image", "value": "localhost/local-dev/fin-fcrepo:sandbox"}
         }
       }
     },
@@ -163,7 +155,7 @@
       "environments" : {
         "local-dev" : {
           "template" : "local-dev",
-          "edit" : {"jsonpath": "spec.template.spec.containers[*].image", "value": "${ELASTIC_SEARCH_IMAGE_NAME}:${FIN_TAG}"}
+          "edit" : {"jsonpath": "spec.template.spec.containers[*].image", "value": "localhost/local-dev/fin-elastic-search:sandbox"}
         }
       }
     },
@@ -172,7 +164,7 @@
       "environments" : {
         "local-dev" : {
           "template" : "local-dev",
-          "edit" : {"jsonpath": "spec.template.spec.containers[*].image", "value": "${PGREST_IMAGE_NAME}:${FIN_TAG}"}
+          "edit" : {"jsonpath": "spec.template.spec.containers[*].image", "value": "localhost/local-dev/fin-pg-rest:sandbox"}
         }
       }
     },
@@ -181,7 +173,7 @@
       "environments" : {
         "local-dev" : {
           "template" : "local-dev",
-          "edit" : {"jsonpath": "spec.template.spec.containers[*].image", "value": "${POSTGRES_IMAGE_NAME}:${FIN_TAG}"}
+          "edit" : {"jsonpath": "spec.template.spec.containers[*].image", "value": "localhost/local-dev/fin-postgres:sandbox"}
         }
       }
     },
@@ -190,7 +182,7 @@
       "environments" : {
         "local-dev" : {
           "template" : "local-dev",
-          "edit" : {"jsonpath": "spec.template.spec.containers[*].image", "value": "${RABBITMQ_IMAGE_NAME}:${FIN_TAG}"}
+          "edit" : {"jsonpath": "spec.template.spec.containers[*].image", "value": "localhost/local-dev/fin-rabbitmq:sandbox"}
         }
       }
     },
@@ -223,8 +215,8 @@
         "local-dev" : {
           "template" : ["local-dev", "fin"],
           "edit" : [
-            {"jsonpath": "spec.template.spec.containers[*].env[?(@.name=='K8S_COLLECTION_IMPORT_IMAGE')].value", "value": "${UCD_DAMS_SERVER_IMAGE_NAME}:${APP_TAG}"},
-            {"jsonpath": "spec.template.spec.containers[*].env[?(@.name=='K8S_COLLECTION_IMPORT_LOCAL_DEV_HOST_PATH')].value", "value": "${__DIRNAME}/collection-import"}
+            {"jsonpath": "spec.template.spec.containers[*].env[?(@.name=='K8S_COLLECTION_IMPORT_IMAGE')].value", "value": "localhost/local-dev/dams-base-service:sandbox"},
+            {"jsonpath": "spec.template.spec.containers[*].env[?(@.name=='K8S_COLLECTION_IMPORT_LOCAL_DEV_HOST_PATH')].value", "value": "localhost/local-dev/dams-base-service:sandbox__DIRNAME}/collection-import"}
           ],
           "sourceMount" : "kustomize/src-mounts/collection-import.json"
         }
@@ -254,7 +246,7 @@
       "environments" : {
         "local-dev" : {
           "template" : "local-dev",
-          "edit" : {"jsonpath": "spec.template.spec.containers[*].image", "value": "${UCD_DAMS_SERVER_IMAGE_NAME}:${APP_TAG}"},
+          "edit" : {"jsonpath": "spec.template.spec.containers[*].image", "value": "localhost/local-dev/dams-base-service:sandbox"},
           "sourceMount" : "kustomize/src-mounts/client.json"
         }
       }
@@ -265,7 +257,7 @@
       "environments" : {
         "local-dev" : {
           "template" : "local-dev",
-          "edit": {"jsonpath": "spec.template.spec.containers[*].image", "value": "${IIIF_IMAGE_NAME}:${APP_TAG}"}
+          "edit": {"jsonpath": "spec.template.spec.containers[*].image", "value": "localhost/local-dev/dams-iipimage-server:sandbox"}
         }
       }
     },
@@ -275,74 +267,11 @@
         "local-dev" : {
           "template" : ["local-dev"],
           "sourceMount" : "kustomize/src-mounts/base-service.json",
-          "edit": {"jsonpath": "spec.template.spec.containers[*].image", "value": "${UCD_DAMS_INIT_IMAGE_NAME}:${APP_TAG}"}
+          "edit": {"jsonpath": "spec.template.spec.containers[*].image", "value": "localhost/local-dev/dams-init:sandbox"}
         }
       }
     }
 
-  ],
-
-  "build" : {
-    "args" : {
-      "UCD_DAMS_REPO_NAME" : "ucd-lib/fin-server",
-      "UCD_DAMS_SERVER_IMAGE_NAME" : "fin-server",
-      "UCD_DAMS_INIT_IMAGE_NAME" : "fin-init",
-      "FIN_TAG" : "latest",
-      "APP_TAG" : "latest",
-      "FCREPO_IMAGE_NAME" : "fcrepo",
-      "ELASTIC_SEARCH_IMAGE_NAME" : "elasticsearch",
-      "PGREST_IMAGE_NAME" : "pg-rest",
-      "POSTGRES_IMAGE_NAME" : "postgres",
-      "RABBITMQ_IMAGE_NAME" : "rabbitmq",
-      "IIIF_IMAGE_NAME" : "iiif"
-    },
-
-    "environments" : {
-      "local-dev" : {
-        "args" : {
-          "APP_TAG" : "${__BRANCH_NAME}"
-        }
-      },
-      "sandbox" : {
-        "args" : {
-          "APP_TAG" : "sandbox"
-        }
-      },
-      "dev" : {
-        "args" : {
-          "APP_TAG" : "dev"
-        }
-      },
-      "prod" : {
-        "args" : {
-          "APP_TAG" : "prod"
-        }
-      }
-    },
-
-    "templates" : {
-      "local-dev" : {
-        "cmd" : "docker build buildx build --output=type=docker --cache-to=type=inline,mode=max",
-        "registry" : "localhost/local-dev",
-        "push" : false
-      },
-      "gc" : {
-        "cmd" : "docker build buildx build --output=type=docker --cache-to=type=inline,mode=max --pull",
-        "registry" : "gcr.io/ucdlib-dams",
-        "push" : true
-      }
-    },
-
-    "images" : [
-      {
-        "contextPath" : "${__DIRNAME}/../${UCD_DAMS_REPO_NAME}/services/init",
-        "tag" : "${__REGISTRY}/${UCD_DAMS_SERVER_IMAGE_NAME}:${APP_TAG}",
-        "options" : {
-          "build-arg" : "FIN_INIT=${INIT_IMAGE_NAME}:${FIN_TAG}"
-        }
-      }
-    ]
-  }
-  
+  ]
   
 }
