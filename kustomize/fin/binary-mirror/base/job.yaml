@@ -1,0 +1,31 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: init
+spec:
+  backoffLimit: 4
+  template:
+    spec:
+      restartPolicy: OnFailure
+      containers:
+      - name: service
+        image: us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-base-service:2.3.5
+        imagePullPolicy: Always
+        env:
+        - name: FIN_SERVICE_NAME
+          value: "mirror-rsync"
+        - name: MIRROR_HOST
+          value: "dams-binary-mirror.library.ucdavis.edu"
+        volumeMounts:
+        - name: mirror-pk
+          mountPath: /etc/dams/mirror-pk
+          subPath: mirror-pk
+        - name: ocfl-volume
+          mountPath: /data
+      volumes:
+      - name: ocfl-volume
+        persistentVolumeClaim:
+          claimName: ocfl-volume-claim
+      - name: mirror-pk
+        secret:
+          secretName: mirror-pk
