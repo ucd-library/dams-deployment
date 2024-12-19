@@ -6,12 +6,12 @@ spec:
     spec:
       containers:
         - name: service
-          image: us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-base-service:2.3.5
+          image: us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-base-service:2.3.6
           env:
             - name: FIN_METRICS_EXPORT_GC
               value: "true"
             - name: FCREPO_RO_ENABLED
-              value: "true"
+              value: "false"
             - name: FIN_GATEWAY_HTTPS_ENABLED
               value: "true"
             - name: K8S_ENABLED

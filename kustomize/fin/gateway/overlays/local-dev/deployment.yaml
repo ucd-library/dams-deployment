@@ -15,5 +15,5 @@ spec:
             value: "docker-desktop"
           - name: "K8S_NAMESPACE"
             value: "dams"
-          - name: "FIN_GATEWAY_DISABLE_FILE_DOWNLOAD"
-            value: "\\.(tiff|tif|pdf)$"
+          # - name: "FIN_GATEWAY_DISABLE_FILE_DOWNLOAD"
+          #   value: "\\.(tiff|tif|pdf)$"
