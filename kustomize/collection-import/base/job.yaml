@@ -10,7 +10,7 @@ spec:
       containers:
       - name: importer
         imagePullPolicy: Always
-        image: us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-base-service:sandbox
+        image: us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-base-service:2.3.8
         command: ["/bin/bash", "-c", "/collection-import/import.sh"]  
         env:
         - name: GOOGLE_APPLICATION_CREDENTIALS
@@ -18,7 +18,7 @@ spec:
         - name: GCS_BINARY_BACKUP_BUCKET
           value: "dams-collections-binary-backups"
         - name: FIN_URL
-          value: "http://dams.justinmerz.net"
+          value: "http://dev.dams.library.ucdavis.edu"
         - name: ROOT_DIR
           value: "/data"
         volumeMounts:

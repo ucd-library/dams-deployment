@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: binary-mirror
+spec:
+  selector:
+    matchLabels:
+      app: binary-mirror
+  template:
+    metadata:
+      labels:
+        app: binary-mirror
+    spec:
+      containers:
+      - name: service
+        image: localhost/local-dev/dams-binary-mirror:sandbox
+        imagePullPolicy: Never
+        volumeMounts:
+        - name: env-config
+          mountPath: /etc/fin/.env
+          subPath: .env
+        env:
+        - name: FIN_SERVICE_NAME
+          value: "mirror-rsync"
+        - name: FCREPO_HOST
+          value: "http://dams.local:3000"
+        - name: OIDC_BASE_URL
+          value: "https://auth.library.ucdavis.edu/realms/dams"
+        - name: SERVICE_ACCOUNT_NAME
+          value: "binary-mirror-service-account"
+        - name: SERVICE_ACCOUNT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: binary-mirror-service-account-key
+              key: secret
+        - name: MESSAGE_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: binary-mirror-message-key
+              key: secret
+      volumes:
+      - name: env-config
+        secret:
+          secretName: env-config

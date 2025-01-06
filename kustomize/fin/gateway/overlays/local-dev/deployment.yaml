@@ -15,5 +15,12 @@ spec:
             value: "docker-desktop"
           - name: "K8S_NAMESPACE"
             value: "dams"
-          # - name: "FIN_GATEWAY_DISABLE_FILE_DOWNLOAD"
-          #   value: "\\.(tiff|tif|pdf)$"
+          - name: FIN_MIRROR_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: binary-mirror-message-key
+                key: secret
+          - name: FIN_MIRROR_HOST
+            value: "http://dams-binary-mirror.local:8000"
+          - name: "FIN_MIRROR_FILE_DOWNLOAD"
+            value: "\\.(tiff|tif|pdf)$"

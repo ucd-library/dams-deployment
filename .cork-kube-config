@@ -53,7 +53,22 @@
           "gcsmName" : "local-dev-service-account",
           "k8sProperty" : "service-account.json"
         }]
-    }],
+      },
+      {
+        "k8sName" : "binary-mirror-message-key",
+        "mappings" : [{
+          "gcsmName" : "binary-mirror-message-key",
+          "k8sProperty" : "secret"
+        }]
+      },
+      {
+        "k8sName" : "binary-mirror-service-account-key",
+        "mappings" : [{
+          "gcsmName" : "binary-mirror-service-account-key",
+          "k8sProperty" : "secret"
+        }]
+      }
+    ],
     "sandbox" : [{
         "k8sName" : "env-config",
         "mappings" : [{
@@ -269,6 +284,15 @@
           "sourceMount" : "kustomize/src-mounts/base-service.json",
           "edit": {"jsonpath": "spec.template.spec.containers[*].image", "value": "localhost/local-dev/dams-init:sandbox"}
         }
+      }
+    },
+    {
+      "path" : "kustomize/fin/binary-mirror",
+      "sourceMount" : "kustomize/src-mounts/mirror.json",
+      "environments" : {
+        "sandbox" : {"ignore" : true},
+        "dev" : {"ignore" : true},
+        "prod" : {"ignore" : true}
       }
     }
 

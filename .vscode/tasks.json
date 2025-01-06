@@ -82,7 +82,7 @@
       {
           "label": "Proxy Gateway HTTP",
           "type": "shell",
-          "command": "kubectl port-forward svc/gateway 3000:3000",
+          "command": "kubectl port-forward --address=0.0.0.0 svc/gateway 3000:3000",
           "presentation": {
               "echo": true,
               "reveal": "always",
@@ -92,6 +92,20 @@
               "clear": false
           },
           "problemMatcher": []
+      },
+      {
+        "label": "Proxy Mirror HTTP",
+        "type": "shell",
+        "command": "kubectl port-forward svc/binary-mirror 8000:3000",
+        "presentation": {
+            "echo": true,
+            "reveal": "always",
+            "focus": false,
+            "panel": "dedicated",
+            "showReuseMessage": false,
+            "clear": false
+        },
+        "problemMatcher": []
       },
       {
         "label": "Proxy Admin DB",

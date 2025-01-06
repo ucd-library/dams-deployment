@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: iiif
+spec:
+  template:
+    spec:
+      containers:
+        - name: service
+          image: us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-iipimage-server:local-dev
+          env:
+          - name: USE_LOCAL_GCSFUSE
+            value: "false"
+          - name: GCS_BUCKET
+            value: "dams-client-media-prod"
+          - name: GCSFUSE_DIR
+            value: "/etc/gcs-fuse"
+          - name: GOOGLE_APPLICATION_CREDENTIALS
+            value: "/etc/fin/service-account.json"
+          volumeMounts:
+          - name: service-account
+            mountPath: /etc/fin/service-account.json
+            subPath: service-account.json
+      volumes:
+      - name: service-account
+        secret:
+          secretName: service-account
