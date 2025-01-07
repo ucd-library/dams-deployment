@@ -2,4 +2,10 @@ apiVersion: v1
 kind: Service
 metadata:
   name: gateway
-spec: {}
+spec:
+  ports:
+    - name: service
+      port: 3000
+      protocol: TCP
+      targetPort: 3000
+      nodePort: 30000

@@ -1,0 +1,11 @@
+services:
+
+  mirror:
+    image: ${MIRROR_IMAGE}
+    env_file:
+      - .env
+    volumes:
+      - ${MIRROR_DATA_DIR}:/opt/dams-mirror
+    ports:
+      - 3000:3000
+    restart: always
