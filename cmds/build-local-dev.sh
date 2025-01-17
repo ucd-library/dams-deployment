@@ -8,4 +8,4 @@ cork-kube build exec \
   -p dams \
   -v sandbox \
   --no-cache-from \
-  -o sandbox $DEPTH -d
+  -o sandbox $DEPTH 

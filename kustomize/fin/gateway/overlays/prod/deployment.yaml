@@ -6,7 +6,7 @@ spec:
     spec:
       containers:
         - name: service
-          image: us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-base-service:2.3.8
+          image: us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-base-service:2.3.12
           env:
             - name: FIN_METRICS_EXPORT_GC
               value: "true"
@@ -22,6 +22,15 @@ spec:
               value: "dams-prod"
             - name: "K8S_REGION"
               value: "us-west1-b"
+            - name: FIN_MIRROR_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: binary-mirror-message-key
+                  key: secret
+            - name: FIN_MIRROR_HOST
+              value: "https://dams-binary-mirror.library.ucdavis.edu"
+            - name: "FIN_MIRROR_FILE_DOWNLOAD"
+              value: "\\.(tiff|tif|pdf)$"
           volumeMounts:
             - mountPath: /etc/fin/certs/sandbox.dams.library.ucdavis.edu
               name: dams-ssl

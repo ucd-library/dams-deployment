@@ -118,7 +118,15 @@
           "gcsmName" : "dams-ssl-key",
           "k8sProperty" : "dams-ssl.key"
         }]
-    }]
+      },
+      {
+        "k8sName" : "binary-mirror-message-key",
+        "mappings" : [{
+          "gcsmName" : "binary-mirror-message-key",
+          "k8sProperty" : "secret"
+        }]
+      }
+    ]
   },
 
   "services" : [
@@ -262,7 +270,10 @@
         "local-dev" : {
           "template" : "local-dev",
           "edit" : {"jsonpath": "spec.template.spec.containers[*].image", "value": "localhost/local-dev/dams-base-service:sandbox"},
-          "sourceMount" : "kustomize/src-mounts/client.json"
+          "sourceMount" : [
+            "kustomize/src-mounts/client.json",
+            "kustomize/src-mounts/base-service.json"
+          ]
         }
       }
     },

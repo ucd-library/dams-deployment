@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: import-postcards
+  name: import-trafton-crane
 spec:
   template:
     spec:
@@ -9,11 +9,11 @@ spec:
       - name: importer
         env:
           - name: COLLECTION_NAME
-            value: postcards
+            value: trafton-crane
         volumeMounts:
         - name: import-volume
           mountPath: /data
       volumes:
       - name: import-volume
         persistentVolumeClaim:
-          claimName: import-postcards-volume-claim
+          claimName: import-trafton-crane-volume-claim
