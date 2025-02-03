@@ -10,7 +10,7 @@ spec:
       containers:
       - name: importer
         imagePullPolicy: Always
-        image: us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-base-service:2.3.16
+        image: us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-base-service:2.3.17
         command: ["/bin/bash", "-c", "/collection-import/import.sh"]  
         env:
         - name: GOOGLE_APPLICATION_CREDENTIALS
