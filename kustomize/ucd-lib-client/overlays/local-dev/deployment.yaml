@@ -8,4 +8,4 @@ spec:
       containers:
         - name: service
           image: us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-base-service:local-dev
-          command: ["bash", "-c", "tail -f /dev/null"]
+          # command: ["bash", "-c", "tail -f /dev/null"]
