@@ -167,10 +167,9 @@
     },
     {
       "path" : "kustomize/fcrepo-ro",
+      "ignore" : true,
       "environments" : {
-        "local-dev" : {
-          "ignore" : true
-        }
+        "local-dev" : {}
       }
     },
     { 

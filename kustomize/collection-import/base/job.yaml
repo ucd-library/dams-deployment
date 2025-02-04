@@ -8,36 +8,39 @@ spec:
     spec:
       restartPolicy: Never
       containers:
-      - name: importer
-        imagePullPolicy: Always
-        image: us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-base-service:2.3.17
-        command: ["/bin/bash", "-c", "/collection-import/import.sh"]  
-        env:
-        - name: GOOGLE_APPLICATION_CREDENTIALS
-          value: /etc/fin/service-account.json
-        - name: GCS_BINARY_BACKUP_BUCKET
-          value: "dams-collections-binary-backups"
-        - name: FIN_URL
-          value: "http://dev.dams.library.ucdavis.edu"
-        - name: ROOT_DIR
-          value: "/data"
-        volumeMounts:
-        - name: service-account
-          mountPath: /etc/fin/service-account.json
-          subPath: service-account.json
-        - name: env-config
-          mountPath: /etc/fin/.env
-          subPath: .env
-        resources:
-          requests:
-            memory: "1Gi"
-            cpu: "1"
+        - name: importer
+          imagePullPolicy: Always
+          image: us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-base-service:2.3.17
+          command:
+            - /bin/bash
+            - '-c'
+            - /collection-import/import.sh
+          env:
+            - name: GOOGLE_APPLICATION_CREDENTIALS
+              value: /etc/fin/service-account.json
+            - name: GCS_BINARY_BACKUP_BUCKET
+              value: dams-collections-binary-backups
+            - name: FIN_URL
+              value: http://dev.dams.library.ucdavis.edu
+            - name: ROOT_DIR
+              value: /data
+          volumeMounts:
+            - name: service-account
+              mountPath: /etc/fin/service-account.json
+              subPath: service-account.json
+            - name: env-config
+              mountPath: /etc/fin/.env
+              subPath: .env
+          resources:
+            requests:
+              memory: 1Gi
+              cpu: '1'
       nodeSelector:
         intendedfor: scalable-pool
       volumes:
-      - name: service-account
-        secret:
-          secretName: service-account
-      - name: env-config
-        secret:
-          secretName: env-config
+        - name: service-account
+          secret:
+            secretName: service-account
+        - name: env-config
+          secret:
+            secretName: env-config

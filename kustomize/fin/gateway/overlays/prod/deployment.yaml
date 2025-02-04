@@ -9,28 +9,28 @@ spec:
           image: us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-base-service:2.3.17
           env:
             - name: FIN_METRICS_EXPORT_GC
-              value: "true"
+              value: 'true'
             - name: FCREPO_RO_ENABLED
-              value: "false"
+              value: 'false'
             - name: FIN_GATEWAY_HTTPS_ENABLED
-              value: "true"
+              value: 'true'
             - name: K8S_ENABLED
-              value: "true"
-            - name : "K8S_PLATFORM"
-              value: "gke"
-            - name: "K8S_CLUSTER"
-              value: "dams-prod"
-            - name: "K8S_REGION"
-              value: "us-west1-b"
+              value: 'true'
+            - name: K8S_PLATFORM
+              value: gke
+            - name: K8S_CLUSTER
+              value: dams-prod
+            - name: K8S_REGION
+              value: us-west1-b
             - name: FIN_MIRROR_SECRET
               valueFrom:
                 secretKeyRef:
                   name: binary-mirror-message-key
                   key: secret
             - name: FIN_MIRROR_HOST
-              value: "https://dams-binary-mirror.library.ucdavis.edu"
-            - name: "FIN_MIRROR_FILE_DOWNLOAD"
-              value: "\\.(tiff|tif|pdf)$"
+              value: https://dams-binary-mirror.library.ucdavis.edu
+            - name: FIN_MIRROR_FILE_DOWNLOAD
+              value: \.(tiff|tif|pdf)$
           volumeMounts:
             - mountPath: /etc/fin/certs/sandbox.dams.library.ucdavis.edu
               name: dams-ssl
