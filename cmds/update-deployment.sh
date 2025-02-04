@@ -70,15 +70,24 @@ edit pg-rest deployment "$FIN_REGISTRY/fin-pg-rest:$FIN_VERSION" service $ENVIRO
 edit postgres statefulset "$FIN_REGISTRY/fin-postgres:$FIN_VERSION" database $ENVIRONMENT
 edit ucd-lib-client deployment "$DAMS_REGISTRY/dams-base-service:$DAMS_VERSION" service $ENVIRONMENT
 
-if [[ "$NO_COMMIT" != "true" ]]; then
+echo ""
+read -p "Would you like to commit the changes to git? (y/n): " COMMIT_CHANGES
+
+if [[ "$COMMIT_CHANGES" == "y" ]]; then
   echo -e "\nCommitting changes to git"
 
   git add --all
-  git commit -m "Updated $ENVIRONMENT to version $VERSION"
+  git commit -m "Updated $ENVIRONMENT to version $DAMS_VERSION"
   git pull
   git push
 
+  echo ""
+  echo "Done updating deployment $ENVIRONMENT to version $DAMS_VERSION"
+else
+  echo ""
+  echo "Changes not committed to git."
 fi
 
-echo -e "\nDone updating deployment $ENVIRONMENT to version $VERSION"
+echo ""
+echo "Done updating deployment $ENVIRONMENT to version $VERSION"
 
