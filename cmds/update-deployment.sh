@@ -80,14 +80,11 @@ if [[ "$COMMIT_CHANGES" == "y" ]]; then
   git commit -m "Updated $ENVIRONMENT to version $DAMS_VERSION"
   git pull
   git push
-
-  echo ""
-  echo "Done updating deployment $ENVIRONMENT to version $DAMS_VERSION"
 else
   echo ""
   echo "Changes not committed to git."
 fi
 
 echo ""
-echo "Done updating deployment $ENVIRONMENT to version $VERSION"
+echo "Done updating deployment $ENVIRONMENT to version $DAMS_VERSION"
 

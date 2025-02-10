@@ -9,7 +9,7 @@ spec:
     spec:
       containers:
         - name: service
-          image: us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-base-service:2.3.18
+          image: us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-base-service:2.3.19
           env:
             - name: K8S_ENABLED
               value: 'true'
