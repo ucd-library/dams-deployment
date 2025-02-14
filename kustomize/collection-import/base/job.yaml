@@ -21,7 +21,7 @@ spec:
             - name: GCS_BINARY_BACKUP_BUCKET
               value: dams-collections-binary-backups
             - name: FIN_URL
-              value: http://dev.dams.library.ucdavis.edu
+              value: https://dev.dams.library.ucdavis.edu
             - name: ROOT_DIR
               value: /data
           volumeMounts:

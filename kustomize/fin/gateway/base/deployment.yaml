@@ -23,10 +23,3 @@ spec:
           value: "/fin/admin/js/dams-admin-ui-ext.js"
         - name: ADMIN_UI_EXTENSIONS_ROUTES
           value: "collection-import:dams-collection-import"
-        - name: FIN_MIRROR_SECRET
-          valueFrom:
-            secretKeyRef:
-              name: binary-mirror-message-key
-              key: secret
-      nodeSelector:
-        intendedfor: scalable-pool

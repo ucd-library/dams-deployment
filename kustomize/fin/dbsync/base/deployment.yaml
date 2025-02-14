@@ -17,5 +17,3 @@ spec:
         env:
         - name: FIN_SERVICE_NAME
           value: "dbsync"
-      nodeSelector:
-        intendedfor: scalable-pool

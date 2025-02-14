@@ -1,12 +1,10 @@
+apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: dbsync
+  name: ucd-lib-client
 spec:
   template:
     spec:
       containers:
         - name: service
           image: us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-base-service:2.3.20
-          env:
-            - name: FIN_METRICS_EXPORT_GC
-              value: 'true'

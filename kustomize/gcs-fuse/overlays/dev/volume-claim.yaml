@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: gcs-fuse-pvc
+spec:
+  storageClassName: hostpath
+  resources:
+    requests:
+      storage: 5Gi

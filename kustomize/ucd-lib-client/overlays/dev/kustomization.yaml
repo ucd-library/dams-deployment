@@ -2,13 +2,10 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-- ../../base
+  - ../../base
 
 patches:
-  - path: service.yaml
-    target:
-      kind: Service
-      name: gateway
   - path: deployment.yaml
     target:
       kind: Deployment
+      name: ucd-lib-client

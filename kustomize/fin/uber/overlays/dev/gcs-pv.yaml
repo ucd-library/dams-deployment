@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: gcs-kustomize-templates-pv
+spec:
+  storageClassName: hostpath
+  accessModes:
+    - ReadWriteMany
+  capacity:
+    storage: 1Gi
+  hostPath: 
+    path: /microk8s/volumes/gcs-kustomize-templates

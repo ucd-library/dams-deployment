@@ -7,6 +7,11 @@
       "platform" : "docker-desktop",
       "namespace" : "dams"
     },
+    "dev" : {
+      "project" : "ucdlib-dams",
+      "platform" : "microk8s",
+      "namespace" : "default"
+    },
     "sandbox" : {
       "platform" : "gke",
       "namespace" : "default",
@@ -31,10 +36,31 @@
     "local-dev" : {
       "localDev" : true,
       "overlay" : ["local-dev"]
+    },
+    "dev" : {
+      "overlay" : ["dev"]
     }
   },
 
   "secrets" : {
+    "dev" : [{
+      "k8sName" : "kubeconfig",
+      "kubeconfig" : true
+    },
+    {
+      "k8sName" : "env-config",
+      "mappings" : [{
+        "gcsmName" : "dev-env",
+        "k8sProperty" : ".env"
+      }]
+    },
+    {
+      "k8sName" : "service-account",
+      "mappings" : [{
+        "gcsmName" : "local-dev-service-account",
+        "k8sProperty" : "service-account.json"
+      }]
+    }],
     "local-dev" : [
       {
         "k8sName" : "kubeconfig",
@@ -136,6 +162,10 @@
         "local-dev" : {
           "template" : "local-dev",
           "edit" : {"jsonpath": "spec.hostPath.path", "value": "${__DIRNAME}/ocfl-volume"}
+        },
+        "dev" : {
+          "template" : "dev",
+          "edit" : {"jsonpath": "spec.hostPath.path", "value": "/microk8s/volumes/ocfl-volume"}
         }
       }
     },
@@ -143,6 +173,9 @@
       "path" : "kustomize/nfs-server",
       "environments" : {
         "local-dev" : {
+          "ignore" : true
+        },
+        "dev" : {
           "ignore" : true
         }
       }
@@ -153,6 +186,10 @@
         "local-dev" : {
           "template" : "local-dev",
           "edit" : {"jsonpath": "spec.hostPath.path", "value": "${__DIRNAME}/gcs-fuse-volume"}
+        },
+        "dev" : {
+          "template" : "dev",
+          "edit" : {"jsonpath": "spec.hostPath.path", "value": "/microk8s/volumes/gcs-fuse-volume"}
         }
       }
     },
@@ -238,7 +275,7 @@
           "template" : ["local-dev", "fin"],
           "edit" : [
             {"jsonpath": "spec.template.spec.containers[*].env[?(@.name=='K8S_COLLECTION_IMPORT_IMAGE')].value", "value": "localhost/local-dev/dams-base-service:sandbox"},
-            {"jsonpath": "spec.template.spec.containers[*].env[?(@.name=='K8S_COLLECTION_IMPORT_LOCAL_DEV_HOST_PATH')].value", "value": "localhost/local-dev/dams-base-service:sandbox__DIRNAME}/collection-import"}
+            {"jsonpath": "spec.template.spec.containers[*].env[?(@.name=='K8S_COLLECTION_IMPORT_LOCAL_DEV_HOST_PATH')].value", "value": "${__DIRNAME}/collection-import"}
           ],
           "sourceMount" : "kustomize/src-mounts/collection-import.json"
         }
@@ -305,7 +342,6 @@
         "prod" : {"ignore" : true}
       }
     }
-
   ]
   
 }

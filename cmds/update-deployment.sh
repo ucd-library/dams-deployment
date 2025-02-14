@@ -56,14 +56,24 @@ fi
 
 echo -e "Updating DAMS $ENVIRONMENT to version DAMS: $DAMS_VERSION FIN: $FIN_VERSION\n"
 
-edit collection-import job "$DAMS_REGISTRY/dams-base-service:$DAMS_VERSION" importer 
+if [[ "$ENVIRONMENT" == "prod" ]]; then
+  edit collection-import job "$DAMS_REGISTRY/dams-base-service:$DAMS_VERSION" importer  
+fi
+
 edit elastic-search statefulset "$FIN_REGISTRY/fin-elastic-search:$FIN_VERSION" elasticsearch $ENVIRONMENT
 edit fcrepo statefulset "$FIN_REGISTRY/fin-fcrepo:$FIN_VERSION" service $ENVIRONMENT
 edit fin/dbsync deployment "$DAMS_REGISTRY/dams-base-service:$DAMS_VERSION" service $ENVIRONMENT
 edit fin/gateway deployment "$DAMS_REGISTRY/dams-base-service:$DAMS_VERSION" service $ENVIRONMENT
 edit fin/gcs deployment "$DAMS_REGISTRY/dams-base-service:$DAMS_VERSION" service $ENVIRONMENT
 edit fin/init job "$DAMS_REGISTRY/dams-init:$DAMS_VERSION" service $ENVIRONMENT
+
 edit fin/uber deployment "$DAMS_REGISTRY/dams-base-service:$DAMS_VERSION" service $ENVIRONMENT
+cork-kube edit --overlay $ENVIRONMENT \
+  -f deployment \
+  -e "\$.spec.template.spec.containers[?(@.name==\"service\")].env[?(@.name==\"K8S_COLLECTION_IMPORT_IMAGE\")].value=$DAMS_REGISTRY/dams-base-service:$DAMS_VERSION" \
+  --replace \
+  -- kustomize/fin/uber
+
 edit fin/workflow deployment "$DAMS_REGISTRY/dams-base-service:$DAMS_VERSION" service $ENVIRONMENT
 edit iiif deployment "$DAMS_REGISTRY/dams-iipimage-server:$DAMS_VERSION" service $ENVIRONMENT
 edit pg-rest deployment "$FIN_REGISTRY/fin-pg-rest:$FIN_VERSION" service $ENVIRONMENT
