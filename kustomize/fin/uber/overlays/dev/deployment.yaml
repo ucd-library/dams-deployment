@@ -13,12 +13,14 @@ spec:
             - name: K8S_NAMESPACE
               value: default
             - name: K8S_PLATFORM
-              value: docker-desktop
+              value: microk8s
             - name: K8S_COLLECTION_IMPORT_IMAGE
               value: us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-base-service:2.3.20
           volumeMounts:
             - mountPath: /etc/fin/k8s-templates
               name: gcs-bucket
+            - name: kubeconfig
+              mountPath: /root/.kube
         - name: gcs-sync
           image: us-west1-docker.pkg.dev/digital-ucdavis-edu/pub/gcs-sync:main
           imagePullPolicy: Always
@@ -41,3 +43,6 @@ spec:
         - name: service-account
           secret:
             secretName: service-account
+        - name: kubeconfig
+          configMap:
+            name: kubeconfig
