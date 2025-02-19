@@ -11,8 +11,6 @@ spec:
     metadata:
       labels:
         app: iiif
-      annotations:
-        gke-gcsfuse/volumes: "true"  
     spec:
       containers:
       - name: service
@@ -36,6 +34,9 @@ spec:
         volumeMounts:
         - name: gcs-fuse
           mountPath: /etc/gcs-fuse/fcrepo/rest
+        - name: service-account
+          mountPath: /etc/fin/service-account.json
+          subPath: service-account.json
       volumes:
       - name: gcs-fuse
         persistentVolumeClaim:
