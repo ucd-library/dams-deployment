@@ -10,7 +10,10 @@
     "dev" : {
       "project" : "ucdlib-dams",
       "platform" : "microk8s",
-      "namespace" : "default"
+      "namespace" : "default",
+      "kubeconfig" : {
+        "secret" : "kubeconfig-dev-microk8s"
+      }
     },
     "sandbox" : {
       "platform" : "gke",

@@ -7,4 +7,4 @@ spec:
     spec:
       containers:
         - name: service
-          image: us-west1-docker.pkg.dev/digital-ucdavis-edu/pub/fin-fcrepo:2.10.0
+          image: us-west1-docker.pkg.dev/digital-ucdavis-edu/pub/fin-fcrepo:2.10.1

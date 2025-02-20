@@ -12,7 +12,7 @@
       {
           "label": "Proxy Dashboard",
           "type": "shell",
-          "command": "cork-kube dashboard proxy",
+          "command": "cork-kube dashboard proxy local-dev",
           "presentation": {
               "echo": true,
               "reveal": "always",
@@ -68,21 +68,7 @@
       {
           "label": "Generate Dashboard Token",
           "type": "shell",
-          "command": "cork-kube dashboard token",
-          "presentation": {
-              "echo": true,
-              "reveal": "always",
-              "focus": false,
-              "panel": "dedicated",
-              "showReuseMessage": false,
-              "clear": false
-          },
-          "problemMatcher": []
-      },
-      {
-          "label": "Proxy Gateway HTTP",
-          "type": "shell",
-          "command": "kubectl port-forward --address=0.0.0.0 svc/gateway 3000:3000",
+          "command": "cork-kube dashboard token local-dev",
           "presentation": {
               "echo": true,
               "reveal": "always",
@@ -96,7 +82,7 @@
       {
         "label": "Proxy Mirror HTTP",
         "type": "shell",
-        "command": "kubectl port-forward svc/binary-mirror 8000:3000",
+        "command": "cork-kube pod port-forward local-dev binary-mirror 8000:3000",
         "presentation": {
             "echo": true,
             "reveal": "always",
@@ -110,7 +96,7 @@
       {
         "label": "Proxy Admin DB",
         "type": "shell",
-        "command": "kubectl port-forward svc/postgres 5432:5432",
+        "command": "cork-kube pod port-forward local-dev postgres 5432:5432",
         "presentation": {
             "echo": true,
             "reveal": "always",
