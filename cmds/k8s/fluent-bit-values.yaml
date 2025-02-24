@@ -82,17 +82,23 @@ config:
         Condition         Key_value_equals level 60
         Set               level CRITICAL
 
-      [FILTER]
+    [FILTER]
         Name              modify
         Match             kube_logs.*
         Condition         Key_value_equals level 60
         Set               level CRITICAL
 
-      [FILTER]
-        Name    lua
-        Match   *
-        Script  /path/to/trim.lua
-        Call    remove_after_dash
+    [FILTER]
+        Name              modify
+        Match             kube_logs.*
+        Condition         Key_value_matches log ^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.*\s+stderr\s+F.*
+        Set               level ERROR
+
+    [FILTER]
+        Name              modify
+        Match             kube_logs.*
+        Condition         Key_value_matches log ^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.*\s+stdout\s+F.*
+        Set               level INFO
 
 
   outputs: |
