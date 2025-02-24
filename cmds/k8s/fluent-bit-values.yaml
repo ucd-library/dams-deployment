@@ -1,0 +1,138 @@
+serviceAccount:
+  create: true
+  name: fluent-bit
+
+env:
+  - name: GOOGLE_APPLICATION_CREDENTIALS
+    value: /etc/fin/service-account.json
+
+config:
+  inputs: |
+    [INPUT]
+        name          kubernetes_events
+        tag           kube_events
+
+    [INPUT]
+        Name        tail
+        Tag_Regex   var.log.containers.(?<pod_name>[a-z0-9](?:[-a-z0-9]*[a-z0-9])?(?:\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*)_(?<namespace_name>[^_]+)_(?<container_name>.+)-(?<docker_id>[a-z0-9]{64})\.log$
+        Tag         kube_logs.<namespace_name>.<pod_name>.<container_name>
+        Path        /var/log/containers/*.log
+        Parser      docker
+        DB          /var/log/fluent-bit-k8s-container.db
+  filters: |
+    # [FILTER]
+    #     Name              parser
+    #     Match             kube_logs.*
+    #     Key_Name          log
+    #     Parser            json
+    # Extract the JSON log inside the "log" property
+
+    [FILTER]
+        Name              parser
+        Match             kube_logs.*
+        Key_Name          log
+        Parser            log_json_extractor
+
+    # Parse the inner Bunyan JSON after extracting it
+    [FILTER]
+        Name              parser
+        Match             kube_logs.*
+        Key_Name          extracted_log
+        Parser            json_bunyan
+
+    [FILTER]
+        Name              type_converter
+        Match             kube_logs.*
+        int_key           level level string
+
+    # Modify 'level' field directly (one condition per filter)
+    [FILTER]
+        Name              modify
+        Match             kube_logs.*
+        Condition         Key_value_equals level 10
+        Set               level TRACE
+
+    [FILTER]
+        Name              modify
+        Match             kube_logs.*
+        Condition         Key_value_equals level 20
+        Set               level DEBUG
+
+    [FILTER]
+        Name              modify
+        Match             kube_logs.*
+        Condition         Key_value_equals level 30
+        Set               level INFO
+
+    [FILTER]
+        Name              modify
+        Match             kube_logs.*
+        Condition         Key_value_equals level 40
+        Set               level WARNING
+
+    [FILTER]
+        Name              modify
+        Match             kube_logs.*
+        Condition         Key_value_equals level 50
+        Set               level ERROR
+
+    [FILTER]
+        Name              modify
+        Match             kube_logs.*
+        Condition         Key_value_equals level 60
+        Set               level CRITICAL
+
+      [FILTER]
+        Name              modify
+        Match             kube_logs.*
+        Condition         Key_value_equals level 60
+        Set               level CRITICAL
+
+      [FILTER]
+        Name    lua
+        Match   *
+        Script  /path/to/trim.lua
+        Call    remove_after_dash
+
+
+  outputs: |
+    [OUTPUT]
+        Name        stackdriver
+        resource    k8s_container
+        Match       kube_logs.*
+        tag_prefix  kube_logs.
+        k8s_cluster_name dams-v2-dev
+        k8s_cluster_location  uc-davis-lib
+        severity_key level
+    
+    [OUTPUT]
+        Name        stackdriver
+        resource    k8s_container
+        Match       kube_events.*
+        tag_prefix  kube_events.
+        k8s_cluster_name dams-v2-dev
+        k8s_cluster_location  uc-davis-lib
+
+  customParsers: |
+    # Extracts the JSON log content from the 'log' field
+    [PARSER]
+        Name   log_json_extractor
+        Format regex
+        Regex  ^[^ ]+ [^ ]+ [^ ]+ (?<extracted_log>\{.*\})$
+    
+    # Parses the extracted Bunyan JSON
+    [PARSER]
+        Name   json_bunyan
+        Format json
+        Time_Key time
+        Time_Format %Y-%m-%dT%H:%M:%S.%LZ
+
+extraVolumeMounts:
+  - name: service-account
+    mountPath: /etc/fin/service-account.json
+    subPath: service-account.json
+
+extraVolumes:
+  - name: service-account
+    secret:
+      secretName: service-account
