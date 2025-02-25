@@ -20,13 +20,6 @@ config:
         Parser      docker
         DB          /var/log/fluent-bit-k8s-container.db
   filters: |
-    # [FILTER]
-    #     Name              parser
-    #     Match             kube_logs.*
-    #     Key_Name          log
-    #     Parser            json
-    # Extract the JSON log inside the "log" property
-
     [FILTER]
         Name              parser
         Match             kube_logs.*
@@ -40,6 +33,8 @@ config:
         Key_Name          extracted_log
         Parser            json_bunyan
 
+    # Convert 'level' field to string, bunyan uses integer
+    # Fluent bit conditionals only support string comparisons
     [FILTER]
         Name              type_converter
         Match             kube_logs.*
@@ -85,18 +80,14 @@ config:
     [FILTER]
         Name              modify
         Match             kube_logs.*
-        Condition         Key_value_equals level 60
-        Set               level CRITICAL
-
-    [FILTER]
-        Name              modify
-        Match             kube_logs.*
+        Condition         Key_does_not_exist level
         Condition         Key_value_matches log ^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.*\s+stderr\s+F.*
         Set               level ERROR
 
     [FILTER]
         Name              modify
         Match             kube_logs.*
+        Condition         Key_does_not_exist level
         Condition         Key_value_matches log ^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.*\s+stdout\s+F.*
         Set               level INFO
 
