@@ -108,6 +108,20 @@
         "problemMatcher": []
       },
       {
+        "label": "Proxy Kibana DB",
+        "type": "shell",
+        "command": "cork-kube pod port-forward local-dev kibana 5601:5601",
+        "presentation": {
+            "echo": true,
+            "reveal": "always",
+            "focus": false,
+            "panel": "dedicated",
+            "showReuseMessage": false,
+            "clear": false
+        },
+        "problemMatcher": []
+      },
+      {
         "label": "Client Watch",
         "type": "shell",
         "command": "cork-kube pod exec local-dev ucd-lib-client -e \"npm  --prefix ./ucd-lib-client run watch\"",

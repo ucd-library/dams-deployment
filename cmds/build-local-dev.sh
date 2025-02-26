@@ -9,6 +9,9 @@ if [[ -z "$VERSION" ]]; then
   VERSION="sandbox"
 fi
 
+docker pull redis:3.2
+
+
 cork-kube build exec \
   -p dams \
   -v $VERSION \

@@ -222,6 +222,9 @@
       }
     },
     {
+      "path" : "kustomize/kibana"
+    },
+    {
       "path" : "kustomize/pg-rest",
       "environments" : {
         "local-dev" : {
