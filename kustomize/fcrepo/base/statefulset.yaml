@@ -30,6 +30,24 @@ spec:
         ports:
         - containerPort: 8080
         - containerPort: 5672
+        readinessProbe:
+          httpGet:
+            path: /fcrepo/rest
+            port: 8080
+            httpHeaders:
+            - name: Authorization
+              value: Basic ZmVkb3JhQWRtaW46ZmVkb3JhQWRtaW4=
+          initialDelaySeconds: 10
+          periodSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /fcrepo/rest
+            port: 8080
+            httpHeaders:
+            - name: Authorization
+              value: Basic ZmVkb3JhQWRtaW46ZmVkb3JhQWRtaW4=
+          initialDelaySeconds: 15
+          periodSeconds: 20
       volumes:
       - name: ocfl-volume
         persistentVolumeClaim:
