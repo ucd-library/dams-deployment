@@ -31,65 +31,27 @@ config:
         Name              parser
         Match             kube_logs.*
         Key_Name          extracted_log
-        Parser            json_bunyan
+        Parser            json_ucdlib
 
-    # Convert 'level' field to string, bunyan uses integer
-    # Fluent bit conditionals only support string comparisons
-    [FILTER]
-        Name              type_converter
-        Match             kube_logs.*
-        int_key           level level string
-
-    # Modify 'level' field directly (one condition per filter)
-    [FILTER]
-        Name              modify
-        Match             kube_logs.*
-        Condition         Key_value_equals level 10
-        Set               level TRACE
 
     [FILTER]
         Name              modify
         Match             kube_logs.*
-        Condition         Key_value_equals level 20
-        Set               level DEBUG
+        Remove            container_name
 
     [FILTER]
         Name              modify
         Match             kube_logs.*
-        Condition         Key_value_equals level 30
-        Set               level INFO
-
-    [FILTER]
-        Name              modify
-        Match             kube_logs.*
-        Condition         Key_value_equals level 40
-        Set               level WARNING
-
-    [FILTER]
-        Name              modify
-        Match             kube_logs.*
-        Condition         Key_value_equals level 50
-        Set               level ERROR
-
-    [FILTER]
-        Name              modify
-        Match             kube_logs.*
-        Condition         Key_value_equals level 60
-        Set               level CRITICAL
-
-    [FILTER]
-        Name              modify
-        Match             kube_logs.*
-        Condition         Key_does_not_exist level
+        Condition         Key_does_not_exist severity
         Condition         Key_value_matches log ^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.*\s+stderr\s+F.*
-        Set               level ERROR
+        Set               severity ERROR
 
     [FILTER]
         Name              modify
         Match             kube_logs.*
-        Condition         Key_does_not_exist level
+        Condition         Key_does_not_exist severity
         Condition         Key_value_matches log ^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.*\s+stdout\s+F.*
-        Set               level INFO
+        Set               severity INFO
 
 
   outputs: |
@@ -100,7 +62,7 @@ config:
         tag_prefix  kube_logs.
         k8s_cluster_name dams-v2-dev
         k8s_cluster_location  uc-davis-lib
-        severity_key level
+        severity_key severity
     
     [OUTPUT]
         Name        stackdriver
@@ -119,7 +81,7 @@ config:
     
     # Parses the extracted Bunyan JSON
     [PARSER]
-        Name   json_bunyan
+        Name   json_ucdlib
         Format json
         Time_Key time
         Time_Format %Y-%m-%dT%H:%M:%S.%LZ
