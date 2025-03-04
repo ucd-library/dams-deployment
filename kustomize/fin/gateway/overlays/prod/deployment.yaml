@@ -6,7 +6,7 @@ spec:
     spec:
       containers:
         - name: service
-          image: us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-base-service:2.3.23
+          image: us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-base-service:2.4.1
           env:
             - name: FIN_METRICS_EXPORT_GC
               value: 'true'
@@ -32,7 +32,9 @@ spec:
             - name: FIN_MIRROR_FILE_DOWNLOAD
               value: \.(tiff|tif|pdf)$
           volumeMounts:
-            - mountPath: /etc/fin/certs/sandbox.dams.library.ucdavis.edu
+            - mountPath: /etc/fin/certs/dev.dams.library.ucdavis.edu
+              name: dams-wildcard-ssl
+            - mountPath: /etc/fin/certs/digital.ucdavis.edu
               name: dams-ssl
       nodeSelector:
         intendedfor: scalable-pool
@@ -40,3 +42,6 @@ spec:
         - name: dams-ssl
           secret:
             secretName: dams-ssl
+        - name: dams-wildcard-ssl
+          secret:
+            secretName: dams-wildcard-ssl

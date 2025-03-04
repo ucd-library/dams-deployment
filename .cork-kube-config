@@ -113,13 +113,13 @@
         }]
       },
       {
-        "k8sName" : "dams-ssl",
+        "k8sName" : "dams-wildcard-ssl",
         "mappings" : [{
-          "gcsmName" : "dams-ssl-cert",
+          "gcsmName" : "dams-wildcard-ssl-cert",
           "k8sProperty" : "dams-ssl.crt"
         },
         {
-          "gcsmName" : "dams-ssl-key",
+          "gcsmName" : "dams-wildcard-ssl-key",
           "k8sProperty" : "dams-ssl.key"
         }]
     }],
@@ -145,6 +145,17 @@
         },
         {
           "gcsmName" : "dams-ssl-key",
+          "k8sProperty" : "dams-ssl.key"
+        }]
+      },
+      {
+        "k8sName" : "dams-wildcard-ssl",
+        "mappings" : [{
+          "gcsmName" : "dams-wildcard-ssl-cert",
+          "k8sProperty" : "dams-ssl.crt"
+        },
+        {
+          "gcsmName" : "dams-wildcard-ssl-key",
           "k8sProperty" : "dams-ssl.key"
         }]
       },
