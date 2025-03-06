@@ -6,6 +6,11 @@ spec:
   selector:
     matchLabels:
       app: fin-service-deployment
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 2
   template:
     metadata:
       labels:

@@ -9,7 +9,7 @@ spec:
     spec:
       containers:
         - name: service
-          image: us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-base-service:2.4.1
+          image: us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-base-service:2.4.4
           env:
             - name: K8S_ENABLED
               value: 'true'
@@ -20,7 +20,7 @@ spec:
             - name: K8S_REGION
               value: us-west1-b
             - name: K8S_COLLECTION_IMPORT_IMAGE
-              value: us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-base-service:2.4.1
+              value: us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-base-service:2.4.4
           volumeMounts:
             - name: gcs-kustomize-templates-fuse
               mountPath: /etc/fin/k8s-templates
