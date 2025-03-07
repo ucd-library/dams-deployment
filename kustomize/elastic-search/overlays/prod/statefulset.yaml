@@ -8,4 +8,4 @@ spec:
       containers:
         - name: elasticsearch
           image: >-
-            us-west1-docker.pkg.dev/digital-ucdavis-edu/pub/fin-elastic-search:2.11.2
+            us-west1-docker.pkg.dev/digital-ucdavis-edu/pub/fin-elastic-search:2.11.3
