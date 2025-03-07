@@ -98,6 +98,8 @@ else
 fi
 
 if [[ "$ENVIRONMENT" == "prod" ]]; then
+  echo ""
+  echo "Syncing kustomize templates to GCS"
   $ROOT_DIR/sync-kustomize-gcs.sh
 fi
 
