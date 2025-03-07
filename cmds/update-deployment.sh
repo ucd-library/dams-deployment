@@ -5,6 +5,8 @@ set -e
 ENVIRONMENT=$1
 DAMS_VERSION=$2
 
+ROOT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+
 ALLOWED_ENVIRONMENTS=("dev" "sandbox" "prod")
 
 FIN_REGISTRY="us-west1-docker.pkg.dev/digital-ucdavis-edu/pub"
@@ -93,6 +95,10 @@ if [[ "$COMMIT_CHANGES" == "y" ]]; then
 else
   echo ""
   echo "Changes not committed to git."
+fi
+
+if [[ "$ENVIRONMENT" == "prod" ]]; then
+  $ROOT_DIR/sync-kustomize-gcs.sh
 fi
 
 echo ""
