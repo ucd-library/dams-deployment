@@ -280,7 +280,8 @@
       "group" : "fin",
       "environments" : {
         "local-dev" : {
-          "template" : ["local-dev", "fin"]
+          "template" : ["local-dev", "fin"],
+          "sourceMount" : "kustomize/src-mounts/client.json"
         }
       }
     },

@@ -97,7 +97,7 @@ else
   echo "Changes not committed to git."
 fi
 
-if [[ "$ENVIRONMENT" == "prod" ]]; then
+if [[ "$COMMIT_CHANGES" == "y" && "$ENVIRONMENT" == "prod" ]]; then
   echo ""
   echo "Syncing kustomize templates to GCS"
   $ROOT_DIR/sync-kustomize-gcs.sh
