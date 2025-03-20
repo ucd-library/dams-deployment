@@ -1,0 +1,9 @@
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: important-job-pdb
+spec:
+  minAvailable: 1  # Ensures at least one pod is always running
+  selector:
+    matchLabels:
+      type: import-job

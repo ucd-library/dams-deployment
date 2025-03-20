@@ -5,12 +5,15 @@ metadata:
 spec:
   backoffLimit: 0
   template:
+    metadata:
+      labels:
+        type: import-job
     spec:
       restartPolicy: Never
       containers:
         - name: importer
           imagePullPolicy: Always
-          image: us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-base-service:2.4.10
+          image: us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-base-service:2.4.12
           command:
             - /bin/bash
             - '-c'
@@ -21,7 +24,7 @@ spec:
             - name: GCS_BINARY_BACKUP_BUCKET
               value: dams-collections-binary-backups
             - name: FIN_URL
-              value: https://dev.dams.library.ucdavis.edu
+              value: https://digital.ucdavis.edu
             - name: ROOT_DIR
               value: /data
           volumeMounts:
