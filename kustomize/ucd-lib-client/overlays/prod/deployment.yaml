@@ -7,4 +7,4 @@ spec:
     spec:
       containers:
         - name: service
-          image: us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-base-service:2.4.12
+          image: us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-base-service:2.4.13
