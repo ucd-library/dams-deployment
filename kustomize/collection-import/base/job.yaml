@@ -13,7 +13,7 @@ spec:
       containers:
         - name: importer
           imagePullPolicy: Always
-          image: us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-base-service:2.4.16
+          image: us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-base-service:2.4.17
           command:
             - /bin/bash
             - '-c'
