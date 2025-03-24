@@ -9,3 +9,8 @@ spec:
         - name: service
           image: us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-base-service:local-dev
           # command: ["bash", "-c", "tail -f /dev/null"]
+          env:
+            - name: GA4_ENABLE_STATS
+              value: "true"
+            - name: GA4_MEASUREMENT_ID
+              value: G-7NK2P5743B
