@@ -34,7 +34,7 @@
   "serviceTemplates" : {
     "fin" : {
       "sourceMount" : "kustomize/src-mounts/base-service.json",
-      "edit" : {"jsonpath": "spec.template.spec.containers[*].image", "value": "localhost/local-dev/dams-base-service:sandbox"}
+      "edit" : {"jsonpath": "spec.template.spec.containers[*].image", "value": "${__LOCAL_DEV_REGISTRY}/dams-base-service:sandbox"}
     },
     "local-dev" : {
       "localDev" : true,
@@ -212,7 +212,7 @@
       "environments" : {
         "local-dev" : {
           "template" : "local-dev",
-          "edit" : {"jsonpath": "spec.template.spec.containers[*].image", "value": "localhost/local-dev/fin-fcrepo:sandbox"}
+          "edit" : {"jsonpath": "spec.template.spec.containers[*].image", "value": "${__LOCAL_DEV_REGISTRY}/fin-fcrepo:sandbox"}
         }
       }
     },
@@ -228,7 +228,7 @@
       "environments" : {
         "local-dev" : {
           "template" : "local-dev",
-          "edit" : {"jsonpath": "spec.template.spec.containers[*].image", "value": "localhost/local-dev/fin-elastic-search:sandbox"}
+          "edit" : {"jsonpath": "spec.template.spec.containers[*].image", "value": "${__LOCAL_DEV_REGISTRY}/fin-elastic-search:sandbox"}
         }
       }
     },
@@ -240,7 +240,7 @@
       "environments" : {
         "local-dev" : {
           "template" : "local-dev",
-          "edit" : {"jsonpath": "spec.template.spec.containers[*].image", "value": "localhost/local-dev/fin-pg-rest:sandbox"}
+          "edit" : {"jsonpath": "spec.template.spec.containers[*].image", "value": "${__LOCAL_DEV_REGISTRY}/fin-pg-rest:sandbox"}
         }
       }
     },
@@ -249,7 +249,7 @@
       "environments" : {
         "local-dev" : {
           "template" : "local-dev",
-          "edit" : {"jsonpath": "spec.template.spec.containers[*].image", "value": "localhost/local-dev/fin-postgres:sandbox"}
+          "edit" : {"jsonpath": "spec.template.spec.containers[*].image", "value": "${__LOCAL_DEV_REGISTRY}/fin-postgres:sandbox"}
         }
       }
     },
@@ -258,7 +258,7 @@
       "environments" : {
         "local-dev" : {
           "template" : "local-dev",
-          "edit" : {"jsonpath": "spec.template.spec.containers[*].image", "value": "localhost/local-dev/fin-rabbitmq:sandbox"}
+          "edit" : {"jsonpath": "spec.template.spec.containers[*].image", "value": "${__LOCAL_DEV_REGISTRY}/fin-rabbitmq:sandbox"}
         }
       }
     },
@@ -292,7 +292,7 @@
         "local-dev" : {
           "template" : ["local-dev", "fin"],
           "edit" : [
-            {"jsonpath": "spec.template.spec.containers[*].env[?(@.name=='K8S_COLLECTION_IMPORT_IMAGE')].value", "value": "localhost/local-dev/dams-base-service:sandbox"},
+            {"jsonpath": "spec.template.spec.containers[*].env[?(@.name=='K8S_COLLECTION_IMPORT_IMAGE')].value", "value": "${__LOCAL_DEV_REGISTRY}/dams-base-service:sandbox"},
             {"jsonpath": "spec.template.spec.containers[*].env[?(@.name=='K8S_COLLECTION_IMPORT_LOCAL_DEV_HOST_PATH')].value", "value": "${__DIRNAME}/collection-import"}
           ],
           "sourceMount" : "kustomize/src-mounts/collection-import.json"
@@ -323,7 +323,7 @@
       "environments" : {
         "local-dev" : {
           "template" : "local-dev",
-          "edit" : {"jsonpath": "spec.template.spec.containers[*].image", "value": "localhost/local-dev/dams-base-service:sandbox"},
+          "edit" : {"jsonpath": "spec.template.spec.containers[*].image", "value": "${__LOCAL_DEV_REGISTRY}/dams-base-service:sandbox"},
           "sourceMount" : [
             "kustomize/src-mounts/client.json",
             "kustomize/src-mounts/base-service.json"
@@ -337,7 +337,7 @@
       "environments" : {
         "local-dev" : {
           "template" : "local-dev",
-          "edit": {"jsonpath": "spec.template.spec.containers[*].image", "value": "localhost/local-dev/dams-iipimage-server:sandbox"}
+          "edit": {"jsonpath": "spec.template.spec.containers[*].image", "value": "${__LOCAL_DEV_REGISTRY}/dams-iipimage-server:sandbox"}
         }
       }
     },
@@ -347,7 +347,7 @@
         "local-dev" : {
           "template" : ["local-dev"],
           "sourceMount" : "kustomize/src-mounts/base-service.json",
-          "edit": {"jsonpath": "spec.template.spec.containers[*].image", "value": "localhost/local-dev/dams-init:sandbox"}
+          "edit": {"jsonpath": "spec.template.spec.containers[*].image", "value": "${__LOCAL_DEV_REGISTRY}/dams-init:sandbox"}
         }
       }
     },
