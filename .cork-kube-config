@@ -79,7 +79,7 @@
       {
         "k8sName" : "service-account",
         "mappings" : [{
-          "gcsmName" : "local-dev-service-account",
+          "gcsmName" : "production-service-account",
           "k8sProperty" : "service-account.json"
         }]
       },

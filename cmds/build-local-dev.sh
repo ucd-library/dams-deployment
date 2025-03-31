@@ -15,5 +15,4 @@ docker pull redis:3.2
 cork-kube build exec \
   -p dams \
   -v $VERSION \
-  --no-cache-from \
   -o sandbox $DEPTH 
