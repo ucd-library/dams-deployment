@@ -77,11 +77,11 @@ cork-kube edit --overlay $ENVIRONMENT \
   -- kustomize/fin/uber
 
 edit fin/workflow deployment "$DAMS_REGISTRY/dams-base-service:$DAMS_VERSION" service $ENVIRONMENT
-cork-kube edit --overlay $ENVIRONMENT \
-  -f deployment \
-  -e "\$.spec.template.spec.containers[?(@.name==\"service\")].env[?(@.name==\"IMAGE_UTILS_SERVICE_CONTAINER\")].value=us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-image-utils/dams-image-utils:$DAMS_VERSION" \
-  --replace \
-  -- kustomize/fin/workflow
+# cork-kube edit --overlay $ENVIRONMENT \
+#   -f deployment \
+#   -e "\$.spec.template.spec.containers[?(@.name==\"service\")].env[?(@.name==\"IMAGE_UTILS_SERVICE_CONTAINER\")].value=us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-image-utils:$DAMS_VERSION" \
+#   --replace \
+#   -- kustomize/fin/workflow
 
 edit iiif deployment "$DAMS_REGISTRY/dams-iipimage-server:$DAMS_VERSION" service $ENVIRONMENT
 edit pg-rest deployment "$FIN_REGISTRY/fin-pg-rest:$FIN_VERSION" service $ENVIRONMENT

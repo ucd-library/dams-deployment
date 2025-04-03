@@ -10,4 +10,4 @@ spec:
           env:
             - name: IMAGE_UTILS_SERVICE_CONTAINER
               value: >-
-                us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-image-utils/dams-image-utils:2.4.24
+                us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-image-utils:2.4.22
