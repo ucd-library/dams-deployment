@@ -6,8 +6,7 @@ spec:
     spec:
       containers:
         - name: service
-          image: us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-base-service:2.4.25
+          image: us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-base-service:2.4.26
           env:
             - name: IMAGE_UTILS_SERVICE_CONTAINER
-              value: >-
-                us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-image-utils/dams-image-utils:2.4.24
+              value: us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-image-utils:2.4.22
