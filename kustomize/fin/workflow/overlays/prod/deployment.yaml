@@ -10,3 +10,7 @@ spec:
           env:
             - name: IMAGE_UTILS_SERVICE_CONTAINER
               value: us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-image-utils:2.4.22
+            - name: WORKFLOW_ENV
+              value: prod
+            - name: IMAGE_UTILS_SERVICE_URL
+              value: https://dams-image-utils-prod-834298256607.us-west1.run.app

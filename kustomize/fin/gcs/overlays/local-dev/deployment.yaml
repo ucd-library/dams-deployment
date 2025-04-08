@@ -1,0 +1,12 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gcs
+spec:
+  template:
+    spec:
+      containers:
+        - name: service
+          env:
+            - name: GCS_CLIENT_MEDIA_BUCKET
+              value: dams-client-media-sandbox
