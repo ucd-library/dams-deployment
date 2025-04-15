@@ -345,7 +345,7 @@
       "path" : "kustomize/fin/init",
       "environments" : {
         "local-dev" : {
-          "template" : ["local-dev", "fin"],
+          "template" : ["local-dev"],
           "sourceMount" : "kustomize/src-mounts/base-service.json",
           "edit": {"jsonpath": "spec.template.spec.containers[*].image", "value": "${__LOCAL_DEV_REGISTRY}/dams-init:sandbox"}
         }
