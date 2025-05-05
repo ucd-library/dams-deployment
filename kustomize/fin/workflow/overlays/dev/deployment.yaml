@@ -6,11 +6,11 @@ spec:
     spec:
       containers:
         - name: service
-          image: us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-base-service:2.5.0
+          image: us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-base-service:2.5.1
           env:
             - name: IMAGE_UTILS_SERVICE_CONTAINER
-              value: us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-image-utils:2.4.22
+              value: us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-image-utils:2.5.1
             - name: WORKFLOW_ENV
-              value: sandbox
+              value: dev
             - name: IMAGE_UTILS_SERVICE_URL
-              value: https://dams-image-utils-sandbox-fga4yw7psa-uc.a.run.app
+              value: https://dams-image-utils-dev-834298256607.us-west1.run.app

@@ -51,6 +51,19 @@
       "kubeconfig" : true
     },
     {
+      "k8sName" : "dams-tls",
+      "tls" : true,
+      "certGcsmName" : "dams-wildcard-ssl-cert",
+      "keyGcsmName" : "dams-wildcard-ssl-key"
+    },
+    {
+      "k8sName" : "dashboard-tls",
+      "namespace" : "kube-system",
+      "tls" : true,
+      "certGcsmName" : "dams-wildcard-ssl-cert",
+      "keyGcsmName" : "dams-wildcard-ssl-key"
+    },
+    {
       "k8sName" : "env-config",
       "mappings" : [{
         "gcsmName" : "dev-env",
