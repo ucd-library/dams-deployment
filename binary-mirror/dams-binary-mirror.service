@@ -1,0 +1,13 @@
+[Unit]
+Description=DAMS Binary Mirror
+After=network.target docker.service
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/dams-deployment
+ExecStart=/usr/local/bin/docker compose -f /opt/dams-deployment/binary-mirror/compose.yaml up
+ExecStop=/usr/local/bin/docker compose -f /opt/dams-deployment/binary-mirror/compose.yaml down
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

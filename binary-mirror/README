@@ -1,0 +1,16 @@
+dams-binary-mirror.service is a sample script that can be used to register systemd cmds
+
+## Systemd Files
+
+Clone this repository to `/opt/dams-deployment`:
+
+```
+cd /opt/dams-deployment
+sudo systemctl enable /opt/dams-deployment/binary-mirror/dams-binary-mirror.service
+```
+
+Then
+
+```bash
+> sudo service dams-binary-mirror [start|stop] 
+```
