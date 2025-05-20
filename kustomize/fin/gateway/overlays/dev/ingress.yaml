@@ -14,10 +14,10 @@ spec:
   ingressClassName: nginx
   tls:
   - hosts:
-    - dev-v2.dams.library.ucdavis.edu
+    - dev.dams.library.ucdavis.edu
     secretName: dams-tls
   rules:
-  - host: dev-v2.dams.library.ucdavis.edu
+  - host: dev.dams.library.ucdavis.edu
     http:
       paths:
       - path: /
