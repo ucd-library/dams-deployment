@@ -22,6 +22,7 @@
   "laben" : "4Gi",
   "lantern_slides" : "6Gi",
   "lug_labels" : "245Gi",
+  "mammoth" : "5Gi",
   "mckinnon-ruble" : "2Gi",
   "mudd-mapes" : "2Gi",
   "nps" : "10Gi",
@@ -33,9 +34,11 @@
   "roth" : "2Gi",
   "robinson" : "235Gi",
   "salt_springs" : "2Gi",
+  "sierra_diary" : "3Gi",
   "sherry-lehmann" : "105Gi",
   "slater" : "8Gi",
   "trafton-crane" : "20Gi",
+  "tule_baseball" : "8Gi",
   "wbs" : "10Gi",
   "yearbooks" : "750Gi"
 }

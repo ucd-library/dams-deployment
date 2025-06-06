@@ -1,0 +1,19 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: import-tule-baseball
+spec:
+  template:
+    spec:
+      containers:
+      - name: importer
+        env:
+          - name: COLLECTION_NAME
+            value: tule_baseball
+        volumeMounts:
+        - name: import-volume
+          mountPath: /data
+      volumes:
+      - name: import-volume
+        persistentVolumeClaim:
+          claimName: import-tule-baseball-volume-claim
