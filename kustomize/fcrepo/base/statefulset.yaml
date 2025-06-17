@@ -48,10 +48,6 @@ spec:
               value: Basic ZmVkb3JhQWRtaW46ZmVkb3JhQWRtaW4=
           initialDelaySeconds: 15
           periodSeconds: 20
-      volumes:
-      - name: ocfl-volume
-        persistentVolumeClaim:
-          claimName: ocfl-volume-claim
   volumeClaimTemplates:
     - metadata:
         name: activemq-volume

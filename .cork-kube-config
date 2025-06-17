@@ -193,6 +193,9 @@
         "dev" : {
           "template" : "dev",
           "edit" : {"jsonpath": "spec.hostPath.path", "value": "/microk8s/volumes/ocfl-volume"}
+        },
+        "prod" : {
+          "ignore" : true
         }
       }
     },
@@ -203,6 +206,9 @@
           "ignore" : true
         },
         "dev" : {
+          "ignore" : true
+        },
+        "prod" : {
           "ignore" : true
         }
       }

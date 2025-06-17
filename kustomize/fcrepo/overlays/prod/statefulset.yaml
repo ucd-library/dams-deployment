@@ -8,3 +8,8 @@ spec:
       containers:
         - name: service
           image: us-west1-docker.pkg.dev/digital-ucdavis-edu/pub/fin-fcrepo:2.11.10
+      volumes:
+        - name: ocfl-volume
+          gcePersistentDisk:
+            pdName: ocfl-volume
+            fsType: ext4

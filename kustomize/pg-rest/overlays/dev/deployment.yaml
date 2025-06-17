@@ -7,4 +7,4 @@ spec:
     spec:
       containers:
         - name: service
-          image: us-west1-docker.pkg.dev/digital-ucdavis-edu/pub/fin-pg-rest:2.11.10
+          image: us-west1-docker.pkg.dev/digital-ucdavis-edu/pub/fin-pg-rest:2.12.0

@@ -38,9 +38,9 @@ spec:
         - name: env-config
           mountPath: /etc/fin/.env
           subPath: .env
-        - name: ocfl-volume
-          mountPath: /data
-          readOnly: true
+        # - name: ocfl-volume
+        #   mountPath: /data
+        #   readOnly: true
         readinessProbe:
           httpGet:
             path: /health/ready
@@ -56,7 +56,7 @@ spec:
       - name: env-config
         secret:
           secretName: env-config
-      - name: ocfl-volume
-        persistentVolumeClaim:
-          claimName: ocfl-volume-claim
-          readOnly: true
+      # - name: ocfl-volume
+      #   persistentVolumeClaim:
+      #     claimName: ocfl-volume-claim
+      #     readOnly: true

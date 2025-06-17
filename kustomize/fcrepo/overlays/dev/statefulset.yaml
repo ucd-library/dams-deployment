@@ -7,4 +7,8 @@ spec:
     spec:
       containers:
         - name: service
-          image: us-west1-docker.pkg.dev/digital-ucdavis-edu/pub/fin-fcrepo:2.11.10
+          image: us-west1-docker.pkg.dev/digital-ucdavis-edu/pub/fin-fcrepo:2.12.0
+      volumes:
+        - name: ocfl-volume
+          persistentVolumeClaim:
+            claimName: ocfl-volume-claim
