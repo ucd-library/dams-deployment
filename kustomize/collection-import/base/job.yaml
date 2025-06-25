@@ -19,14 +19,13 @@ spec:
             - '-c'
             - /collection-import/import.sh
           env:
-            - name: GOOGLE_APPLICATION_CREDENTIALS
-              value: /etc/fin/service-account.json
-            - name: GCS_BINARY_BACKUP_BUCKET
-              value: dams-collections-binary-backups
             - name: FIN_URL
               value: https://digital.ucdavis.edu
             - name: ROOT_DIR
               value: /data
+          envFrom:
+            - configMapRef:
+                name: app-config
           volumeMounts:
             - name: service-account
               mountPath: /etc/fin/service-account.json

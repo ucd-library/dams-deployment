@@ -26,11 +26,9 @@ spec:
           requests:
             memory: "200Mi"
             cpu: "200m"
-        env:
-        - name: FIN_METRICS_ENABLED
-          value: "false"
-        - name: GOOGLE_APPLICATION_CREDENTIALS
-          value: /etc/fin/service-account.json
+        envFrom:
+        - configMapRef:
+            name: app-config
         volumeMounts:
         - name: service-account
           mountPath: /etc/fin/service-account.json

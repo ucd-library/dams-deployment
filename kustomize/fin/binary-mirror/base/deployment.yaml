@@ -24,8 +24,6 @@ spec:
           value: "mirror-rsync"
         - name: FCREPO_HOST
           value: "http://dams.local:3000"
-        - name: OIDC_BASE_URL
-          value: "https://auth.library.ucdavis.edu/realms/dams"
         - name: SERVICE_ACCOUNT_NAME
           value: "binary-mirror-service-account"
         - name: SERVICE_ACCOUNT_SECRET
@@ -38,6 +36,9 @@ spec:
             secretKeyRef:
               name: binary-mirror-message-key
               key: secret
+        envFrom:
+        - configMapRef:
+            name: app-config
       volumes:
       - name: env-config
         secret:
