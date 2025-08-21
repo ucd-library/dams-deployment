@@ -15,6 +15,13 @@
         "secret" : "kubeconfig-dev-microk8s"
       }
     },
+    "dev-libk8s" : {
+      "alias" : "dev",
+      "kubeconfig" : {
+        "secret" : "kubeconfig-dev-libk8s",
+        "context" : "microk8s"
+      }
+    },
     "sandbox" : {
       "platform" : "gke",
       "namespace" : "default",
