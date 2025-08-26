@@ -49,6 +49,9 @@
     },
     "dev" : {
       "overlay" : ["dev"]
+    },
+    "dev-libk8s" : {
+      "overlay" : ["dev-libk8s", "dev"]
     }
   },
 

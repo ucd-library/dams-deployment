@@ -9,6 +9,8 @@ ROOT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 ALLOWED_ENVIRONMENTS=("dev" "sandbox" "prod")
 
+LIBRARY_DEV_K8S="dev-libk8s"
+
 FIN_REGISTRY="us-west1-docker.pkg.dev/digital-ucdavis-edu/pub"
 DAMS_REGISTRY="us-west1-docker.pkg.dev/ucdlib-dams/pub"
 DAMS_BUILD_REGISTRY_URL="https://raw.githubusercontent.com/ucd-library/cork-build-registry/refs/heads/main/repositories/dams.json"
@@ -87,6 +89,12 @@ edit iiif deployment "$DAMS_REGISTRY/dams-iipimage-server:$DAMS_VERSION" service
 edit pg-rest deployment "$FIN_REGISTRY/fin-pg-rest:$FIN_VERSION" service $ENVIRONMENT
 edit postgres statefulset "$FIN_REGISTRY/fin-postgres:$FIN_VERSION" database $ENVIRONMENT
 edit ucd-lib-client deployment "$DAMS_REGISTRY/dams-base-service:$DAMS_VERSION" service $ENVIRONMENT
+
+if [[ "$ENVIRONMENT" == "dev" ]]; then
+  edit elastic-search statefulset "$FIN_REGISTRY/fin-elastic-search:$FIN_VERSION" elasticsearch $LIBRARY_DEV_K8S
+  edit fcrepo statefulset "$FIN_REGISTRY/fin-fcrepo:$FIN_VERSION" service $LIBRARY_DEV_K8S
+  edit postgres statefulset "$FIN_REGISTRY/fin-postgres:$FIN_VERSION" database $LIBRARY_DEV_K8S
+fi
 
 echo ""
 read -p "Would you like to commit the changes to git? (y/n): " COMMIT_CHANGES
