@@ -1,0 +1,19 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: import-hall-ada
+spec:
+  template:
+    spec:
+      containers:
+      - name: importer
+        env:
+          - name: COLLECTION_NAME
+            value: hall-ada
+        volumeMounts:
+        - name: import-volume
+          mountPath: /data
+      volumes:
+      - name: import-volume
+        persistentVolumeClaim:
+          claimName: import-hall-ada-volume-claim

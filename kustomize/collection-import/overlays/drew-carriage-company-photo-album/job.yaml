@@ -1,0 +1,19 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: import-drew-carriage-company-photo-album
+spec:
+  template:
+    spec:
+      containers:
+      - name: importer
+        env:
+          - name: COLLECTION_NAME
+            value: drew-carriage-company-photo-album
+        volumeMounts:
+        - name: import-volume
+          mountPath: /data
+      volumes:
+      - name: import-volume
+        persistentVolumeClaim:
+          claimName: import-drew-carriage-company-photo-album-volume-claim
