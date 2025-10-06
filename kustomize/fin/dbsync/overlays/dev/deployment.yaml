@@ -7,7 +7,7 @@ spec:
     spec:
       containers:
         - name: service
-          image: us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-base-service:2.6.6
+          image: us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-base-service:2.6.7
           env:
             - name: FIN_METRICS_EXPORT_GC
               value: 'true'
