@@ -90,6 +90,8 @@ edit pg-rest deployment "$FIN_REGISTRY/fin-pg-rest:$FIN_VERSION" service $ENVIRO
 edit postgres statefulset "$FIN_REGISTRY/fin-postgres:$FIN_VERSION" database $ENVIRONMENT
 edit ucd-lib-client deployment "$DAMS_REGISTRY/dams-base-service:$DAMS_VERSION" service $ENVIRONMENT
 
+edit image-prepuller daemonset "$DAMS_REGISTRY/dams-base-service:$DAMS_VERSION" prepuller-dams-base $ENVIRONMENT
+
 if [[ "$ENVIRONMENT" == "dev" ]]; then
   edit elastic-search statefulset "$FIN_REGISTRY/fin-elastic-search:$FIN_VERSION" elasticsearch $LIBRARY_DEV_K8S
   edit fcrepo statefulset "$FIN_REGISTRY/fin-fcrepo:$FIN_VERSION" service $LIBRARY_DEV_K8S

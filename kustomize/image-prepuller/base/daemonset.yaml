@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: image-prepuller
+spec:
+  selector:
+    matchLabels:
+      app: image-prepuller
+  template:
+    metadata:
+      labels:
+        app: image-prepuller
+    spec:
+      initContainers:
+        - name: prepuller-dams-base
+          image: us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-base-service:sandbox
+          command:
+            - sh
+            - '-c'
+            - 'true'
+      containers:
+        - name: pause
+          image: gcr.io/google_containers/pause:3.2

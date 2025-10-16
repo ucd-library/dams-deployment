@@ -1,0 +1,13 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: prepuller
+spec:
+  template:
+    spec:
+      containers:
+        - name: prepuller-dams-base
+          image: us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-base-service:2.6.9
+        - name: prepuller-fin-base
+          image: >-
+            us-west1-docker.pkg.dev/digital-ucdavis-edu/pub/fin-base-service:sandbox

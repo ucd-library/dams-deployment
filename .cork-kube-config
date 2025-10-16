@@ -264,6 +264,9 @@
     {
       "path" : "kustomize/kibana"
     },
+       {
+      "path" : "kustomize/image-prepuller"
+    },
     {
       "path" : "kustomize/pg-rest",
       "environments" : {
