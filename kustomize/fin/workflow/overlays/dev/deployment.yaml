@@ -6,10 +6,10 @@ spec:
     spec:
       containers:
         - name: service
-          image: us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-base-service:2.6.9
+          image: us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-base-service:2.7.0
           env:
             - name: IMAGE_UTILS_SERVICE_CONTAINER
-              value: us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-image-utils:2.6.9
+              value: us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-image-utils:2.7.0
             - name: WORKFLOW_ENV
               value: dev
             - name: IMAGE_UTILS_SERVICE_URL

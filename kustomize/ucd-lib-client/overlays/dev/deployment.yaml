@@ -7,11 +7,15 @@ spec:
     spec:
       containers:
         - name: service
-          image: us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-base-service:2.6.9
+          image: us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-base-service:2.7.0
           env:
             - name: GA4_ENABLE_STATS
               value: 'true'
             - name: GA4_MEASUREMENT_ID
               value: G-7NK2P5743B
             - name: ITEM_TEXT_FIELDS
-              value: "name.punctuation_insensitive, name.stem, @graph.description.stem, @graph.identifier.stem, @graph.about.stem, @graph.keywords, @graph.alternativeHeadline, @graph.indexableContent"
+              value: >-
+                name.punctuation_insensitive, name.stem,
+                @graph.description.stem, @graph.identifier.stem,
+                @graph.about.stem, @graph.keywords, @graph.alternativeHeadline,
+                @graph.indexableContent
