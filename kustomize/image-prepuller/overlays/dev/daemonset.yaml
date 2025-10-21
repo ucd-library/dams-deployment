@@ -7,4 +7,4 @@ spec:
     spec:
       initContainers:
         - name: prepuller-dams-base
-          image: us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-base-service:2.7.1
+          image: us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-base-service:2.7.2
