@@ -10,5 +10,5 @@ spec:
     spec:
       containers:
         - name: service
-          image: us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-iipimage-server:2.6.9
+          image: us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-iipimage-server:2.7.2
       serviceAccountName: dams-production

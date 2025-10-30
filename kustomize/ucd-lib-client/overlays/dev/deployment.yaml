@@ -13,9 +13,3 @@ spec:
               value: 'true'
             - name: GA4_MEASUREMENT_ID
               value: G-7NK2P5743B
-            - name: ITEM_TEXT_FIELDS
-              value: >-
-                name.punctuation_insensitive, name.stem,
-                @graph.description.stem, @graph.identifier.stem,
-                @graph.about.stem, @graph.keywords, @graph.alternativeHeadline,
-                @graph.indexableContent
