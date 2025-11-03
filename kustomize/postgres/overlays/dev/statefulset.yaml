@@ -7,4 +7,4 @@ spec:
     spec:
       containers:
         - name: database
-          image: us-west1-docker.pkg.dev/digital-ucdavis-edu/pub/fin-postgres:2.12.1
+          image: us-west1-docker.pkg.dev/digital-ucdavis-edu/pub/fin-postgres:2.13.0
