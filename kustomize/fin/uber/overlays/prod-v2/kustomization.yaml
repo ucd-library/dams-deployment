@@ -1,9 +1,12 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+
 resources:
-  - ../../base
+- ../../base
+- gcs-pvc.yaml
+- gcs-pv.yaml
+
 patches:
   - path: deployment.yaml
     target:
-      kind: StatefulSet
-      name: fcrepo-ro
+      kind: Deployment

@@ -15,10 +15,23 @@ gcloud beta container clusters create ${GKE_CLUSTER_NAME} \
   --addons GcsFuseCsiDriver \
   --addons GcePersistentDiskCsiDriver \
   --num-nodes 3 \
-  --disk-size 50GB \
+  --disk-size 100GB \
   --release-channel=regular \
-  --machine-type e2-standard-4 \
+  --machine-type n4-standard-4 \
   --workload-pool=${GC_PROJECT_ID}.svc.id.goog \
+  --node-labels=intendedfor=services
+
+
+
+gcloud beta container clusters create dams-prod-v2 \
+  --zone us-west1-a \
+  --addons GcsFuseCsiDriver \
+  --addons GcePersistentDiskCsiDriver \
+  --num-nodes 3 \
+  --disk-size 100GB \
+  --release-channel=regular \
+  --machine-type n2-standard-4 \
+  --workload-pool=ucdlib-dams.svc.id.goog \
   --node-labels=intendedfor=services
 
 gcloud beta container node-pools create scalable-pool \
@@ -30,6 +43,17 @@ gcloud beta container node-pools create scalable-pool \
   --workload-metadata=GKE_METADATA \
   --node-labels=intendedfor=scalable-pool \
   --enable-autoscaling --min-nodes 1 --max-nodes 6
+
+gcloud beta container node-pools create scalable-pool \
+  --cluster dams-prod-v2 \
+  --zone us-west1-a \
+  --machine-type n2-standard-4 \
+  --num-nodes 1 \
+  --disk-size 100GB \
+  --workload-metadata=GKE_METADATA \
+  --node-labels=intendedfor=scalable-pool \
+  --enable-autoscaling --min-nodes 1 --max-nodes 6
+
 
 # ./create-secrets.sh
 

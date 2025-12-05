@@ -13,3 +13,11 @@ spec:
           gcePersistentDisk:
             pdName: ocfl-volume-v2
             fsType: ext4
+  volumeClaimTemplates:
+    - metadata:
+        name: activemq-volume
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        resources:
+          requests:
+            storage: 5Gi

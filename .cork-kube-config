@@ -29,7 +29,22 @@
       "zone" : "us-central1-a",
       "project" : "ucdlib-dams"
     },
+    "prod-v2" : {
+      "alias" : "prod",
+      "platform" : "gke",
+      "namespace" : "default",
+      "cluster" : "dams-prod-v2",
+      "zone" : "us-west1-a",
+      "project" : "ucdlib-dams"
+    },
     "prod" : {
+      "platform" : "gke",
+      "namespace" : "default",
+      "cluster" : "dams-prod-v2",
+      "zone" : "us-west1-a",
+      "project" : "ucdlib-dams"
+    },
+    "prod-old" : {
       "platform" : "gke",
       "namespace" : "default",
       "cluster" : "dams-prod",
@@ -52,6 +67,9 @@
     },
     "dev-libk8s" : {
       "overlay" : ["dev-libk8s", "dev"]
+    },
+    "prod-v2" : {
+      "overlay" : ["prod-v2", "prod"]
     }
   },
 
@@ -189,6 +207,50 @@
           "k8sProperty" : "secret"
         }]
       }
+    ],
+    "prod-v2" : [{
+        "k8sName" : "env-config",
+        "mappings" : [{
+          "gcsmName" : "prod-v2-env",
+          "k8sProperty" : ".env"
+        }]
+      },
+      {
+        "k8sName" : "service-account",
+        "mappings" : [{
+          "gcsmName" : "production-service-account",
+          "k8sProperty" : "service-account.json"
+        }]
+      },
+      {
+        "k8sName" : "dams-ssl",
+        "mappings" : [{
+          "gcsmName" : "dams-ssl-cert",
+          "k8sProperty" : "dams-ssl.crt"
+        },
+        {
+          "gcsmName" : "dams-ssl-key",
+          "k8sProperty" : "dams-ssl.key"
+        }]
+      },
+      {
+        "k8sName" : "dams-wildcard-ssl",
+        "mappings" : [{
+          "gcsmName" : "dams-wildcard-ssl-cert",
+          "k8sProperty" : "dams-ssl.crt"
+        },
+        {
+          "gcsmName" : "dams-wildcard-ssl-key",
+          "k8sProperty" : "dams-ssl.key"
+        }]
+      },
+      {
+        "k8sName" : "binary-mirror-message-key",
+        "mappings" : [{
+          "gcsmName" : "binary-mirror-message-key",
+          "k8sProperty" : "secret"
+        }]
+      }
     ]
   },
 
@@ -237,6 +299,15 @@
       }
     },
     {
+      "path" : "kustomize/postgres",
+      "environments" : {
+        "local-dev" : {
+          "template" : "local-dev",
+          "edit" : {"jsonpath": "spec.template.spec.containers[*].image", "value": "${__LOCAL_DEV_REGISTRY}/fin-postgres:sandbox"}
+        }
+      }
+    },
+    {
       "path" : "kustomize/fcrepo",
       "environments" : {
         "local-dev" : {
@@ -273,15 +344,6 @@
         "local-dev" : {
           "template" : "local-dev",
           "edit" : {"jsonpath": "spec.template.spec.containers[*].image", "value": "${__LOCAL_DEV_REGISTRY}/fin-pg-rest:sandbox"}
-        }
-      }
-    },
-    {
-      "path" : "kustomize/postgres",
-      "environments" : {
-        "local-dev" : {
-          "template" : "local-dev",
-          "edit" : {"jsonpath": "spec.template.spec.containers[*].image", "value": "${__LOCAL_DEV_REGISTRY}/fin-postgres:sandbox"}
         }
       }
     },

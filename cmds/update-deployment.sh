@@ -96,6 +96,12 @@ cork-kube edit --overlay $ENVIRONMENT \
   --replace \
   -- kustomize/image-prepuller
 
+cork-kube edit --overlay $ENVIRONMENT \
+  -f daemonset \
+  -e "\$.spec.template.spec.initContainers[?(@.name==\"prepuller-fin-fcrepo\")].image=$FIN_REGISTRY/fin-fcrepo:$FIN_VERSION" \
+  --replace \
+  -- kustomize/image-prepuller
+
 if [[ "$ENVIRONMENT" == "dev" ]]; then
   edit elastic-search statefulset "$FIN_REGISTRY/fin-elastic-search:$FIN_VERSION" elasticsearch $LIBRARY_DEV_K8S
   edit fcrepo statefulset "$FIN_REGISTRY/fin-fcrepo:$FIN_VERSION" service $LIBRARY_DEV_K8S

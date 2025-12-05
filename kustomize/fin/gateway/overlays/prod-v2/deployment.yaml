@@ -1,0 +1,47 @@
+kind: Deployment
+metadata:
+  name: gateway
+spec:
+  template:
+    spec:
+      containers:
+        - name: service
+          image: us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-base-service:2.7.5
+          env:
+            - name: FIN_METRICS_EXPORT_GC
+              value: 'true'
+            - name: FCREPO_RO_ENABLED
+              value: 'false'
+            - name: FIN_GATEWAY_HTTPS_ENABLED
+              value: 'true'
+            - name: K8S_ENABLED
+              value: 'true'
+            - name: K8S_PLATFORM
+              value: gke
+            - name: K8S_CLUSTER
+              value: dams-prod-v2
+            - name: K8S_REGION
+              value: us-west1-a
+            - name: FIN_MIRROR_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: binary-mirror-message-key
+                  key: secret
+            - name: FIN_MIRROR_HOST
+              value: https://dams-binary-mirror.library.ucdavis.edu
+            - name: FIN_MIRROR_FILE_DOWNLOAD
+              value: \.(tiff|tif|pdf)$
+          volumeMounts:
+            - mountPath: /etc/fin/certs/prod-v2.dams.library.ucdavis.edu
+              name: dams-wildcard-ssl
+            - mountPath: /etc/fin/certs/digital.ucdavis.edu
+              name: dams-ssl
+      nodeSelector:
+        intendedfor: scalable-pool
+      volumes:
+        - name: dams-ssl
+          secret:
+            secretName: dams-ssl
+        - name: dams-wildcard-ssl
+          secret:
+            secretName: dams-wildcard-ssl
