@@ -29,14 +29,6 @@
       "zone" : "us-central1-a",
       "project" : "ucdlib-dams"
     },
-    "prod-v2" : {
-      "alias" : "prod",
-      "platform" : "gke",
-      "namespace" : "default",
-      "cluster" : "dams-prod-v2",
-      "zone" : "us-west1-a",
-      "project" : "ucdlib-dams"
-    },
     "prod" : {
       "platform" : "gke",
       "namespace" : "default",

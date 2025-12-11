@@ -45,7 +45,7 @@ gcloud compute instances create-with-container ${VM_NAME} \
 
 echo "Waiting for PostgreSQL VM to start..."
 
-sleep 5
+sleep 20
 
 echo "Setting up SSH tunnel to PostgreSQL on VM ${VM_NAME}..."
 
@@ -64,5 +64,10 @@ pg_dump -Fc -h localhost -p ${LOCAL_PORT} -U postgres -d ${DATABASE} > ${DUMP_FI
 echo "Database dump saved to ${DUMP_FILE}"
 
 echo "To restore the database from the dump file, use the following commands:"
-echo "cork-kube pod port-forward postgres-0 5434:5434"
+echo "cork-kube pod port-forward [env] postgres 5434:5434"
 echo "pg_restore --clean --if-exists -h localhost -p 5434 -U postgres -d ${DATABASE} ${DUMP_FILE}"
+
+echo ""
+echo "You might need to drop the database first if it already exists:"
+echo "psql -h localhost -p 5434 -U postgres"
+echo "SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname = '${DATABASE}'; DROP DATABASE ${DATABASE}; CREATE DATABASE ${DATABASE};"
