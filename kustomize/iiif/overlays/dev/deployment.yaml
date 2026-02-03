@@ -7,7 +7,7 @@ spec:
     spec:
       containers:
         - name: service
-          image: us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-iipimage-server:2.7.12
+          image: us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-iipimage-server:2.7.13
           securityContext:
             privileged: true
             capabilities:
