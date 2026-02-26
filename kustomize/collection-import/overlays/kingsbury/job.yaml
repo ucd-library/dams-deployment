@@ -1,0 +1,19 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: import-kingsbury
+spec:
+  template:
+    spec:
+      containers:
+      - name: importer
+        env:
+          - name: COLLECTION_NAME
+            value: kingsbury
+        volumeMounts:
+        - name: import-volume
+          mountPath: /data
+      volumes:
+      - name: import-volume
+        persistentVolumeClaim:
+          claimName: import-kingsbury-volume-claim
