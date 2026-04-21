@@ -6,7 +6,7 @@ spec:
     spec:
       containers:
         - name: service
-          image: us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-base-service:2.7.16
+          image: us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-base-service:2.7.17
           env:
             - name: K8S_ENABLED
               value: 'true'
@@ -16,8 +16,10 @@ spec:
               value: digital-dev-backend
             - name: K8S_PLATFORM
               value: microk8s
+            - name: K8S_COLLECTION_IMPORT_URL
+              value: http://gateway:3000
             - name: K8S_COLLECTION_IMPORT_IMAGE
-              value: us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-base-service:2.7.16
+              value: us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-base-service:2.7.17
           volumeMounts:
             - mountPath: /etc/fin/k8s-templates
               name: gcs-bucket
