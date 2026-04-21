@@ -37,6 +37,8 @@ spec:
             - name: service-account
               mountPath: /etc/fin/service-account.json
               subPath: service-account.json
+      nodeSelector:
+        intended-for: digital-dev-backend
       volumes:
         - name: gcs-bucket
           emptyDir: {}

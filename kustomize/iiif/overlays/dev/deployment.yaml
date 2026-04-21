@@ -20,3 +20,5 @@ spec:
               value: /etc/fin/service-account.json
             - name: GCS_BUCKET
               value: dams-client-media-prod
+      nodeSelector:
+        intended-for: digital-dev-backend

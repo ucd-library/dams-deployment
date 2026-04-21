@@ -3,6 +3,7 @@ kind: Deployment
 metadata:
   name: ucd-lib-client
 spec:
+  replicas: 2
   template:
     spec:
       containers:
@@ -13,3 +14,5 @@ spec:
               value: 'true'
             - name: GA4_MEASUREMENT_ID
               value: G-7NK2P5743B
+      nodeSelector:
+        intended-for: digital-dev-frontend

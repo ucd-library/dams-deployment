@@ -12,3 +12,15 @@ spec:
         - name: ocfl-volume
           persistentVolumeClaim:
             claimName: ocfl-volume-claim
+      nodeSelector:
+        intended-for: digital-dev-backend
+  volumeClaimTemplates:
+    - metadata:
+        name: activemq-volume
+      spec:
+        storageClassName: microk8s-hostpath
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 2Gi

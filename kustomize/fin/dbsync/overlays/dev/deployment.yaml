@@ -11,3 +11,5 @@ spec:
           env:
             - name: FIN_METRICS_EXPORT_GC
               value: 'true'
+      nodeSelector:
+        intended-for: digital-dev-backend

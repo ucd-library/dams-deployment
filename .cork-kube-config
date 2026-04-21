@@ -10,13 +10,7 @@
     "dev" : {
       "project" : "ucdlib-dams",
       "platform" : "microk8s",
-      "namespace" : "default",
-      "kubeconfig" : {
-        "secret" : "kubeconfig-dev-microk8s"
-      }
-    },
-    "dev-libk8s" : {
-      "alias" : "dev",
+      "namespace" : "digital-dev",
       "kubeconfig" : {
         "secret" : "kubeconfig-dev-libk8s",
         "context" : "microk8s"
@@ -56,9 +50,6 @@
     },
     "dev" : {
       "overlay" : ["dev"]
-    },
-    "dev-libk8s" : {
-      "overlay" : ["dev-libk8s", "dev"]
     },
     "prod-v2" : {
       "overlay" : ["prod-v2", "prod"]

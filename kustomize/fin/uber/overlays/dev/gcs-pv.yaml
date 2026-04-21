@@ -3,7 +3,7 @@ kind: PersistentVolume
 metadata:
   name: gcs-kustomize-templates-pv
 spec:
-  storageClassName: hostpath
+  storageClassName: microk8s-hostpath
   accessModes:
     - ReadWriteMany
   capacity:

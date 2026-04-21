@@ -3,7 +3,7 @@ kind: PersistentVolume
 metadata:
   name: gcs-fuse-pv
 spec:
-  storageClassName: hostpath
+  storageClassName: microk8s-hostpath
   capacity:
     storage: 25Gi
   hostPath:

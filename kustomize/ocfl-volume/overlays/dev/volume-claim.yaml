@@ -3,7 +3,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: ocfl-volume-claim
 spec:
-  storageClassName: hostpath
+  storageClassName: nfs-csi
   resources:
     requests:
-      storage: 25Gi
+      storage: 5000Gi

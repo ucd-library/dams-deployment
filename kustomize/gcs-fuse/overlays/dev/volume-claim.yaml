@@ -3,7 +3,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: gcs-fuse-pvc
 spec:
-  storageClassName: hostpath
+  storageClassName: microk8s-hostpath
   resources:
     requests:
       storage: 5Gi

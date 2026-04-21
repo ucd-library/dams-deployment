@@ -8,3 +8,15 @@ spec:
       containers:
         - name: database
           image: us-west1-docker.pkg.dev/digital-ucdavis-edu/pub/fin-postgres:2.13.0
+      nodeSelector:
+        intended-for: digital-dev-backend
+  volumeClaimTemplates:
+    - metadata:
+        name: data-volume
+      spec:
+        storageClassName: microk8s-hostpath
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 10Gi

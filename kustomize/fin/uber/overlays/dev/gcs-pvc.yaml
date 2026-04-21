@@ -6,7 +6,7 @@ spec:
   accessModes:
     - ReadWriteMany
   volumeName: gcs-kustomize-templates-pv
-  storageClassName: hostpath
+  storageClassName: microk8s-hostpath
   resources:
     requests:
       storage: 1Gi

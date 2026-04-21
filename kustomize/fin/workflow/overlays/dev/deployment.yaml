@@ -14,3 +14,5 @@ spec:
               value: dev
             - name: IMAGE_UTILS_SERVICE_URL
               value: https://dams-image-utils-dev-834298256607.us-west1.run.app
+      nodeSelector:
+        intended-for: digital-dev-backend
