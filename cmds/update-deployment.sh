@@ -9,8 +9,6 @@ ROOT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 ALLOWED_ENVIRONMENTS=("dev" "sandbox" "prod")
 
-LIBRARY_DEV_K8S="dev-libk8s"
-
 FIN_REGISTRY="us-west1-docker.pkg.dev/digital-ucdavis-edu/pub"
 DAMS_REGISTRY="us-west1-docker.pkg.dev/ucdlib-dams/pub"
 DAMS_BUILD_REGISTRY_URL="https://raw.githubusercontent.com/ucd-library/cork-build-registry/refs/heads/main/repositories/dams.json"
@@ -103,9 +101,9 @@ cork-kube edit --overlay $ENVIRONMENT \
   -- kustomize/image-prepuller
 
 if [[ "$ENVIRONMENT" == "dev" ]]; then
-  edit elastic-search statefulset "$FIN_REGISTRY/fin-elastic-search:$FIN_VERSION" elasticsearch $LIBRARY_DEV_K8S
-  edit fcrepo statefulset "$FIN_REGISTRY/fin-fcrepo:$FIN_VERSION" service $LIBRARY_DEV_K8S
-  edit postgres statefulset "$FIN_REGISTRY/fin-postgres:$FIN_VERSION" database $LIBRARY_DEV_K8S
+  edit elastic-search statefulset "$FIN_REGISTRY/fin-elastic-search:$FIN_VERSION" elasticsearch dev
+  edit fcrepo statefulset "$FIN_REGISTRY/fin-fcrepo:$FIN_VERSION" service dev
+  edit postgres statefulset "$FIN_REGISTRY/fin-postgres:$FIN_VERSION" database dev
 fi
 
 echo ""

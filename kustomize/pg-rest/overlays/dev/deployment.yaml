@@ -7,6 +7,6 @@ spec:
     spec:
       containers:
         - name: service
-          image: us-west1-docker.pkg.dev/digital-ucdavis-edu/pub/fin-pg-rest:2.13.0
+          image: us-west1-docker.pkg.dev/digital-ucdavis-edu/pub/fin-pg-rest:null
       nodeSelector:
         intended-for: digital-dev-backend
