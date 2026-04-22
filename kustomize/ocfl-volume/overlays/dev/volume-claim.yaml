@@ -3,6 +3,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: ocfl-volume-claim
 spec:
+  accessModes:
+    - ReadWriteMany
   storageClassName: nfs-csi
   resources:
     requests:

@@ -18,6 +18,8 @@ spec:
               value: microk8s
             - name: K8S_COLLECTION_IMPORT_URL
               value: http://gateway:3000
+            - name: K8S_IMPORT_STORAGE_CLASS
+              value: nfs-csi
             - name: K8S_COLLECTION_IMPORT_IMAGE
               value: us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-base-service:2.7.17
           volumeMounts:
