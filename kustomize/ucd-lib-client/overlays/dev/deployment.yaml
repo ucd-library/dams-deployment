@@ -4,6 +4,11 @@ metadata:
   name: ucd-lib-client
 spec:
   replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: 1
   template:
     spec:
       containers:
@@ -16,3 +21,10 @@ spec:
               value: G-7NK2P5743B
       nodeSelector:
         intended-for: digital-dev-frontend
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchLabels:
+                  app: ucd-lib-client
+              topologyKey: kubernetes.io/hostname
