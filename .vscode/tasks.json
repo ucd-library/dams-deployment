@@ -10,20 +10,6 @@
   ],
   "tasks": [
       {
-          "label": "Proxy Dashboard",
-          "type": "shell",
-          "command": "cork-kube dashboard proxy local-dev",
-          "presentation": {
-              "echo": true,
-              "reveal": "always",
-              "focus": false,
-              "panel": "dedicated",
-              "showReuseMessage": false,
-              "clear": false
-          },
-          "problemMatcher": []
-      },
-      {
         "label": "Log Service",
         "type": "shell",
         "command": "cork-kube pod logs local-dev ${input:podName}",
@@ -64,20 +50,6 @@
             "clear": false
         },
         "problemMatcher": []
-      },
-      {
-          "label": "Generate Dashboard Token",
-          "type": "shell",
-          "command": "cork-kube dashboard token local-dev",
-          "presentation": {
-              "echo": true,
-              "reveal": "always",
-              "focus": false,
-              "panel": "dedicated",
-              "showReuseMessage": false,
-              "clear": false
-          },
-          "problemMatcher": []
       },
       {
         "label": "Proxy Mirror HTTP",
@@ -250,7 +222,6 @@
       {
         "label": "Run all watch tasks",
         "dependsOn": [
-            "Proxy Dashboard",
             "Proxy Gateway HTTP",
             "Proxy Admin DB",
             "Client Watch",
@@ -263,7 +234,6 @@
           "dependsOrder": "sequence",
           "dependsOn": [
               "Deploy Pods",
-              "Generate Dashboard Token",
               "Sleep",
               "Run all watch tasks"
           ]

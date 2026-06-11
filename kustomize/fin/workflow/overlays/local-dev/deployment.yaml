@@ -15,5 +15,5 @@ spec:
             value: sandbox
           - name: IMAGE_UTILS_SERVICE_URL
             value: https://dams-image-utils-sandbox-fga4yw7psa-uc.a.run.app
-          - name: GCS_CLIENT_MEDIA_BUCKET
-            value: dams-client-media-sandbox
+          # - name: GCS_CLIENT_MEDIA_BUCKET
+          #   value: dams-client-media-sandbox

@@ -17,6 +17,8 @@ spec:
         env:
         - name: FIN_SERVICE_NAME
           value: "gateway"
+        - name: FIN_SERVICE_SKIP_FCREPO
+          value: "true"
         - name: ADMIN_UI_EXTENSIONS_ENABLED
           value: "true"
         - name: ADMIN_UI_EXTENSIONS_SOURCE_PATH
