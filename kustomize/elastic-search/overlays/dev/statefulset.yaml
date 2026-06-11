@@ -11,19 +11,19 @@ spec:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
-            - matchExpressions:
-              - key: intended-for
-                operator: In
-                values:
-                - digital-dev-frontend
-                - es-quorum
+              - matchExpressions:
+                  - key: intended-for
+                    operator: In
+                    values:
+                      - digital-dev-frontend
+                      - es-quorum
       containers:
         - name: elasticsearch
           image: >-
-            us-west1-docker.pkg.dev/digital-ucdavis-edu/pub/fin-elastic-search:2.13.0
+            us-west1-docker.pkg.dev/digital-ucdavis-edu/pub/fin-elastic-search:2.14.0
           env:
-            - name: "cluster.initial_master_nodes"
-              value: "elasticsearch-0,elasticsearch-1,elasticsearch-2"
+            - name: cluster.initial_master_nodes
+              value: elasticsearch-0,elasticsearch-1,elasticsearch-2
   volumeClaimTemplates:
     - metadata:
         name: data
