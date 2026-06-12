@@ -12,8 +12,8 @@
       "platform" : "microk8s",
       "namespace" : "digital-dev",
       "kubeconfig" : {
-        "secret" : "kubeconfig-dev-libk8s",
-        "context" : "microk8s"
+        "secret" : "libk8s-digital-dev-deployer ",
+        "context" : "digital-dev-deploy-context"
       }
     },
     "sandbox" : {
