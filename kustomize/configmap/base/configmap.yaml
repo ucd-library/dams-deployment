@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dams-env-config
+data:
+  FIN_METRICS_EXPORT_GC: 'true'
+  GA4_ENABLE_STATS: 'true'
+  GA4_MEASUREMENT_ID: G-7NK2P5743B
+  GOOGLE_APPLICATION_CREDENTIALS: /etc/fin/service-account.json
+  USE_LOCAL_GCSFUSE: 'true'
+  GCS_BUCKET: dams-client-media-prod
+  K8S_COLLECTION_IMPORT_URL: http://gateway:3000
+  FCREPO_RO_ENABLED: 'false'

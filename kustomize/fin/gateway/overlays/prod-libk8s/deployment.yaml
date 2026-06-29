@@ -1,0 +1,27 @@
+kind: Deployment
+metadata:
+  name: gateway
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: 1
+  template:
+    spec:
+      containers:
+        - name: service
+          image: us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-base-service:2.8.0
+          envFrom:
+            - configMapRef:
+                name: dams-env-config
+      nodeSelector:
+        intended-for: digital-prod-frontend
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchLabels:
+                  app: gateway
+              topologyKey: kubernetes.io/hostname

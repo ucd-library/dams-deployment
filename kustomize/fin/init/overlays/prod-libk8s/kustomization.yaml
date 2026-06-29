@@ -1,5 +1,8 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - volume.yaml
-  - volume-claim.yaml
+  - ../../base
+patches:
+  - path: job.yaml
+    target:
+      kind: Job

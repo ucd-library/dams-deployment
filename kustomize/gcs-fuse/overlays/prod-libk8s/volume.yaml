@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: gcs-fuse-pv-dev
+  name: gcs-fuse-pv-prod
 spec:
   storageClassName: microk8s-hostpath
   accessModes:
@@ -9,4 +9,4 @@ spec:
   capacity:
     storage: 25Gi
   hostPath:
-    path: /tmp/gcs-fuse-volume
+    path: /microk8s/volumes/gcs-fuse-volume

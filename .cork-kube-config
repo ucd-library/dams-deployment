@@ -12,7 +12,7 @@
       "platform" : "microk8s",
       "namespace" : "digital-dev",
       "kubeconfig" : {
-        "secret" : "libk8s-digital-dev-deployer ",
+        "secret" : "libk8s-digital-dev-deployer",
         "context" : "digital-dev-deploy-context"
       }
     },
@@ -30,12 +30,14 @@
       "zone" : "us-west1-a",
       "project" : "ucdlib-dams"
     },
-    "prod-old" : {
-      "platform" : "gke",
-      "namespace" : "default",
-      "cluster" : "dams-prod",
-      "zone" : "us-west1-b",
-      "project" : "ucdlib-dams"
+    "prod-libk8s" : {
+      "project" : "ucdlib-dams",
+      "platform" : "microk8s",
+      "namespace" : "digital-prod",
+      "kubeconfig" : {
+        "secret" : "libk8s-digital-prod-deployer",
+        "context" : "digital-prod-deploy-context"
+      }
     }
   },
 
@@ -52,7 +54,7 @@
       "overlay" : ["dev"]
     },
     "prod-v2" : {
-      "overlay" : ["prod-v2", "prod"]
+      "overlay" : ["prod-libk8s", "prod-v2", "prod"]
     }
   },
 
@@ -191,7 +193,12 @@
         }]
       }
     ],
-    "prod-v2" : [{
+    "prod-v2" : [
+      {
+        "k8sName" : "kubeconfig",
+        "kubeconfig" : true
+      },
+      {
         "k8sName" : "env-config",
         "mappings" : [{
           "gcsmName" : "prod-v2-env",
@@ -233,6 +240,42 @@
           "gcsmName" : "binary-mirror-message-key",
           "k8sProperty" : "secret"
         }]
+      }
+    ],
+    "prod-libk8s" : [{
+        "k8sName" : "kubeconfig",
+        "kubeconfig" : true
+      },
+      {
+        "k8sName" : "env-config",
+        "mappings" : [{
+          "gcsmName" : "prod-libk8s-env",
+          "k8sProperty" : ".env"
+        }]
+      },
+      {
+        "k8sName" : "service-account",
+        "mappings" : [{
+          "gcsmName" : "production-service-account",
+          "k8sProperty" : "service-account.json"
+        }]
+      },
+      {
+        "k8sName" : "dams-ssl",
+        "mappings" : [{
+          "gcsmName" : "dams-ssl-cert",
+          "k8sProperty" : "dams-ssl.crt"
+        },
+        {
+          "gcsmName" : "dams-ssl-key",
+          "k8sProperty" : "dams-ssl.key"
+        }]
+      },
+      {
+        "k8sName" : "dams-tls",
+        "tls" : true,
+        "certGcsmName" : "dams-wildcard-ssl-cert",
+        "keyGcsmName" : "dams-wildcard-ssl-key"
       }
     ]
   },
@@ -426,6 +469,14 @@
           "sourceMount" : "kustomize/src-mounts/base-service.json",
           "edit": {"jsonpath": "spec.template.spec.containers[*].image", "value": "${__LOCAL_DEV_REGISTRY}/dams-init:sandbox"}
         }
+      }
+    },
+    {
+      "path" : "kustomize/configmap",
+      "environments" : {
+        "sandbox" : {"ignore" : true},
+        "prod" : {"ignore" : true},
+        "local-dev" : {"ignore" : true}
       }
     },
     {

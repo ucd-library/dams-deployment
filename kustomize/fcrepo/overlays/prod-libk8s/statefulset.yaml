@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: fcrepo
+spec:
+  template:
+    spec:
+      containers:
+        - name: service
+          image: us-west1-docker.pkg.dev/digital-ucdavis-edu/pub/fin-fcrepo:2.14.0
+      volumes:
+        - name: ocfl-volume
+          persistentVolumeClaim:
+            claimName: ocfl-volume-claim
+      nodeSelector:
+        intended-for: digital-prod-backend
+  volumeClaimTemplates:
+    - metadata:
+        name: activemq-volume
+      spec:
+        storageClassName: microk8s-hostpath
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 5Gi

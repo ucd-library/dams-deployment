@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ucd-lib-client
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: 1
+  template:
+    spec:
+      containers:
+        - name: service
+          image: us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-base-service:2.8.0
+          envFrom:
+            - configMapRef:
+                name: dams-env-config
+      nodeSelector:
+        intended-for: digital-prod-frontend
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchLabels:
+                  app: ucd-lib-client
+              topologyKey: kubernetes.io/hostname

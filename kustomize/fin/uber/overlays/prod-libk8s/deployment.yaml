@@ -1,0 +1,44 @@
+kind: Deployment
+metadata:
+  name: uber
+spec:
+  template:
+    spec:
+      containers:
+        - name: service
+          image: us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-base-service:2.8.0
+          envFrom:
+            - configMapRef:
+                name: dams-env-config
+          volumeMounts:
+            - mountPath: /etc/fin/k8s-templates
+              name: gcs-bucket
+            - name: kubeconfig
+              mountPath: /root/.kube
+        - name: gcs-sync
+          image: us-west1-docker.pkg.dev/digital-ucdavis-edu/pub/gcs-sync:main
+          imagePullPolicy: Always
+          env:
+            - name: PORT
+              value: '8080'
+            - name: BUCKETS
+              value: dams-kustomize-templates:/etc/fin/k8s-templates
+            - name: GOOGLE_APPLICATION_CREDENTIALS
+              value: /etc/fin/service-account.json
+          volumeMounts:
+            - mountPath: /etc/fin/k8s-templates
+              name: gcs-bucket
+            - name: service-account
+              mountPath: /etc/fin/service-account.json
+              subPath: service-account.json
+      nodeSelector:
+        intended-for: digital-prod-backend
+      volumes:
+        - name: gcs-bucket
+          emptyDir: {}
+        - name: service-account
+          secret:
+            secretName: service-account
+        - name: kubeconfig
+          configMap:
+            name: kubeconfig

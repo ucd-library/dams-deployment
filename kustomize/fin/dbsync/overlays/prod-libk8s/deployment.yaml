@@ -1,0 +1,15 @@
+kind: Deployment
+metadata:
+  name: dbsync
+spec:
+  replicas: 4
+  template:
+    spec:
+      containers:
+        - name: service
+          image: us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-base-service:2.8.0
+          envFrom:
+            - configMapRef:
+                name: dams-env-config
+      nodeSelector:
+        intended-for: digital-prod-backend
