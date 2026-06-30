@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: gcs-fuse-pvc-dev
+  name: gcs-fuse-pvc
 spec:
   storageClassName: microk8s-hostpath
   resources:

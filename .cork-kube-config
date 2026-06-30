@@ -70,13 +70,6 @@
       "keyGcsmName" : "dams-wildcard-ssl-key"
     },
     {
-      "k8sName" : "dashboard-tls",
-      "namespace" : "kube-system",
-      "tls" : true,
-      "certGcsmName" : "dams-wildcard-ssl-cert",
-      "keyGcsmName" : "dams-wildcard-ssl-key"
-    },
-    {
       "k8sName" : "env-config",
       "mappings" : [{
         "gcsmName" : "dev-env",
@@ -319,6 +312,7 @@
           "edit" : {"jsonpath": "spec.hostPath.path", "value": "${__DIRNAME}/gcs-fuse-volume"}
         },
         "dev" : {
+          "ignore" : true,
           "template" : "dev",
           "edit" : {"jsonpath": "spec.hostPath.path", "value": "/microk8s/volumes/gcs-fuse-volume"}
         }
