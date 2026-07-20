@@ -7,7 +7,7 @@ DAMS_VERSION=$2
 
 ROOT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
-ALLOWED_ENVIRONMENTS=("dev" "sandbox" "prod")
+ALLOWED_ENVIRONMENTS=("dev" "sandbox" "prod", "prod-libk8s")
 
 FIN_REGISTRY="us-west1-docker.pkg.dev/digital-ucdavis-edu/pub"
 DAMS_REGISTRY="us-west1-docker.pkg.dev/ucdlib-dams/pub"
