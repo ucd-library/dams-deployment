@@ -315,6 +315,9 @@
           "ignore" : true,
           "template" : "dev",
           "edit" : {"jsonpath": "spec.hostPath.path", "value": "/microk8s/volumes/gcs-fuse-volume"}
+        },
+        "prod-libk8s" : {
+          "ignore" : true
         }
       }
     },

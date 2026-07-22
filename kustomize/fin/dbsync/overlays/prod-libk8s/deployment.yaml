@@ -2,7 +2,7 @@ kind: Deployment
 metadata:
   name: dbsync
 spec:
-  replicas: 4
+  replicas: 8
   template:
     spec:
       containers:
