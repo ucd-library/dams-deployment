@@ -242,7 +242,7 @@
       {
         "k8sName" : "env-config",
         "mappings" : [{
-          "gcsmName" : "prod-libk8s-env",
+          "gcsmName" : "production-env",
           "k8sProperty" : ".env"
         }]
       },
@@ -254,18 +254,13 @@
         }]
       },
       {
-        "k8sName" : "dams-ssl",
-        "mappings" : [{
-          "gcsmName" : "dams-ssl-cert",
-          "k8sProperty" : "dams-ssl.crt"
-        },
-        {
-          "gcsmName" : "dams-ssl-key",
-          "k8sProperty" : "dams-ssl.key"
-        }]
+        "k8sName" : "dams-tls",
+        "tls" : true,
+        "certGcsmName" : "dams-ssl-cert",
+        "keyGcsmName" : "dams-ssl-key"
       },
       {
-        "k8sName" : "dams-tls",
+        "k8sName" : "dams-wildcard-tls",
         "tls" : true,
         "certGcsmName" : "dams-wildcard-ssl-cert",
         "keyGcsmName" : "dams-wildcard-ssl-key"
