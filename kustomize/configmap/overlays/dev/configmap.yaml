@@ -12,3 +12,12 @@ data:
   K8S_IMPORT_JOB_INTENDED_FOR: digital-dev-backend
   K8S_IMPORT_STORAGE_CLASS: nfs-csi
   K8S_COLLECTION_IMPORT_IMAGE: us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-base-service:2.8.0
+
+  # CaskFS access (docs/PORT-PLAN.md Phase 1, interim track) - cross-namespace
+  # call to argonath-prod's real cask service, no dedicated argonath-dev
+  # namespace exists yet (tracked as an external dependency on argonath-deployment).
+  # CASK_USER must be granted a CaskFS-side role scoped to gold/digital-dev
+  # only - see cmds/provision-cask-dev-access.sh, run against argonath-prod.
+  CASK_URL: http://cask.argonath-prod.svc.cluster.local:3001
+  CASK_PATH_PREFIX: /cask
+  CASK_USER: dams-dev-service

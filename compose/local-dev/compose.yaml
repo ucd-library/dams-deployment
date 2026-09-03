@@ -1,0 +1,82 @@
+services:
+
+  postgres:
+    image: ${IMAGE_PROJECT_ANDUIN_ANDUIN_PG}
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+
+  cask:
+    image: ${IMAGE_CASKFS_CASKFS}
+    depends_on:
+      - postgres
+    environment:
+      - CASKFS_PG_HOST=postgres
+      - CASKFS_ENABLE_POWERWASH=true
+      - CASKFS_ROOT_DIR=/opt/cache
+      - CASKFS_ACL_ENABLED=true
+      - CASKFS_HEADER_AUTH_ENABLED=true
+      - CASKFS_WEBAPP_PORT=3001
+      - CASKFS_WEBAPP_ENV=dev
+      - CASKFS_WEBAPP_PATH_PREFIX=/cask
+    volumes:
+      - ../../../../caskfs/src:/opt/caskfs/src
+      - caskfs_data:/opt/cache
+    ports:
+      - "3001:3001"
+
+  auth-gateway:
+    image: ${IMAGE_PROJECT_ANDUIN_AUTH_GATEWAY}
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+      - cask
+    environment:
+      - PORT=4000
+      # No real Keycloak reachable from local dev by default - see .env.
+      # dams's client talks to cask directly (below) rather than through
+      # this gateway, matching the interim architecture in docs/PORT-PLAN.md
+      # Phase 1 (CaskFS's ACL is username-keyed, not gateway-session-keyed).
+      # This service is here so argonath's own local topology is fully
+      # present to develop/test against as that story firms up (Phase 5).
+      - AUTH_ENABLED=false
+      - CASK_URL=http://cask:3001
+    volumes:
+      - ../../../../project-anduin/auth-gateway/controllers:/app/controllers
+      - ../../../../project-anduin/auth-gateway/lib:/app/lib
+      - ../../../../project-anduin/auth-gateway/client:/app/client
+      - ../../../../project-anduin/auth-gateway/index.js:/app/index.js
+    ports:
+      - "4000:4000"
+
+  client:
+    build:
+      context: ../../../dams/services/client
+    depends_on:
+      - cask
+    environment:
+      - CLIENT_ENV=dev
+      - PG_HOST=postgres
+      - PG_DATABASE=dcf
+      - CASK_URL=http://cask:3001
+      - CASK_PATH_PREFIX=/cask
+      - CASK_USER=dams-dev-service
+    volumes:
+      - ../../../dams/services/client/controllers:/app/controllers
+      - ../../../dams/services/client/lib:/app/lib
+      - ../../../dams/services/client/models:/app/models
+      - ../../../dams/services/client/index.js:/app/index.js
+      - ../../../dams/services/client/config.js:/app/config.js
+    ports:
+      - "8000:8000"
+
+volumes:
+  pg_data:
+    driver: local
+  caskfs_data:
+    driver: local
