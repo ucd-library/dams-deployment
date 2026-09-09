@@ -22,6 +22,9 @@ spec:
           requests:
             memory: "500Mi"
             cpu: "500m"
+        envFrom:
+          - configMapRef:
+              name: dams-env-config
         env:
         - name: FIN_METRICS_FIN_ENABLED
           value: "true"

@@ -21,3 +21,4 @@ data:
   CASK_URL: http://cask.argonath-prod.svc.cluster.local:3001
   CASK_PATH_PREFIX: /cask
   CASK_USER: dams-dev-service
+  USE_DATE_RANGE_FIELDS: 'true'
