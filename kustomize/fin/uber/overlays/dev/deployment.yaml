@@ -6,7 +6,7 @@ spec:
     spec:
       containers:
         - name: service
-          image: us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-base-service:2.9.1
+          image: us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-base-service:2.9.3
           envFrom:
             - configMapRef:
                 name: dams-env-config
@@ -24,7 +24,7 @@ spec:
             - name: K8S_IMPORT_STORAGE_CLASS
               value: nfs-csi
             - name: K8S_COLLECTION_IMPORT_IMAGE
-              value: us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-base-service:2.9.1
+              value: us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-base-service:2.9.3
           volumeMounts:
             - mountPath: /etc/fin/k8s-templates
               name: gcs-bucket
