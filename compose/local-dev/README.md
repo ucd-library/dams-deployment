@@ -30,6 +30,7 @@ Then:
 - `http://localhost:3001` - cask directly
 - `http://localhost:4000` - auth-gateway (AUTH_ENABLED=false by default - see `.env`)
 - `http://localhost:5432` - shared postgres
+- `http://localhost:9200` - elasticsearch (same custom image real dev/prod runs, single-node here)
 
 `services/client/{controllers,lib,models,index.js,config.js}` are
 live-mounted from the `dams` checkout - edit and `docker compose restart

@@ -23,6 +23,15 @@ services:
       - CASKFS_WEBAPP_PORT=3001
       - CASKFS_WEBAPP_ENV=dev
       - CASKFS_WEBAPP_PATH_PREFIX=/cask
+      # Identifier subjects must be explicitly opted into CaskFS's RDF filter
+      # index (caskfs.ld_filter) or GET /api/find?subject=<id> always
+      # returns empty - see dams repo docs/PORT-PLAN.md Phase 2. This
+      # pattern only covers ARK-shaped identifiers - real identifiers won't
+      # all be ARKs (a custom library box/folder ID scheme is also in play,
+      # see PORT-PLAN.md's "Identifiers are not all ARKs" note), so this
+      # needs broadening (not just replicating as-is) before real
+      # argonath-prod cask gets an equivalent setting.
+      - "CASKFS_FILTER_URI_MATCHES=^ark:"
     volumes:
       - ../../../../caskfs/src:/opt/caskfs/src
       - caskfs_data:/opt/cache
@@ -54,11 +63,33 @@ services:
     ports:
       - "4000:4000"
 
+  # Same custom image real dev/prod runs (kustomize/elastic-search/base/
+  # statefulset.yaml) - reused directly, single-node, rather than a plain
+  # upstream elasticsearch image, so any baked-in analyzer/plugin behavior
+  # config.elasticsearch.compactTypeInclude relies on matches real clusters.
+  # See docs/PORT-PLAN.md (dams repo) Phase 3 - this is what "confirm the
+  # dcf ES instance is reachable" actually needs a place to verify against
+  # locally: the `client` service resolving ES_HOST, and (once populated)
+  # diffing documents produced by two different indexing paths.
+  elasticsearch:
+    image: us-west1-docker.pkg.dev/digital-ucdavis-edu/pub/fin-elastic-search:sandbox
+    environment:
+      - discovery.type=single-node
+      - cluster.name=elasticsearch
+      - network.host=0.0.0.0
+      - xpack.security.enabled=false
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    ports:
+      - "9200:9200"
+    volumes:
+      - es_data:/usr/share/elasticsearch/data
+
   client:
     build:
       context: ../../../dams/services/client
     depends_on:
       - cask
+      - elasticsearch
     environment:
       - CLIENT_ENV=dev
       - PG_HOST=postgres
@@ -66,6 +97,9 @@ services:
       - CASK_URL=http://cask:3001
       - CASK_PATH_PREFIX=/cask
       - CASK_USER=dams-dev-service
+      - IIIF_HOST=http://iiif
+      - ES_HOST=elasticsearch
+      - ES_PORT=9200
     volumes:
       - ../../../dams/services/client/controllers:/app/controllers
       - ../../../dams/services/client/lib:/app/lib
@@ -75,8 +109,29 @@ services:
     ports:
       - "8000:8000"
 
+  # dams/services/iipimage's own image (built via .cork-build, contextPath
+  # services/iipimage) - see docs/PORT-PLAN.md Phase 2. Its lighttpd.conf
+  # hardcodes FILESYSTEM_PREFIX=/etc/gcs-fuse at build time (not env-var
+  # driven), so IIIF identifiers are always paths relative to that root
+  # regardless of what backs it - here, the same caskfs_data volume `cask`
+  # itself writes to (CaskFS's CAS root), read-only, standing in for the
+  # real direct-mount-of-CaskFS's-CAS-root PVC this phase still needs to
+  # spike in real k8s. USE_LOCAL_GCSFUSE deliberately left unset - that
+  # only matters for the real GCS-fuse path, not this local stand-in.
+  iiif:
+    # no :sandbox/:local-dev tag exists in this registry for this image
+    # (unlike the argonath-side images above) - pinned to the most recent
+    # real tag (matches kustomize/iiif/overlays/dev) instead.
+    image: us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-iipimage-server:2.9.3
+    volumes:
+      - caskfs_data:/etc/gcs-fuse:ro
+    ports:
+      - "8080:80"
+
 volumes:
   pg_data:
     driver: local
   caskfs_data:
+    driver: local
+  es_data:
     driver: local
