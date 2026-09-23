@@ -12,3 +12,4 @@ data:
   K8S_IMPORT_JOB_INTENDED_FOR: digital-prod-backend
   K8S_IMPORT_STORAGE_CLASS: nfs-csi
   K8S_COLLECTION_IMPORT_IMAGE: us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-base-service:2.8.0
+  USE_DATE_RANGE_FIELDS: 'true'
