@@ -37,8 +37,12 @@ spec:
             httpHeaders:
             - name: Authorization
               value: Basic ZmVkb3JhQWRtaW46ZmVkb3JhQWRtaW4=
+            - name: Prefer
+              value: 'return=representation; omit="http://www.w3.org/ns/ldp#PreferContainment"'
           initialDelaySeconds: 10
-          periodSeconds: 5
+          periodSeconds: 10
+          timeoutSeconds: 3
+          failureThreshold: 3
         livenessProbe:
           httpGet:
             path: /fcrepo/rest
@@ -46,8 +50,12 @@ spec:
             httpHeaders:
             - name: Authorization
               value: Basic ZmVkb3JhQWRtaW46ZmVkb3JhQWRtaW4=
+            - name: Prefer
+              value: 'return=representation; omit="http://www.w3.org/ns/ldp#PreferContainment"'
           initialDelaySeconds: 15
-          periodSeconds: 20
+          timeoutSeconds: 5
+          periodSeconds: 30
+          failureThreshold: 5
   volumeClaimTemplates:
     - metadata:
         name: activemq-volume
