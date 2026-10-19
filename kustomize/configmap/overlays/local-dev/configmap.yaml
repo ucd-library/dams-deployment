@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dams-env-config
+data:
+  WORKFLOW_ENV: dev
+  USE_DATE_RANGE_FIELDS: 'true'
+  FIN_GATEWAY_TURNSTILE_ENABLED: 'true'
+  FIN_GATEWAY_TURNSTILE_ALLOWLIST: '169.237.0.0/16,128.120.0.0/16,152.79.0.0/16'

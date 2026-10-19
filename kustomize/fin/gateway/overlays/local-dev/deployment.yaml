@@ -15,6 +15,9 @@ spec:
             value: "docker-desktop"
           - name: "K8S_NAMESPACE"
             value: "dams"
+          envFrom:
+            - configMapRef:
+                name: dams-env-config
           # - name: FIN_MIRROR_SECRET
           #   valueFrom:
           #     secretKeyRef:

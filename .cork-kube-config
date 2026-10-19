@@ -98,7 +98,7 @@
       {
         "k8sName" : "service-account",
         "mappings" : [{
-          "gcsmName" : "local-dev-service-accounts",
+          "gcsmName" : "local-dev-service-account",
           "k8sProperty" : "service-account.json"
         }]
       },
@@ -467,8 +467,7 @@
       "path" : "kustomize/configmap",
       "environments" : {
         "sandbox" : {"ignore" : true},
-        "prod" : {"ignore" : true},
-        "local-dev" : {"ignore" : true}
+        "prod" : {"ignore" : true}
       }
     },
     {
