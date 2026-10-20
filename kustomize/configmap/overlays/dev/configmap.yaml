@@ -14,7 +14,7 @@ data:
   K8S_COLLECTION_IMPORT_IMAGE: us-west1-docker.pkg.dev/ucdlib-dams/pub/dams-base-service:2.8.0
 
   FIN_GATEWAY_TURNSTILE_ENABLED: 'true'
-  FIN_GATEWAY_TURNSTILE_ALLOWLIST: '169.237.0.0/16,128.120.0.0/16,152.79.0.0/16'
+  # FIN_GATEWAY_TURNSTILE_ALLOWLIST: '169.237.0.0/16,128.120.0.0/16,152.79.0.0/16,10.1.0.0/16'
 
   # CaskFS access (docs/PORT-PLAN.md Phase 1, interim track) - cross-namespace
   # call to argonath-prod's real cask service, no dedicated argonath-dev
