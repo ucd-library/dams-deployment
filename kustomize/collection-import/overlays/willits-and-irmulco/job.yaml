@@ -1,0 +1,19 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: import-willits-and-irmulco
+spec:
+  template:
+    spec:
+      containers:
+      - name: importer
+        env:
+          - name: COLLECTION_NAME
+            value: willits-and-irmulco
+        volumeMounts:
+        - name: import-volume
+          mountPath: /data
+      volumes:
+      - name: import-volume
+        persistentVolumeClaim:
+          claimName: import-willits-and-irmulco-volume-claim
